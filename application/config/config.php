@@ -25,7 +25,7 @@ $config['modules_locations'] = array('modules/' => '../../modules/',);
 | path to your installation.
 |
 */
-$config['base_url']	= '';
+$config['base_url']	= 'http://www.scadsy.com:1337/scadsy/';
 
 /*
 |--------------------------------------------------------------------------
@@ -117,7 +117,7 @@ $config['enable_hooks'] = FALSE;
 | http://codeigniter.com/user_guide/general/creating_libraries.html
 |
 */
-$config['subclass_prefix'] = 'MY_';
+$config['subclass_prefix'] = 'SCADSY_';
 
 
 /*
