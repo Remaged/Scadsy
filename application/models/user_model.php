@@ -4,17 +4,14 @@ class User_model extends SCADSY_Model {
 
 	public function __construct()
 	{
+		parent::__construct();
 		$this->load->library('session');
-		$this->load->database();
 	}
 	
 	/**
 	 * add_user
 	 *
 	 * Adds a new user into the database, using the POST-data of the registration form
-	 *
-	 * @access	public
-	 * @return	void
 	 */
 	public function add_user(){
 		$salt = mcrypt_create_iv(16, MCRYPT_DEV_URANDOM);	
@@ -38,6 +35,9 @@ class User_model extends SCADSY_Model {
 		$this->db->trans_complete();
 	}
 	
+	/**
+	 * Adds a group_user (student, teacher or parent) to the database.
+	 */
 	public function add_group_user(){
 		if($this->input->post('group') == 'students'){
 			$this->add_student();
@@ -50,10 +50,11 @@ class User_model extends SCADSY_Model {
 		}
 	}
 	
-	public function add_student(){
-		
-		
-		$user_id = $this->db->insert_id(); //weet niet zo even welke methode
+	/**
+	 * Adds a student and enrollment_information to the database for the currently added user.
+	 */
+	public function add_student(){				
+		$user_id = $this->db->insert_id(); 
 		$data_student = array(
 			'id' => $this->input->post('student_id'),
 			'alternate_id' => $this->input->post('alternate_id'),
@@ -70,21 +71,26 @@ class User_model extends SCADSY_Model {
 		$this->db->insert('enrollment_information', $data_enrollment);
 	}
 	
+	/**
+	 * Adds a parent to the database, linked to the currently added user.
+	 */
 	public function add_parent(){
-		$user_id = $this->db->insert_id(); //weet niet zo even welke methode
+		$user_id = $this->db->insert_id(); 
 		$this->db->insert('parent', array('user'=>$user_id));
 	}
 	
+	/**
+	 * Adds a teacher to the database, linked to the currently added user.
+	 */
 	public function add_teacher(){
-		$user_id = $this->db->insert_id(); //weet niet zo even welke methode
+		$user_id = $this->db->insert_id(); 
 		$data = array(
 			'user' => $user_id,
 			'start_date' => $this->input->post('start_date')			
 		);	
 		$this->db->insert('teacher', $data);
 	}
-	
-	
+		
 	/**
 	 * get_hashed_password
 	 *
@@ -150,15 +156,9 @@ class User_model extends SCADSY_Model {
 	 * @access	public
 	 * @return	void
 	 */
-	public function logout_user(){
+	public function logout(){
 		$user_session_data = array(
-			'id'=>'',
-			'username' => '',
-			'first_name' =>'',
-			'middle_name' => '',
-			'last_name' =>'',
-           	'email'     => '',
-           	'logged_in' => FALSE
+			'id'=>''
     	);
 		$this->session->unset_userdata($user_session_data);
 	}
@@ -173,29 +173,19 @@ class User_model extends SCADSY_Model {
 	 * @access	public
 	 * @return	boolean
 	 */
-	public function login_user(){
-		$this->db->from('user')->where('username',$this->input->post('username'));
-		$userdata = array_shift($this->db->get()->result());
+	public function login(){
+		$query = $this->db->get_where('user',array('username'=>$this->input->post('username')));
 
-		if(!isset($userdata->password) OR $userdata->password != $this->get_hashed_password($this->input->post('password'),$userdata->password_salt))
+		if($query->num_rows() == 1 || $query->row()->password != $this->get_hashed_password($this->input->post('password'),$query->row()->password_salt))
 		{
 			return FALSE;
-		}
-		
+		}		
 		$newdata = array(
-			'id'=>$userdata->id,
-			'username' => $userdata->username,
-			'first_name' =>$userdata->first_name,
-			'middle_name' =>$userdata->middle_name,
-			'last_name' =>$userdata->last_name,
-           	'email'     => $userdata->email,
-           	'logged_in' => TRUE
+			'id'=>$userdata->id
     	);
 		$this->session->set_userdata($newdata);
 		return TRUE;
-
-	}
-	
+	}	
 }
 
 
