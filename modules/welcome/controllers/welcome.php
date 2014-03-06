@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Welcome extends CI_Controller {
+class Welcome extends SCADSY_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -19,7 +19,19 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('welcome_message');
+		parent::init(array(
+			'module' => "welcome",
+			'action' => "index",
+			'group' => array('student','school','admin')
+			)
+		);
+		
+		$this->menu_manager->add_menu_item('welcome/hoi', 'HOI');
+		$this->menu_manager->add_menu_item('welcome/doei', 'Doei');
+		
+		$data['menu'] = $this->menu_manager->get_menu();
+		
+		$this->load->view('welcome_message', $data);
 	}
 }
 

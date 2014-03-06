@@ -69,6 +69,10 @@
 <div id="container">
 	<h1>Welcome to CodeIgniter! (bewerkte)</h1>
 
+<div>
+	<?php echo $menu; ?>
+</div>
+
 	<div id="body">
 		<p>The page you are looking at is being generated dynamically by CodeIgniter.</p>
 
