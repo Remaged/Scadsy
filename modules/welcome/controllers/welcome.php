@@ -27,7 +27,12 @@ class Welcome extends SCADSY_Controller {
 		);
 		
 		$this->menu_manager->add_menu_item('welcome/hoi', 'HOI');
-		$this->menu_manager->add_menu_item('welcome/doei', 'Doei');
+		$this->menu_manager->add_menu_item('welcome/doei', 'Doei', 1);
+		$this->menu_manager->add_submenu_item('welcome/hoi', 'welcome/subtest', 'Subtest1');
+		$this->menu_manager->add_submenu_item('welcome/hoi', 'welcome/subtest3', 'Subtest3');
+		$this->menu_manager->add_submenu_item('welcome/hoi', 'welcome/subtest4', 'Subtest4');
+		$this->menu_manager->add_submenu_item('welcome/subtest', 'welcome/subtest2', 'Subtest2');
+		$this->menu_manager->add_submenu_item('welcome/subtest2', 'welcome/subtest12', 'Subtest12');
 		
 		$data['menu'] = $this->menu_manager->get_menu();
 		

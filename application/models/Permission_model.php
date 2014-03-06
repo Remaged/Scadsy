@@ -17,7 +17,7 @@ class Permission_model extends SCADSY_Model {
 	 * 		The found permission or NULL if no permission could be found.
 	 */
 	public function get_permission($action, $module, $group) {
-		$query = $this->db->get_where('permission', array(
+		$query = Database_manager::get_db()->get_where('permission', array(
 											'module_action_name' => $action,
 											'module_action_module' => $module,
 											'group_name' => $group
@@ -43,7 +43,7 @@ class Permission_model extends SCADSY_Model {
 	public function add_permission($action, $module, $default_groups, $allowed) {
 		if(is_array($default_groups)) {
 			foreach($default_groups as $group) {
-				$this->db->insert('permission', array(
+				Database_manager::get_db()->insert('permission', array(
 										'module_action_name' => $action,
 										'module_action_module' => $module,
 										'group_name' => $group,
@@ -51,7 +51,7 @@ class Permission_model extends SCADSY_Model {
 										));
 			}
 		} else {
-				$this->db->insert('permission', array(
+				Database_manager::get_db()->insert('permission', array(
 												'module_action_name' => $action,
 												'module_action_module' => $module,
 												'group_name' => $default_groups,
