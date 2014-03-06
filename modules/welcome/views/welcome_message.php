@@ -67,7 +67,7 @@
 <body>
 
 <div id="container">
-	<h1>Welcome to CodeIgniter! (bewerkte)</h1>
+	<h1>Welcome to CodeIgniter! (module)</h1>
 
 <div>
 	<?php echo $menu; ?>
