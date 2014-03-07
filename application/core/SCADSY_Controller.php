@@ -53,7 +53,8 @@ class SCADSY_Controller extends MX_Controller {
 	 */		
 	protected function view($page, $data = '')
 	{
-		$this->load->view('template/header.php');
+		$headerdata['menu'] = $this->menu_manager->get_menu();
+		$this->load->view('template/header.php', $headerdata);
 	    $this->load->view($page, $data);
 		$this->load->view('template/footer.php');
 	}

@@ -63,8 +63,11 @@ class Menu_manager {
 	 * 		The menu
 	 */
 	public function get_menu($as_html = TRUE) {
-		if($as_html) {			
-			return $this->get_menu_html();
+		Hook_manager::execute_hook('pre_menu_generate', $this);
+		if($as_html) {
+			$html = $this->get_menu_html();	
+			Hook_manager::execute_hook('post_menu_generate', $html);		
+			return $html;
 		} else {
 			return $this->menu_items;
 		}
