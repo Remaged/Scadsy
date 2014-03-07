@@ -21,11 +21,19 @@ class Menu_manager {
 	 * 		The link to the page (for example: welcome/index)
 	 * @param $description
 	 * 		The description of the link (for example: "home")
+	 * @param $default_groups
+	 * 		The default groups that have permission for this menu item
 	 * @param $priority
 	 * 		Optional, the priority for the menu item
 	 */
-	public function add_menu_item($link, $description, $priority = 10) {
-		$this->menu_items[$priority][$link] = $description;		
+	public function add_menu_item($link, $description, $default_groups, $priority = 10) {
+		$CI =& get_instance();
+		
+		$exploded = explode('/', $link);
+		
+		if($CI->permission_manager->check_permissions($exploded[1], $exploded[0], $default_groups)) {
+			$this->menu_items[$priority][$link] = $description;
+		}		
 	}
 	
 	/**
@@ -37,8 +45,14 @@ class Menu_manager {
 	 * @param $description
 	 * 		The description of the link (for example: "home")
 	 */
-	public function add_submenu_item($parent, $link, $description) {
-		$this->submenu_items[$parent][$link] = $description;		
+	public function add_submenu_item($parent, $link, $description, $default_groups) {
+		$CI =& get_instance();
+		
+		$exploded = explode('/', $link);
+		
+		if($CI->permission_manager->check_permissions($exploded[1], $exploded[0], $default_groups)) {
+			$this->submenu_items[$parent][$link] = $description;		
+		}
 	}
 	
 	/**

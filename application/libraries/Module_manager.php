@@ -1,7 +1,7 @@
 <?php (defined('BASEPATH')) OR exit('No direct script access allowed');
 
 /**
- * The module_manager class. This class manager the initialising and loading of modules.
+ * The module_manager class. This class manages the initialising and loading of modules.
  */
 class Module_manager {
 
