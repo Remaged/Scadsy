@@ -8,14 +8,16 @@ class Module_model extends SCADSY_Model {
 	/**
 	 * Get the modules that have a certain status
 	 * @param $status
-	 * 		The status of the module. Can be 'enabled' or 'disabled'
+	 * 		The status of the module. Can be 'enabled', 'disabled'or 'all'
 	 * @return
 	 * 		The found modules
 	 */
-	public function get_modules($status) {
+	public function get_modules($status = 'all') {
 		if($status == 'enabled' || $status == 'disabled') {
 			$query = Database_manager::get_db()->get_where('module', array('status' => $status));
 			return $query->result();
+		} else if ($status == 'all') {
+			return Database_manager::get_db()->get('module')->result();
 		}
 		throw new Exception("Invalid status");
 	}

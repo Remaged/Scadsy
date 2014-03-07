@@ -15,7 +15,9 @@ class Module extends SCADSY_Controller{
 			)
 		);
 		
+		$data['modules'] = $this->module_model->get_modules();
 		
+		$this->view('list', $data);
 	}
 }
 
