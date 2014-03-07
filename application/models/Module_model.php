@@ -39,19 +39,6 @@ class Module_model extends SCADSY_Model {
 	 	Database_manager::get_db()->where('directory', $directory);
 	 	Database_manager::get_db()->update('module', array('status' => 'disabled'));
 	 }
-	 
-	 /**
-	  * Add the permissions of a module to the database
-	  * @param $permissions
-	  * 	The permissions associated with a certain module
-	  * @param $directory
-	  * 	The directory the module is located
-	  */
-	 public function add_module_permissions($permissions, $directory) {
-		foreach($permissions as $permission) {
-			Database_manager::get_db()->insert('modules_permissions', array('module' => $directory, 'permission' => $permission));
-		}
-	}
 	
 	/**
 	 * Check if a module is active
@@ -61,7 +48,7 @@ class Module_model extends SCADSY_Model {
 	 * 		Whether or not the module is active
 	 */
 	public function is_module_active($directory) {
-		$query = Database_manager::get_db()->get_where('modules', array('directory' => $directory, 'status' => 'enabled'));
+		$query = Database_manager::get_db()->get_where('module', array('directory' => $directory, 'status' => 'enabled'));
 		
 		return $query->num_rows() > 0;
 	}
@@ -74,7 +61,7 @@ class Module_model extends SCADSY_Model {
 	 * 		The module data or NULL if no module is found
 	 */
 	public function get_module($directory) {
-		$query = Database_manager::get_db()->get_where('modules', array('directory' => $directory));
+		$query = Database_manager::get_db()->get_where('module', array('directory' => $directory));
 		
 		if($query->num_rows() == 1) {
 		 	return $query->row();
@@ -82,6 +69,37 @@ class Module_model extends SCADSY_Model {
 			return NULL;
 		}
 	}
+	
+	/**
+	 * Add module
+	 * @param $module_metadata
+	 * 		An array with all the data to add a module
+	 * @param $module_actions
+	 * 		An array with all the actions of a module
+	 * @param $module_permissions
+	 * 		An array with the groups that are allowed to load this module
+	 */
+	 public function add_module($module_metadata, $module_actions, $module_permissions) {
+	 	Database_manager::get_db()->trans_start();
+		
+	 	Database_manager::get_db()->insert('module', $module_metadata);
+		
+		foreach($module_actions as $action) {
+	 		Database_manager::get_db()->insert('module_action', array(
+																"name" => $action,
+																"module" => $module_metadata['directory']
+																));
+	 	}
+		
+		foreach($module_permissions as $permission) {
+			Database_manager::get_db()->insert('module_permission', array(
+																		"module" => $module_metadata['directory'],
+																		"group" => $permission
+																		));
+		}
+		
+		Database_manager::get_db()->trans_complete();
+	 }
 }
 
 /* End of file Module_model.php */

@@ -25,7 +25,8 @@ class SCADSY_Controller extends MX_Controller {
 			$is_allowed = $this->permission_manager->check_permissions($settings['action'], $settings['module'], $settings['group']);
 			
 			if(!$is_allowed) {
-				show_404();
+				//show_404();\
+				echo 'No permission to view this page';
 				die();
 			}
 		}	

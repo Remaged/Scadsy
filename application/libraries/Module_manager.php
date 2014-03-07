@@ -41,10 +41,11 @@ class Module_manager {
 						&& is_file($key.$dir . '\index.php')) {
 							
 					$module_metadata = self::get_module_metadata($key.$dir . '\index.php', $dir);
-
+					$module_actions = self::get_module_actions($key.$dir.'\controllers\\'.$dir.'.php', $dir);
+					$module_permissions = self::get_module_permissions($key.$dir . '\index.php');
+	
 					if($CI->module_model->get_module($module_metadata['directory']) === NULL){
-						$CI->module_model->add_module($module_metadata);
-						$CI->module_model->add_module_permissions(self::get_module_permissions($key.$dir . '\index.php'), $dir);
+						$CI->module_model->add_module($module_metadata, $module_actions, $module_permissions);					
 					}
 				}
 			}
@@ -98,7 +99,34 @@ class Module_manager {
 		
 		$permissions = explode(',', $permission[1]);
 		
+		foreach($permissions as &$permission) {
+			$permission = trim($permission);
+		}
+		
 		return $permissions;	
+	}
+	
+	/**
+	 * Get the actions a certain module can perform
+	 * @param $filepath
+	 * 		The complete filepath to the controller file
+	 * @return 
+	 * 		An array with action names
+	 */
+	private static function get_module_actions($filepath, $directory) {							
+		include_once($filepath);
+		
+		$reflection_class = new ReflectionClass($directory);
+		$results = $reflection_class->getMethods(ReflectionMethod::IS_PUBLIC);
+
+		$methods = array();
+		foreach($results as $result) {
+			if(strtolower($result->class) == strtolower($directory) && $result->name != '__construct') {
+				$methods[] = $result->name;
+			}
+		}
+		
+		return $methods;
 	}
 }
 

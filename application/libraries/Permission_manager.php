@@ -22,7 +22,7 @@ class Permission_manager {
 	public function check_permissions($action, $module, $default_groups) {
 		$CI =& get_instance();
 		// TODO: Get user group
-		$user_group = "student";
+		$user_group = "admin";
 		$is_allowed = $this->check_permissions_database($action, $module, $user_group);
 		
 		if($is_allowed === NULL) {

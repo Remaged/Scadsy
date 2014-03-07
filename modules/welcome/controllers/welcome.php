@@ -26,14 +26,6 @@ class Welcome extends SCADSY_Controller {
 			)
 		);
 		
-		$this->menu_manager->add_menu_item('welcome/hoi', 'HOI', array('student', 'admin'));
-		$this->menu_manager->add_menu_item('welcome/doei', 'Doei', array('admin'), 1);
-		$this->menu_manager->add_submenu_item('welcome/hoi', 'welcome/subtest', 'Subtest1', array('admin'));
-		$this->menu_manager->add_submenu_item('welcome/hoi', 'welcome/subtest3', 'Subtest3', array('admin'));
-		$this->menu_manager->add_submenu_item('welcome/hoi', 'welcome/subtest4', 'Subtest4', array('student', 'admin'));
-		$this->menu_manager->add_submenu_item('welcome/subtest', 'welcome/subtest2', 'Subtest2', array('admin'));
-		$this->menu_manager->add_submenu_item('welcome/subtest2', 'welcome/subtest12', 'Subtest12', array('student', 'admin'));
-		
 		$data['menu'] = $this->menu_manager->get_menu();
 		
 		$this->load->view('welcome_message', $data);
