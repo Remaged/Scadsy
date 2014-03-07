@@ -29,11 +29,7 @@
 	</fieldset>
 	
 	<fieldset>
-		<legend>Student information (als group = student)</legend>
-		<div>
-			<label>Student ID</label>
-			<input type="text" name="student_id" value="<?php echo set_value('student_id', ''); ?>" size="50" />
-		</div>
+		<legend>Student information</legend>
 		<div>
 			<label>Alternate ID</label>
 			<input type="text" name="alternate_id" value="<?php echo set_value('alternate_id', ''); ?>" size="50" />

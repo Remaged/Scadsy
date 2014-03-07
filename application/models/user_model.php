@@ -92,15 +92,15 @@ class User_model extends SCADSY_Model {
 	}
 		
 	/**
-	 * get_hashed_password
-	 *
-	 * Hashed a provided password, using the 'SHA512' hash and the provided salt.
+	 * Hashes a provided password, using the 'SHA512' hash and the provided salt.
 	 * Returns the hashed password.
 	 *
-	 * @access	public
-	 * @param	string
-	 * @param	string
-	 * @return	string
+	 * @param	password
+	 * 		The password to be hashed
+	 * @param	salt
+	 * 		salt to use in the hashing
+	 * @return
+	 * 		hashed password
 	 */
 	public function get_hashed_password($password,$salt){
 		if (CRYPT_SHA512 != 1) {
@@ -112,49 +112,9 @@ class User_model extends SCADSY_Model {
 		return $hash_explode[1];
 	}
 	
-	/**
-	 * check_email_exists
-	 *
-	 * checks if the provided email already exists for any users.
-	 * returns TRUE if email exists, FALSE if not. 
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	boolean
-	 */
-	public function check_email_exists($email){
-		$this->db->where("email",$email);
-		if($this->db->count_all_results('user') === 0){
-			return FALSE;
-		}
-		return TRUE;
-	}
 	
 	/**
-	 * check_student_id_exists
-	 *
-	 * checks if the provided student id already exists for any student.
-	 * returns TRUE if student id exists, FALSE if not. 
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	boolean
-	 */
-	public function check_student_id_exists($student_id){
-		$this->db->where("id",$student_id);
-		if($this->db->count_all_results('student') === 0){
-			return FALSE;
-		}
-		return TRUE;
-	}
-	
-	/**
-	 * logout_user
-	 *
 	 * Ends session-data for the current logged in user. 
-	 *
-	 * @access	public
-	 * @return	void
 	 */
 	public function logout(){
 		$user_session_data = array(
@@ -164,24 +124,19 @@ class User_model extends SCADSY_Model {
 	}
 
 	/**
-	 * login_user
-	 *
 	 * Tries to log in a user by using provided POST-data and validating the username/email + password
 	 * returns FALSE if login unsuccesfull (no user found or password invalid).
 	 * Otherwise stores user-data in sessions and return TRUE.
-	 *
-	 * @access	public
-	 * @return	boolean
 	 */
 	public function login(){
 		$query = $this->db->get_where('user',array('username'=>$this->input->post('username')));
 
-		if($query->num_rows() == 1 || $query->row()->password != $this->get_hashed_password($this->input->post('password'),$query->row()->password_salt))
+		if($query->num_rows() == 0 || $query->row()->password != $this->get_hashed_password($this->input->post('password'),$query->row()->password_salt))
 		{
 			return FALSE;
 		}		
 		$newdata = array(
-			'id'=>$userdata->id
+			'id'=>$query->row()->id
     	);
 		$this->session->set_userdata($newdata);
 		return TRUE;

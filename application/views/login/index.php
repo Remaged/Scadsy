@@ -2,6 +2,7 @@
 <?php echo validation_errors(); ?>
 
 <?php echo form_open('login'); ?>
+<?php echo $failed_message; ?>
 	
 	<div>
 		<label>Username</label>
