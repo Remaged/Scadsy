@@ -29,10 +29,38 @@ class User_model extends SCADSY_Model {
 			'password' => $hashed_password,
 			'password_salt' => $salt 
 		);
-		$this->db->trans_start();		
-		$this->db->insert('user', $data);
+		Database_manager::get_db()->trans_start();		
+		Database_manager::get_db()->insert('user', $data);
 		$this->add_group_user();
-		$this->db->trans_complete();
+		Database_manager::get_db()->trans_complete();
+	}
+	
+	/**
+	 * Gets user-data of the logged in user.
+	 * @return
+	 * 		object containing user-data
+	 * 		or NULL if user is not logged in.
+	 */
+	public function get_logged_in_user(){
+		if(user_logged_in() === TRUE){
+			return Database_manager::get_db()->get_where('user',array('id'=>$this->session->userdata('id')))->row();
+		}
+		else{
+			return null;
+		}
+	}
+	
+	/**
+	 * checks if the user is logged in.
+	 * @return
+	 * 		TRUE if user is logged in (the id-session of the user is stored).
+	 * 		FALSE if the user is not logged in.
+	 */
+	public function user_logged_in(){
+		if($this->session->userdata('id')){
+			return TRUE;
+		}
+		return FALSE;
 	}
 	
 	/**
@@ -54,41 +82,41 @@ class User_model extends SCADSY_Model {
 	 * Adds a student and enrollment_information to the database for the currently added user.
 	 */
 	public function add_student(){				
-		$user_id = $this->db->insert_id(); 
+		$user_id = Database_manager::get_db()->insert_id(); 
 		$data_student = array(
 			'id' => $this->input->post('student_id'),
 			'alternate_id' => $this->input->post('alternate_id'),
 			'user' => $user_id,
 			'grade' => $this->input->post('grade')		
 		);	
-		$this->db->insert('student', $data_student);
+		Database_manager::get_db()->insert('student', $data_student);
 		
 		$data_enrollment = array(
 			'student' => $this->input->post('student_id'),
 			'start_date' => $this->input->post('start_date'),
 			'end_date' => $this->input->post('end_date')		
 		);	
-		$this->db->insert('enrollment_information', $data_enrollment);
+		Database_manager::get_db()->insert('enrollment_information', $data_enrollment);
 	}
 	
 	/**
 	 * Adds a parent to the database, linked to the currently added user.
 	 */
 	public function add_parent(){
-		$user_id = $this->db->insert_id(); 
-		$this->db->insert('parent', array('user'=>$user_id));
+		$user_id = Database_manager::get_db()->insert_id(); 
+		Database_manager::get_db()->insert('parent', array('user'=>$user_id));
 	}
 	
 	/**
 	 * Adds a teacher to the database, linked to the currently added user.
 	 */
 	public function add_teacher(){
-		$user_id = $this->db->insert_id(); 
+		$user_id = Database_manager::get_db()->insert_id(); 
 		$data = array(
 			'user' => $user_id,
 			'start_date' => $this->input->post('start_date')			
 		);	
-		$this->db->insert('teacher', $data);
+		Database_manager::get_db()->insert('teacher', $data);
 	}
 		
 	/**
@@ -129,7 +157,7 @@ class User_model extends SCADSY_Model {
 	 * Otherwise stores user-data in sessions and return TRUE.
 	 */
 	public function login(){
-		$query = $this->db->get_where('user',array('username'=>$this->input->post('username')));
+		$query = Database_manager::get_db()->get_where('user',array('username'=>$this->input->post('username')));
 
 		if($query->num_rows() == 0 || $query->row()->password != $this->get_hashed_password($this->input->post('password'),$query->row()->password_salt))
 		{

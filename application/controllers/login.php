@@ -10,10 +10,10 @@ class Login extends SCADSY_Controller{
 	 */
 	public function index(){
 		if($this->session->userdata('id') || $this->_validate_login() === TRUE){
-			$this->load->view('login/succes');
+			$this->view('login/succes');
 		}		
 		else{
-			$this->load->view('login/index',$this->data);
+			$this->view('login/index',$this->data);
 		}		
 	}
 	
