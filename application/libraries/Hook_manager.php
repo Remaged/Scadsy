@@ -12,7 +12,12 @@ class Hook_manager {
 	 * Init the hook manager.
 	 */
 	public static function init() {
-		//self::set_hook('menu_load');
+		$CI =& get_instance();
+		$CI->config->load('hooks');
+		
+		foreach($CI->config->item('system_hooks') as $tag) {
+			self::set_hook($tag);
+		}	
 	}
 	
 	/**
