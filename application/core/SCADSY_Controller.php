@@ -20,7 +20,7 @@ class SCADSY_Controller extends MX_Controller {
 	 * @param $settings
 	 * 		The permission settings used for the current page
 	 */
-	public function init(Array $settings) {
+	protected function init(Array $settings) {
 		if(isset($settings['action']) && isset($settings['module'])) {
 			$is_allowed = $this->permission_manager->check_permissions($settings['action'], $settings['module'], $settings['group']);
 			
@@ -34,6 +34,19 @@ class SCADSY_Controller extends MX_Controller {
 		Module_manager::load_modules();
 	}
 			
+	/**
+	 * The view function
+	 * @param $template
+	 * 		The template for the view
+	 * @param $data
+	 * 		Optional, The data for the view
+	 */		
+	protected function view($template, $data = '')
+	{
+		$this->load->view('template/header.php');
+	    $this->load->view($template, $data);
+		$this->load->view('template/footer.php');
+	}
 }
 
 /* End of file SCADSY_Controller.php */
