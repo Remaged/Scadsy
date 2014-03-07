@@ -1,65 +1,49 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * The login controller, handles the login and logout requests.
+ */
 class Login extends SCADSY_Controller{
-	
-	public function __construct()
-	{
-		parent::__construct();
-	}
-	
-	
-	function index()
-	{
-		if($this->session->userdata('logged_in') OR $this->validate_login() === TRUE)
-		{
-			$this->view('succes');
+	protected $data = array('failed_message'=>'');
+	/**
+	 * Default action. When user not logged in this results in a login form. Otherwise a succes page will be shown.
+	 */
+	public function index(){
+		if($this->session->userdata('id') || $this->_validate_login() === TRUE){
+			$this->load->view('login/succes');
 		}		
-		else
-		{
-			$this->view();	
+		else{
+			$this->load->view('login/index',$this->data);
 		}		
 	}
 	
-	
-	public function validate_login(){
+	/**
+	 * Sets rules for the login form validation.
+	 */
+	private function _validate_login(){
 		$this->load->helper(array('form', 'url'));
 		$this->load->library('form_validation');
-		$this->form_validation->set_rules('username', 'Username');				
-		$this->form_validation->set_rules('password', 'Password', 'callback_password_check');
-		return $this->form_validation->run();
-	}
-	
-	public function password_check($str){
-		if($this->user_model->login_user())
-		{
-			return TRUE;
+		$this->form_validation->set_rules('username', 'Username','required|trim|xss_clean');				
+		$this->form_validation->set_rules('password', 'Password', 'required|trim|xss_clean');
+		if($this->form_validation->run() === FALSE){
+			return FALSE;
 		}
-		$this->form_validation->set_message('password_check', 'The username or password was not correct.');
-		return FALSE;
+		if($this->user_model->login() === FALSE){
+			$this->data['failed_message'] = '<div id="login_failed">The username or password was not correct.</div>';
+			return FALSE;
+		}
+		return TRUE;
+		
 	}
 	
-	
+	/**
+	 * Logs out user
+	 */
 	public function logout(){
-		$this->user_model->logout_user();
-		$this->view('logout');
+		$this->user_model->logout();
+		$this->load->view('login/logout');
 	}
-	
-	
-	public function view($page = 'index')
-	{
-		if ( ! file_exists('application/views/login/'.$page.'.php'))
-		{
-			show_404();
-		}
-	
-		$data['title'] = ucfirst($page); // Capitalize the first letter
-	
-		//$this->load->view('templates/header', $data);
-		$this->load->view('login/'.$page.'.php', $data);
-		//$this->load->view('templates/footer', $data);
-	
-	}
-	
+		
 }
 
 
