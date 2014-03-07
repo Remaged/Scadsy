@@ -46,7 +46,7 @@ class User_model extends SCADSY_Model {
 			return Database_manager::get_db()->get_where('user',array('id'=>$this->session->userdata('id')))->row();
 		}
 		else{
-			return null;
+			return NULL;
 		}
 	}
 	
