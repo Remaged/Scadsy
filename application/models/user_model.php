@@ -42,8 +42,23 @@ class User_model extends SCADSY_Model {
 	 * 		or NULL if user is not logged in.
 	 */
 	public function get_logged_in_user(){
-		if(user_logged_in() === TRUE){
-			return Database_manager::get_db()->get_where('user',array('id'=>$this->session->userdata('id')))->row();
+		if($this->user_logged_in() === TRUE){
+			return Database_manager::get_db()->get_where('user',array('id'=>$this->session->userdata('id')),1)->row();
+		}
+		else{
+			return NULL;
+		}
+	}
+	
+	/**
+	 * Gets the group the user is in.
+	 * @return	
+	 * 		string containing the group-name
+	 * 		or NULL if user is not logged in.
+	 */
+	public function get_group(){
+		if($this->user_logged_in() === TRUE){
+			return Database_manager::get_db()->select('group_key')->get_where('user',array('id'=>$this->session->userdata('id')),1)->row()->group_key;
 		}
 		else{
 			return NULL;

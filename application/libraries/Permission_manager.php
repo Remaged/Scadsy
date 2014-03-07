@@ -21,8 +21,7 @@ class Permission_manager {
 	 */	
 	public function check_permissions($action, $module, $default_groups) {
 		$CI =& get_instance();
-		// TODO: Get user group
-		$user_group = "admin";
+		$user_group = $CI->user_model->get_group();
 		$is_allowed = $this->check_permissions_database($action, $module, $user_group);
 		
 		if($is_allowed === NULL) {

@@ -33,7 +33,6 @@ class SCADSY_Controller extends MX_Controller {
 	protected function init(Array $settings) {
 		if(isset($settings['action']) && isset($settings['module'])) {
 			$is_allowed = $this->permission_manager->check_permissions($settings['action'], $settings['module'], $settings['group']);
-			
 			if(!$is_allowed) {
 				//show_404();\
 				echo 'No permission to view this page';
