@@ -36,15 +36,15 @@ class SCADSY_Controller extends MX_Controller {
 			
 	/**
 	 * The view function
-	 * @param $template
-	 * 		The template for the view
+	 * @param $page
+	 * 		The page for the view
 	 * @param $data
 	 * 		Optional, The data for the view
 	 */		
-	protected function view($template, $data = '')
+	protected function view($page, $data = '')
 	{
 		$this->load->view('template/header.php');
-	    $this->load->view($template, $data);
+	    $this->load->view($page, $data);
 		$this->load->view('template/footer.php');
 	}
 }
