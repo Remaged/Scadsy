@@ -13,6 +13,16 @@ class SCADSY_Controller extends MX_Controller {
 	 */
 	public function __construct() {
 		parent::__construct();	
+		$this->redirect_to_login();
+	}
+	
+	/**
+	 * Redirects users to the the login page when not logged in.
+	 */
+	protected function redirect_to_login(){
+		if($this->user_model->user_logged_in() === FALSE && uri_string() != 'login'){
+			redirect('login');
+		}
 	}
 
 	/**
@@ -23,7 +33,6 @@ class SCADSY_Controller extends MX_Controller {
 	protected function init(Array $settings) {
 		if(isset($settings['action']) && isset($settings['module'])) {
 			$is_allowed = $this->permission_manager->check_permissions($settings['action'], $settings['module'], $settings['group']);
-			
 			if(!$is_allowed) {
 				//show_404();\
 				echo 'No permission to view this page';

@@ -10,7 +10,7 @@ class Registration_model extends SCADSY_Model {
 	 * 		array of all groups as objects.
 	 */
 	public function get_groups(){
-		return $this->db->get('group')->result();
+		return Database_manager::get_db()->get('group')->result();
 	}
 	
 	/**
@@ -20,7 +20,7 @@ class Registration_model extends SCADSY_Model {
 	 * 		array of objects
 	 */
 	public function get_ethnicities(){
-		return $this->db->get('ethnicity')->result();
+		return Database_manager::get_db()->get('ethnicity')->result();
 	}
 	
 	/**
@@ -30,7 +30,7 @@ class Registration_model extends SCADSY_Model {
 	 * 		array of objects
 	 */
 	public function get_languages(){
-		return $this->db->get('language')->result();
+		return Database_manager::get_db()->get('language')->result();
 	}
 	
 	/**
@@ -40,7 +40,7 @@ class Registration_model extends SCADSY_Model {
 	 * 		array of objects
 	 */
 	public function get_grades(){
-		return $this->db->get('grade')->result();
+		return Database_manager::get_db()->get('grade')->result();
 	}
 	
 	/**
