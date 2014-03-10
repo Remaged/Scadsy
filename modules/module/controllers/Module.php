@@ -19,6 +19,18 @@ class Module extends SCADSY_Controller{
 		
 		$this->view('list', $data);
 	}
+	
+	public function enable($directory) {
+		$this->module_model->enable_module($directory);
+		
+		redirect('module/index');
+	}
+	
+	public function disable($directory) {
+		$this->module_model->disable_module($directory);
+		
+		redirect('module/index');
+	}
 }
 
 

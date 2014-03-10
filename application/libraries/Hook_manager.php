@@ -13,7 +13,6 @@ class Hook_manager {
 	 */
 	public static function init() {
 		$CI =& get_instance();
-		$CI->config->load('hooks');
 		
 		foreach($CI->config->item('system_hooks') as $tag) {
 			self::set_hook($tag);
