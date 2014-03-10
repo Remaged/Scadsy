@@ -1,0 +1,1 @@
+alert('FOOTER JS LOADED');

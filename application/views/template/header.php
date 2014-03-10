@@ -2,6 +2,8 @@
 <html>
 <head>
 	<title>SCADSY - School Administration System</title>
+	<?php echo $scripts; ?>
+	<?php echo $stylesheets; ?>
 </head>
 
 <body>

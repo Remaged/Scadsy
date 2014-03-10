@@ -35,7 +35,7 @@ class SCADSY_Controller extends MX_Controller {
 			$is_allowed = $this->permission_manager->check_permissions($settings['action'], $settings['module'], $settings['group']);
 			if(!$is_allowed) {
 				//show_404();\
-				echo 'No permission to view this page';
+				echo 'No permission to view this page!';
 				die();
 			}
 		}	
@@ -53,9 +53,14 @@ class SCADSY_Controller extends MX_Controller {
 	protected function view($page, $data = '')
 	{
 		$headerdata['menu'] = $this->menu_manager->get_menu();
+		$headerdata['scripts'] = $this->template_manager->get_scripts();
+		$headerdata['stylesheets'] = $this->template_manager->get_stylesheets();
 		$this->load->view('template/header.php', $headerdata);
+		
 	    $this->load->view($page, $data);
-		$this->load->view('template/footer.php');
+		
+		$footerdata['scripts'] = $this->template_manager->get_scripts(FALSE);
+		$this->load->view('template/footer.php', $footerdata);
 	}
 }
 
