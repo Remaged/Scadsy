@@ -13,8 +13,6 @@ class Login_model extends SCADSY_Model {
 	 * 		and the value matches the name of the school.	
 	 */
 	public function get_databases(){
-		return array("scadsy_school_a"=>"A","scadsy_school_b"=>"B");
-		$this->logout();
 		$rows = Database_manager::get_db()->get('database')->result();
 		$result = array();
 		foreach($rows as $row){
@@ -38,14 +36,14 @@ class Login_model extends SCADSY_Model {
 	 * 		TRUE if succesfull
 	 * 		string with error-message if failed.
 	 */
-	public function validate_login(){		
-		$this->database_manager->set_db($this->input->post('school'));
-		$this->setup_form_validation();	
-		
+	public function validate_login(){
+		$this->setup_form_validation();			
 		if($this->form_validation->run() === FALSE){
 			return '';
-		}
+		}		
+		Database_manager::set_db($this->input->post('school'));
 		if($this->user_model->login() === FALSE){
+			Database_manager::disconnect();
 			return '<div id="login_failed">The username or password was not correct.</div>';
 		}
 		return TRUE;

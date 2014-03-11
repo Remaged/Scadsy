@@ -26,7 +26,7 @@ class Database_manager {
 	 * @param $db_name
 	 * 		The name of the new database
 	 */
-	public static function set_db($db_name) {		
+	public static function set_db($db_name) {	
 		self::connect($db_name);
 	}
 	
@@ -36,13 +36,13 @@ class Database_manager {
 	 * 		The currently active database object
 	 */
 	public static function get_db() {
+		if(self::$DB !== NULL) {
+			return self::$DB;
+		}		
 		$CI =& get_instance();
 		$db_name = $CI->input->cookie('scadsy_db_cookie', TRUE);
 		if($db_name !== FALSE) {
-			if(self::$DB === NULL) {
-				self::connect($db_name);
-			}
-			return self::$DB;
+			self::connect($db_name);
 		} else {
 			return $CI->db;
 		}
@@ -69,7 +69,7 @@ class Database_manager {
 			$config['password'] = $row->password;
 			$config['database'] = $row->name;
 			$config['dbdriver'] = 'mysql';
-			
+
 			self::$DB = &$CI->load->database($config, TRUE);
 			
 			$cookie = array(
@@ -77,7 +77,7 @@ class Database_manager {
 			    'value'  => $db_name,
 			    'expire' => 0
 			);			
-			$CI->input->set_cookie($cookie);
+			$CI->input->set_cookie($cookie,TRUE);
 		}
 	}
 	
