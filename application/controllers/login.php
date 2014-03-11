@@ -10,10 +10,10 @@ class Login extends SCADSY_Controller{
 	 */
 	public function index(){
 		if($this->session->userdata('id') || $this->_validate_login() === TRUE){
-			$this->view('login/succes');
+			redirect('module');
 		}		
 		else{
-			$this->view('login/index',$this->data);
+			$this->view('login/index',$this->data, 'template/header_without_menu');
 		}		
 	}
 	
@@ -40,8 +40,9 @@ class Login extends SCADSY_Controller{
 	 * Logs out user
 	 */
 	public function logout(){
+		
 		$this->user_model->logout();
-		$this->load->view('login/logout');
+		$this->view('login/logout');
 	}
 		
 }

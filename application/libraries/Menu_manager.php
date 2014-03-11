@@ -13,7 +13,19 @@ class Menu_manager {
 	public function __construct() {
 		$this->menu_items = array();
 		$this->submenu_items = array();
+		$this->load_template_menu();
 	}
+	
+	/**
+	 * Load the template menu items
+	 */
+	 private function load_template_menu() {
+	 	$CI =& get_instance();
+		
+		foreach($CI->config->item('template_menu') as $item) {
+			$this->add_menu_item($item['link'], $item['description'], $item['default_groups'], $item['priority']);
+		}
+	 }
 	
 	/**
 	 * Add a new menu item to the menu
@@ -78,7 +90,7 @@ class Menu_manager {
 	 */
 	 private function get_menu_html() {
 	 	$html = '<ul class="main_menu">';
-		for($i = 0; $i < 11; $i++) {
+		for($i = 0; $i <= 11; $i++) {
 			if(isset($this->menu_items[$i])) {
 				foreach($this->menu_items[$i] as $key => $value) {
 					$html .= '<li>';

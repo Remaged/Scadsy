@@ -28,7 +28,7 @@ class Welcome extends SCADSY_Controller {
 		
 		$data['menu'] = $this->menu_manager->get_menu();
 		
-		$this->load->view('welcome_message', $data);
+		$this->view('welcome_message', $data);
 	}
 }
 

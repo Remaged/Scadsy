@@ -42,6 +42,7 @@ class User_model extends SCADSY_Model {
 	 * 		or NULL if user is not logged in.
 	 */
 	public function get_logged_in_user(){
+		
 		if($this->user_logged_in() === TRUE){
 			return Database_manager::get_db()->get_where('user',array('id'=>$this->session->userdata('id')),1)->row();
 		}

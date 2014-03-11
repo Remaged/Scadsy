@@ -8,6 +8,7 @@ class Permission_manager {
 	public function __construct() {
 		$CI =& get_instance();
 		$CI->load->model('permission_model');
+		$CI->load->model('user_model');
 	}
 
 	/**
@@ -30,7 +31,6 @@ class Permission_manager {
 				$is_allowed = TRUE;
 			} else {
 				$is_allowed = FALSE;
-				$CI->permission_model->add_permission($action, $module, $user_group, FALSE);
 			}
 			
 			$CI->permission_model->add_permission($action, $module, $default_groups, TRUE);
@@ -53,6 +53,10 @@ class Permission_manager {
 	 * 		NULL if no data could be found in the database about this action
 	 */
 	private function check_permissions_database($action, $module, $group) {
+		if($group === NULL) {
+			return TRUE;
+		}
+		
 		$CI =& get_instance();
 		$is_allowed = NULL;
 		if(is_array($group)) {

@@ -16,7 +16,27 @@ class Template_manager {
 		$this->scripts_footer = array();
 		$this->scripts_header = array();
 		$this->stylesheets = array();
+		
+		$this->load_framework_assets();
 	}
+	
+	/**
+	 * Load the frameworks scripts and styles
+	 */
+	 private function load_framework_assets() {
+	 	$CI =& get_instance();
+		
+		$scripts = $CI->config->item('template_scripts');
+		$styles = $CI->config->item('template_styles');
+		
+		foreach($scripts as $identifier => $url) {
+			$this->add_script($identifier, $CI->config->item('assets_location')['scripts'].'/'.$url);
+		}
+		
+		foreach($styles as $identifier => $url) {
+			$this->add_stylesheet($identifier, $CI->config->item('assets_location')['styles'].'/'.$url);
+		}
+	 }
 
 	/**
 	 * Add a script

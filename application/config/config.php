@@ -13,6 +13,20 @@ $config['modules_locations'] = array('modules/' => '../../modules/',);
 
 /*
 |--------------------------------------------------------------------------
+| Assets directory
+|--------------------------------------------------------------------------
+|
+| The location of the assets directories without trailing slashes.
+|
+*/
+$config['assets_location'] = array(
+	'scripts' => 'assets/scripts',
+	'styles' => 'assets/style'
+);
+
+
+/*
+|--------------------------------------------------------------------------
 | Base Site URL
 |--------------------------------------------------------------------------
 |

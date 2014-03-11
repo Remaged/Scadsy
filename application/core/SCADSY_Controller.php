@@ -50,17 +50,17 @@ class SCADSY_Controller extends MX_Controller {
 	 * @param $data
 	 * 		Optional, The data for the view
 	 */		
-	protected function view($page, $data = '')
+	protected function view($page, $data = '', $header_template = 'template/header', $footer_template = 'template/footer')
 	{
 		$headerdata['menu'] = $this->menu_manager->get_menu();
 		$headerdata['scripts'] = $this->template_manager->get_scripts();
 		$headerdata['stylesheets'] = $this->template_manager->get_stylesheets();
-		$this->load->view('template/header.php', $headerdata);
+		$this->load->view($header_template, $headerdata);
 		
 	    $this->load->view($page, $data);
 		
 		$footerdata['scripts'] = $this->template_manager->get_scripts(FALSE);
-		$this->load->view('template/footer.php', $footerdata);
+		$this->load->view($footer_template, $footerdata);
 	}
 }
 

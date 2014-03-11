@@ -13,9 +13,6 @@
 				<div id="logo">
 					<h1>SCADSY </h1>
 				</div>
-				<div id="menu">
-					<?php echo $menu; ?>
-				</div>
 				<div class="clear"></div>
 			</div>
 		</div>
