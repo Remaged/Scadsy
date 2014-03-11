@@ -17,6 +17,12 @@ $config['template_styles'] = array(
 
 $config['template_menu'] = array(
 	array(
+		"link" => "module/index",
+		"description" => "Modules",
+		"default_groups" => array("admin"),
+		"priority" => 11
+	),
+	array(
 		"link" => "login/logout",
 		"description" => "Logout",
 		"default_groups" => array("student", "admin", "school"),
