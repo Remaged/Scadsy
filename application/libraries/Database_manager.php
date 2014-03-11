@@ -36,7 +36,11 @@ class Database_manager {
 	 * 		Whether or not to get the main db or the set db. Default is FALSE
 	 * @return
 	 * 		The currently active database object
+<<<<<<< HEAD
 	 */ 
+=======
+	 */
+>>>>>>> 01addbd4e7a7def216c3ec1db6d5e2d566b83533
 	public static function get_db($ci_db = FALSE) {
 		$CI =& get_instance();
 		if($ci_db === FALSE) {
