@@ -36,7 +36,7 @@ class Database_manager {
 	 * 		Whether or not to get the main db or the set db. Default is FALSE
 	 * @return
 	 * 		The currently active database object
-	 */   
+	 */	
 	public static function get_db($ci_db = FALSE) {
 		$CI =& get_instance();
 		if($ci_db === FALSE) {
@@ -49,7 +49,6 @@ class Database_manager {
 			} else {
 				return $CI->db;
 			}
-
 		} else {
 			return $CI->db;
 		}
