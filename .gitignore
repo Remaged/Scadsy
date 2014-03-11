@@ -9,3 +9,4 @@ application/logs/*
 !application/logs/.htaccess
 
 .project
+application/third_party/MX/Router.php
