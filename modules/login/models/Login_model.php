@@ -22,12 +22,11 @@ class Login_model extends SCADSY_Model {
 	}
 	
 	/**
-	 * Logs out user and unsets the selected school-database.
+	 * Logs out user and disconnects from the current school-database.
 	 */
 	public function logout(){
 		$this->user_model->logout();
-		$this->load->helper('cookie');
-		delete_cookie("scadsy_db_cookie");
+		Database_manager::disconnect();
 	}
 	
 	/**

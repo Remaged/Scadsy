@@ -16,15 +16,14 @@ class Login extends SCADSY_Controller{
 	 * Default action. When user not logged in this results in a login form. Otherwise a succes page will be shown.
 	 */
 	public function index() {
-		parent::init(array(
-			'module' => "login",
-			'action' => "index",
-			'group' => array('admin')
-			)
-		);	 
-		
 		$validate_login = $this->login_model->validate_login(); 
 		if($this->user_model->user_logged_in() || $validate_login === TRUE){
+			parent::init(array(
+				'module' => "login",
+				'action' => "index",
+				'group' => array('admin')
+				)
+			);
 			$this->view('succes');
 		}		
 		else{
