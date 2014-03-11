@@ -1,7 +1,6 @@
 <?php
 
 $database_file = "../application/config/database.php";
-$database_file = "../application/config/config.php";
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
 	try {
@@ -19,9 +18,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$file_content = str_replace("{db_host}", $_POST['db_host'], $file_content);
 	$file_content = str_replace("{db_user}", $_POST['db_user'], $file_content);
 	$file_content = str_replace("{db_pass}", $_POST['db_pass'], $file_content);
-	file_put_contents($database_file, $file_content);
 
-	echo file_get_contents('succes.html');
+	if (file_put_contents($database_file, $file_content) === FALSE ) {
+		echo 'Something went wrong with writing the settings. Please make sure "'.$database_file.'" has the correct filepermissions.';
+	} else {
+		echo file_get_contents('succes.html');
+	}
 	
 	} catch (PDOException $e) {
 		echo "An error occured: " . $e->getMessage();
