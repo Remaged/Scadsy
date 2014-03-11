@@ -55,11 +55,13 @@ class Database_manager {
 	 */
 	private static function connect($db_name) {
 		$CI =& get_instance();
-		
-		//$query = $CI->db->get_where('databases', array('name' => $db_name));
-		
-		//if($query->num_rows() == 1) {
-		if(FALSE) {	
+		if(empty($CI->db)){
+			$CI->load->database();
+		}
+		$query = $CI->db->get_where('database', array('name' => $db_name));
+	
+		if($query->num_rows() == 1) {
+
 			$row = $query->row();
 			
 			$config['hostname'] = 'localhost';
