@@ -32,17 +32,23 @@ class Database_manager {
 	
 	/**
 	 * Get the currently active database
+	 * @param $ci_db
+	 * 		Whether or not to get the main db or the set db. Default is FALSE
 	 * @return
 	 * 		The currently active database object
 	 */
-	public static function get_db() {
+	public static function get_db($ci_db = FALSE) {
 		$CI =& get_instance();
-		$db_name = $CI->input->cookie('scadsy_db_cookie', TRUE);
-		if($db_name !== FALSE) {
-			if(self::$DB === NULL) {
-				self::connect($db_name);
+		if($ci_db === FALSE) {
+			$db_name = $CI->input->cookie('scadsy_db_cookie', TRUE);
+			if($db_name !== FALSE) {
+				if(self::$DB === NULL) {
+					self::connect($db_name);
+				}
+				return self::$DB;
+			} else {
+				return $CI->db;
 			}
-			return self::$DB;
 		} else {
 			return $CI->db;
 		}
