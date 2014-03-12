@@ -32,6 +32,7 @@ body {
 #menu ul li {
 	display:inline-block;
 	border-right: 1px solid #C4C4C4;
+	position:relative;
 }
 
 #menu ul li:last-child {
@@ -46,8 +47,21 @@ body {
 	margin: 0 5px;
 }
 
+#menu ul li:hover > ul.sub_menu_0 {
+	display:block;
+}
+
 #menu ul li a:hover {
 	color: gray;
+}
+
+#menu ul.sub_menu_0 {
+	display:none;
+	position:absolute;
+	background:white;
+	border-right: 1px solid #C4C4C4;
+	border-left: 1px solid #C4C4C4;
+	border-bottom: 1px solid #C4C4C4;
 }
 
 #page {

@@ -31,7 +31,12 @@ class SCADSY_Controller extends MX_Controller {
 	 * Check if this controller should be loaded
 	 */
 	 private function check_permissions() {
-	 	$query = Database_manager::get_db()->get_where('module', array('directory' => $this->router->fetch_class(), 'status' => 'enabled'));
+	 	$class_name = $this->router->get_module();
+		if($class_name === NULL) {
+			$class_name = $this->router->fetch_class();
+		}
+		
+	 	$query = Database_manager::get_db()->get_where('module', array('directory' => $class_name, 'status' => 'enabled'));
 		if($query->num_rows() == 0) {
 			show_401();
 			die();

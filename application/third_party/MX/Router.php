@@ -48,7 +48,9 @@ class MX_Router extends CI_Router
 		if (count($segments) == 0) return $segments;
 		
 		/* locate module controller */
-		if ($located = $this->locate($segments)) return $located;
+		if ($located = $this->locate($segments)) {
+			return $located;
+		} 
 		
 		/* use a default 404_override controller */
 		if (isset($this->routes['404_override']) AND $this->routes['404_override']) {
@@ -63,7 +65,7 @@ class MX_Router extends CI_Router
 	/** Locate the controller **/
 	public function locate($segments) {		
 		
-		$this->module = '';
+		$this->module = NULL;
 		$this->directory = '';
 		$ext = $this->config->item('controller_suffix').EXT;
 		
@@ -76,7 +78,8 @@ class MX_Router extends CI_Router
 		list($module, $directory, $controller) = array_pad($segments, 3, NULL);
 
 		/* check modules */
-		foreach (Modules::$locations as $location => $offset) {		
+		foreach (Modules::$locations as $location => $offset) {
+					
 			/* module exists? */
 			if (is_dir($source = $location.$module.'/controllers/')) {
 				
@@ -109,6 +112,16 @@ class MX_Router extends CI_Router
 				if(is_file($source.$module.$ext)) {
 					return $segments;
 				}
+			} else {
+				/* Check if it isn't a second controller in a module */
+				$module_directories = preg_grep('/^([^.])/', scandir($location));
+				foreach($module_directories as $module_directory) {
+					if(is_file($location.$module_directory.'/controllers/'.$module.$ext)) {
+						$this->module = $module_directory;
+						$this->directory = $offset.$module_directory.'/controllers/';
+						return $segments;
+					}
+				}
 			}
 		}
 		
@@ -132,5 +145,9 @@ class MX_Router extends CI_Router
 
 	public function set_class($class) {
 		$this->class = $class.$this->config->item('controller_suffix');
+	}
+
+	public function get_module() {
+		return $this->module;
 	}
 }
