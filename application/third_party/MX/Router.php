@@ -76,47 +76,38 @@ class MX_Router extends CI_Router
 		list($module, $directory, $controller) = array_pad($segments, 3, NULL);
 
 		/* check modules */
-		foreach (Modules::$locations as $location => $offset) {
-		
-			/* module exists and enabled? */
-			require_once( BASEPATH .'database/DB'. EXT );
-			$db =& DB();
-			$query = $db->get_where('module', array('directory' => $module, 'status' => 'enabled'));
-		
-			if ($query->num_rows() > 0) {
-			
-				/* module exists? */
-				if (is_dir($source = $location.$module.'/controllers/')) {
+		foreach (Modules::$locations as $location => $offset) {		
+			/* module exists? */
+			if (is_dir($source = $location.$module.'/controllers/')) {
+				
+				$this->module = $module;
+				$this->directory = $offset.$module.'/controllers/';
+				
+				/* module sub-controller exists? */
+				if($directory AND is_file($source.$directory.$ext)) {
+					return array_slice($segments, 1);
+				}
 					
-					$this->module = $module;
-					$this->directory = $offset.$module.'/controllers/';
-					
-					/* module sub-controller exists? */
-					if($directory AND is_file($source.$directory.$ext)) {
+				/* module sub-directory exists? */
+				if($directory AND is_dir($source.$directory.'/')) {
+
+					$source = $source.$directory.'/'; 
+					$this->directory .= $directory.'/';
+
+					/* module sub-directory controller exists? */
+					if(is_file($source.$directory.$ext)) {
 						return array_slice($segments, 1);
 					}
-						
-					/* module sub-directory exists? */
-					if($directory AND is_dir($source.$directory.'/')) {
-	
-						$source = $source.$directory.'/'; 
-						$this->directory .= $directory.'/';
-	
-						/* module sub-directory controller exists? */
-						if(is_file($source.$directory.$ext)) {
-							return array_slice($segments, 1);
-						}
-					
-						/* module sub-directory sub-controller exists? */
-						if($controller AND is_file($source.$controller.$ext))	{
-							return array_slice($segments, 2);
-						}
+				
+					/* module sub-directory sub-controller exists? */
+					if($controller AND is_file($source.$controller.$ext))	{
+						return array_slice($segments, 2);
 					}
-					
-					/* module controller exists? */			
-					if(is_file($source.$module.$ext)) {
-						return $segments;
-					}
+				}
+				
+				/* module controller exists? */			
+				if(is_file($source.$module.$ext)) {
+					return $segments;
 				}
 			}
 		}

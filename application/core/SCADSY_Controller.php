@@ -14,6 +14,7 @@ class SCADSY_Controller extends MX_Controller {
 	public function __construct() {
 		parent::__construct();	
 		$this->redirect_to_login();
+		$this->check_permissions();
 		$this->load_managers();
 	}
 	
@@ -25,6 +26,17 @@ class SCADSY_Controller extends MX_Controller {
 			redirect('login');
 		}
 	}
+	
+	/**
+	 * Check if this controller should be loaded
+	 */
+	 private function check_permissions() {
+	 	$query = Database_manager::get_db()->get_where('module', array('directory' => $this->router->fetch_class(), 'status' => 'enabled'));
+		if($query->num_rows() == 0) {
+			show_401();
+			die();
+		}		
+	 }
 	
 	/**
 	 * Load the managers
