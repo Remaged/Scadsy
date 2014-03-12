@@ -8,7 +8,7 @@ class Login extends SCADSY_Controller{
 	
 	public function __construct() {
 		parent::__construct();
-		$this->module_manager->add_new_modules();
+		//$this->module_manager->add_new_modules();
 		$this->load->model('login_model');
 	}
 	
@@ -29,7 +29,7 @@ class Login extends SCADSY_Controller{
 		else{
 			$this->data['failed_message'] = $validate_login;
 			$this->data['schools'] = $this->login_model->get_databases();
-			$this->view('index',$this->data);
+			$this->view('index',$this->data,'template/header_without_menu');
 		}
 	}
 	

@@ -10,10 +10,14 @@ class Module_manager {
 	 */
 	public static function load_modules() {
 		$CI =& get_instance();
-		$CI->load->model('module_model');
-		
-		$modules = $CI->module_model->get_modules('enabled');
-
+		if(defined('ENTERPRISE') && $CI->user_model->user_logged_in() === FALSE){				
+			$CI->config->load('enterprise');
+			$modules = $CI->config->item('enterprise_modules');
+		}
+		else{
+			$CI->load->model('module_model');			
+			$modules = $CI->module_model->get_modules('enabled');
+		}
 		foreach($modules as $module) {
 			foreach($CI->config->item('modules_locations') as $key => $value) {
 				if(is_file($key.$module->directory.'\index.php')) {
