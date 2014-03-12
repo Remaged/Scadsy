@@ -12,8 +12,8 @@ $config['enterprise_modules'] = array(
 		"status" => "enabled"
 	),
 	array(
-		"directory" => "admin",
-		"name" => "Admin",
+		"directory" => "enterprise",
+		"name" => "Enterprise",
 		"status" => "enabled"
 	)
 );

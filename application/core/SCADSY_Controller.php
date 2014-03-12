@@ -25,7 +25,7 @@ class SCADSY_Controller extends MX_Controller {
 	 */
 	protected function redirect_to_login(){
 		//&& uri_string() != 'admin' later nog welhalen. Nu toegepast omdat er nog geen admin-login bestaat.
-		if($this->user_model->user_logged_in() === FALSE && uri_string() != 'login' && uri_string() != 'admin'){
+		if($this->user_model->user_logged_in() === FALSE && get_class($this) != 'Login' && get_class($this) != 'Module'){
 			redirect('login');
 		}
 	}
