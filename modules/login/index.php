@@ -12,7 +12,7 @@ Author URI: http://kevindriessen.nl
 Hook_manager::add_hook('pre_menu_generate', 'login_pre_menu_generated');
 
 function login_pre_menu_generated($menu_manager) {
-	$menu_manager->add_menu_item('login/index', 'Login', array('admin','teacher','student'));
+	$menu_manager->add_submenu_item('module/index', 'login/index', 'Login', array('admin'));
 }
 
 
