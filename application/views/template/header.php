@@ -11,7 +11,7 @@
 		<div id="header_container">
 			<div id="header">
 				<div id="logo">
-					<h1>SCADSY </h1>
+					<h1>SCADSY: <?php echo Database_manager::get_db()->database; ?> </h1>
 				</div>
 				<div id="menu">
 					<?php echo $menu; ?>

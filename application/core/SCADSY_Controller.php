@@ -14,6 +14,7 @@ class SCADSY_Controller extends MX_Controller {
 	public function __construct() {
 		parent::__construct();	
 		$this->redirect_to_login();
+		$this->load_managers();
 	}
 	
 	/**
@@ -24,6 +25,16 @@ class SCADSY_Controller extends MX_Controller {
 			redirect('login');
 		}
 	}
+	
+	/**
+	 * Load the managers
+	 */
+	 protected function load_managers() {
+	 	$this->load->library('permission_manager');
+	 	$this->load->library('menu_manager');
+		$this->load->library('template_manager');
+		$this->load->library('module_manager');
+	 }
 
 	/**
 	 * Initialize the SCADSY_Controller

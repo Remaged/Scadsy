@@ -53,18 +53,7 @@ class Database_manager {
 		} else {
 			return $CI->db;
 		}
-	}
-		 /*
-	public static function get_db() {
-		if(self::$DB !== NULL) {
-			return self::$DB;
-		}		
-		$CI =& get_instance();
-		$db_name = $CI->input->cookie('scadsy_db_cookie', TRUE);
-		if($db_name !== FALSE) {
-			self::connect($db_name);
-	  */
-	
+	}	
 
 	/**
 	 * Connect to a database
