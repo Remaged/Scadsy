@@ -21,7 +21,7 @@ class Login extends SCADSY_Controller{
 			parent::init(array(
 				'module' => "login",
 				'action' => "index",
-				'group' => array('admin')
+				'group' => array('admin','student','teacher')
 				)
 			);
 			$this->view('succes');
