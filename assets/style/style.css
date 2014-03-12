@@ -10,7 +10,6 @@ body {
 
 #header_container {
 	width:100%;
-	padding:10px 0;
 	border-bottom: 1px solid #C4C4C4;
 }
 
@@ -23,6 +22,7 @@ body {
 	float:left;
 	font-size:22px;
 	margin-right:50px;
+	padding: 10px 0;
 }
 
 #header_container #header #menu {
@@ -43,8 +43,11 @@ body {
 	color:black;
 	text-decoration:none;
 	display:block;
-	padding: 5px 15px;
-	margin: 0 5px;
+	padding: 15px 20px;
+}
+
+#menu ul li a:hover {
+	background: #F0F0F0;
 }
 
 #menu ul li:hover > ul.sub_menu_0 {
@@ -58,9 +61,34 @@ body {
 #menu ul.sub_menu_0 {
 	display:none;
 	position:absolute;
-	background:white;
+	background: white;
 	border-right: 1px solid #C4C4C4;
 	border-left: 1px solid #C4C4C4;
+	border-bottom: 1px solid #C4C4C4;
+	width:150px;
+}
+
+.main_menu li > a:after { margin-left: 5px; content: '\25BA'; }
+.main_menu > li > a:after { margin-left: 5px; content: '\25BC'; }
+.main_menu li > a:only-child:after { margin-left: 0; content: ''; }
+
+#menu ul.sub_menu_0 li {
+	border-right:none;
+	width:100%;
+	position:relative;
+}
+
+#menu ul.sub_menu_0 li:hover > ul.sub_menu_1 {
+	display:block;
+}
+
+#menu ul.sub_menu_1 {
+	display:none;
+	position:absolute;
+	left:150px;
+	background: white; 	
+	top:0;
+	border-right: 1px solid #C4C4C4;
 	border-bottom: 1px solid #C4C4C4;
 }
 
@@ -68,6 +96,11 @@ body {
 	width:1000px;
 	margin: 0 auto;
 	padding: 10px 20px;
+}
+
+#page p, #page code {
+	font-size:13px;
+	line-height:20px;
 }
 
 table {

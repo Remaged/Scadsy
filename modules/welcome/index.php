@@ -11,7 +11,7 @@ Author URI: http://www.seoduct.com/
 
 Hook_manager::add_hook('pre_menu_generate', 'welcome_pre_menu_generated');
 function welcome_pre_menu_generated($menu_manager) {
-	$menu_manager->add_menu_item('welcome/index', 'Welcome', array('student', 'admin'));
+	$menu_manager->add_submenu_item('module/index', 'welcome/index', 'Welcome', array('student', 'admin'));
 }
 
 Hook_manager::add_hook('pre_scripts_header_generate', 'welcome_pre_scripts_header_generated');
