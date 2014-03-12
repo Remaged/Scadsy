@@ -18,6 +18,7 @@
  *
  */
 	define('ENVIRONMENT', 'development');
+	define('ENTERPRISE','true');
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING

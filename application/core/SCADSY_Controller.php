@@ -11,11 +11,13 @@ class SCADSY_Controller extends MX_Controller {
 	/**
 	 * Construct a new instance of the SCADSY_Controller class
 	 */
-	public function __construct() {
+	public function __construct() {		
 		parent::__construct();	
 		$this->redirect_to_login();
-		$this->check_permissions();
-		$this->load_managers();
+		if (!defined('ENTERPRISE') && $this->user_model->user_logged_in() === FALSE){
+			$this->check_permissions();
+		}
+		$this->load_managers();		
 	}
 	
 	/**
