@@ -13,7 +13,7 @@ class Login_model extends SCADSY_Model {
 	 * 		and the value matches the name of the school.	
 	 */
 	public function get_databases(){
-		$rows = Database_manager::get_db()->get('database')->result();
+		$rows = Database_manager::get_db(TRUE)->get('database')->result();
 		$result = array();
 		foreach($rows as $row){
 			$result[$row->name] = $row->school;
