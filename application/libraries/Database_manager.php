@@ -40,6 +40,9 @@ class Database_manager {
 	 */ 
 =======
 	 */
+<<<<<<< HEAD
+>>>>>>> 01addbd4e7a7def216c3ec1db6d5e2d566b83533
+=======
 >>>>>>> 01addbd4e7a7def216c3ec1db6d5e2d566b83533
 	public static function get_db($ci_db = FALSE) {
 		$CI =& get_instance();
