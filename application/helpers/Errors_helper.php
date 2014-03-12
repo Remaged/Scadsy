@@ -12,14 +12,10 @@
 */
 if ( ! function_exists('show_401'))
 {
-	function show_401($page = 'error_general')
+	function show_401($page = '', $log_error = TRUE)
 	{
 		$_error =& load_class('Exceptions', 'core');
-		
-		$heading = "401 Not Authorized";
-		$message = "You are not authorized to view this page. If you believe you are, please contact the system administrator.";
-
-		$_error->show_error($heading, $message, 'error_general', 401);
+		$_error->show_401($page, $log_error);
 		exit;
 	}
 }
