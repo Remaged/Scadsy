@@ -1,6 +1,8 @@
 <?php echo validation_errors(); ?>
+
 <?php echo form_open('login'); ?>
-<?php echo $failed_message; ?>
+
+	<?php echo $failed_message; ?>
 	
 	<div>
 		<?php echo form_label('School', 'school'); ?>
@@ -17,4 +19,5 @@
 	<div>	
 		<?php echo form_submit('submit', 'Log in'); ?>
 	</div>
-</form>
+	
+<?php echo form_close(); ?>

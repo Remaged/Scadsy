@@ -19,9 +19,10 @@ class Module_manager {
 			$modules = $CI->module_model->get_modules('enabled');
 		}
 		foreach($modules as $module) {
+			$module = (array) $module;
 			foreach($CI->config->item('modules_locations') as $key => $value) {
-				if(is_file($key.$module->directory.'\index.php')) {
-					include_once($key.$module->directory.'\index.php');	
+				if(is_file($key.$module['directory'].'\index.php')) {
+					include_once($key.$module['directory'].'\index.php');	
 				}
 			}
 		}
