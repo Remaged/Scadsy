@@ -6,8 +6,8 @@
 class Login extends SCADSY_Controller{
 	protected $data = array('failed_message'=>'');
 	
-	public function __construct() {
-		parent::__construct();
+	public function __construct() {		
+		parent::__construct(); 
 		//$this->module_manager->add_new_modules();
 		$this->load->model('login_model');
 	}
@@ -31,23 +31,6 @@ class Login extends SCADSY_Controller{
 			$this->data['schools'] = $this->login_model->get_databases();
 			$this->view('login/index',$this->data,'template/header_without_menu');
 		}
-	}
-	
-	/*
-	 * Enables login-module
-	 */ 
-	public function enable($directory) {
-		$this->module_model->enable_module($directory);		
-		redirect('login');
-	}
-	
-	/*
-	 * Disables login-module
-	 */ 
-	public function disable($directory) {
-		$this->module_model->disable_module($directory);
-		
-		redirect('login');
 	}
 	
 	/**

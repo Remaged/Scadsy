@@ -31,6 +31,14 @@ class Module extends SCADSY_Controller{
 		
 		redirect('module/index');
 	}
+	
+	/**
+	 * Stores all enable/disable data of all modules
+	 */
+	public function save_modules(){
+		$this->module_model->save_module_statusses($this->input->post('status'));
+		redirect('module');
+	}
 }
 
 

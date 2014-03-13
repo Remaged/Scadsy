@@ -41,6 +41,20 @@ class Module_model extends SCADSY_Model {
 	 	Database_manager::get_db()->where('directory', $directory);
 	 	Database_manager::get_db()->update('module', array('status' => 'disabled'));
 	 }
+	 
+	 /**
+	  * Stores status for all modules.
+	  * @param $statusses
+	  * 		associative array in which keynames match the module directory names
+	  */
+	 public function save_module_statusses($statusses){
+	 	Database_manager::get_db()->trans_start();	
+		Database_manager::get_db()->update('module',array('status'=>'disabled'));
+		foreach($statusses AS $module => $val){
+			Database_manager::get_db()->where('directory',$module)->update('module',array('status'=>'enabled'));
+		}
+		Database_manager::get_db()->trans_complete();
+	 }
 	
 	/**
 	 * Check if a module is active

@@ -24,8 +24,7 @@ class SCADSY_Controller extends MX_Controller {
 	 * Redirects users to the the login page when not logged in.
 	 */
 	protected function redirect_to_login(){
-		//&& uri_string() != 'admin' later nog welhalen. Nu toegepast omdat er nog geen admin-login bestaat.
-		if($this->user_model->user_logged_in() === FALSE && get_class($this) != 'Login' && get_class($this) != 'Module'){
+		if($this->user_model->user_logged_in() === FALSE && get_class($this) != 'Login'){
 			redirect('login');
 		}
 	}
@@ -38,7 +37,6 @@ class SCADSY_Controller extends MX_Controller {
 		if($class_name === NULL) {
 			$class_name = $this->router->fetch_class();
 		}
-
 	 	$query = Database_manager::get_db()->get_where('module', array('directory' => $class_name, 'status' => 'enabled'));
 		if($query->num_rows() == 0) {
 			show_401();

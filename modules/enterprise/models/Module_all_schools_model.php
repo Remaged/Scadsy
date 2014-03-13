@@ -5,7 +5,7 @@
  */
 class Module_all_schools_model extends SCADSY_Model {
 	
-	public function __construct() {					
+	public function __construct() {				
 		parent::__construct();
 		$this->load->model('module_model');
 	}
@@ -29,6 +29,7 @@ class Module_all_schools_model extends SCADSY_Model {
 		$modules_per_school = array();
 		$school_databases = $this->get_databases();
 		foreach($school_databases AS $school_db){
+			if($school_db->name == ENTERPRISE){ continue; }
 			Database_manager::set_db($school_db->name);			
 			$modules_per_school[$school_db->name] = $this->module_model->get_modules();
 		}
@@ -60,12 +61,7 @@ class Module_all_schools_model extends SCADSY_Model {
 	 public function save_all_module_settings($statusses){	 	
 		foreach($statusses AS $school_db => $modules){
 	 		Database_manager::set_db($school_db);
-			Database_manager::get_db()->trans_start();	
-			Database_manager::get_db()->update('module',array('status'=>'disabled'));
-			foreach($modules AS $module => $val){
-				Database_manager::get_db()->where('directory',$module)->update('module',array('status'=>'enabled'));
-			}
-			Database_manager::get_db()->trans_complete();	
+			$this->module_model->save_module_statusses($modules);	
 			Database_manager::disconnect();		
 		}
 	 }
