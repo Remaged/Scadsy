@@ -41,7 +41,7 @@ class Login_model extends SCADSY_Model {
 			return '';
 		}		
 			
-		if(!($this->input->post('school') === 'none' && defined('ENTERPRISE'))) {
+		if(!(defined('ENTERPRISE') && $this->input->post('school') === ENTERPRISE)) {
 			Database_manager::set_db($this->input->post('school'));
 		}
 		
