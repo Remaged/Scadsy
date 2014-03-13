@@ -10,7 +10,7 @@ class Module_manager {
 	 */
 	public static function load_modules() {
 		$CI =& get_instance();
-		if(defined('ENTERPRISE') && $CI->user_model->user_logged_in() === FALSE){				
+		if(!$CI->permission_manager->should_check_permissions()){				
 			$CI->config->load('enterprise');
 			$modules = $CI->config->item('enterprise_modules');
 		}

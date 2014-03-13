@@ -14,10 +14,10 @@ class SCADSY_Controller extends MX_Controller {
 	public function __construct() {		
 		parent::__construct();	
 		$this->redirect_to_login();
-		if (!defined('ENTERPRISE') && $this->user_model->user_logged_in() === FALSE){
-			$this->check_permissions();
-		}
-		$this->load_managers();		
+		$this->load_managers();	
+		if ($this->permission_manager->should_check_permissions()){			
+			$this->check_module_enabled();
+		}		
 	}
 	
 	/**
@@ -33,12 +33,12 @@ class SCADSY_Controller extends MX_Controller {
 	/**
 	 * Check if this controller should be loaded
 	 */
-	 private function check_permissions() {
+	 private function check_module_enabled() {
 	 	$class_name = $this->router->get_module();
 		if($class_name === NULL) {
 			$class_name = $this->router->fetch_class();
 		}
-		
+
 	 	$query = Database_manager::get_db()->get_where('module', array('directory' => $class_name, 'status' => 'enabled'));
 		if($query->num_rows() == 0) {
 			show_401();
@@ -65,12 +65,11 @@ class SCADSY_Controller extends MX_Controller {
 		if(isset($settings['action']) && isset($settings['module'])) {
 			$is_allowed = $this->permission_manager->check_permissions($settings['action'], $settings['module'], $settings['group']);
 			if(!$is_allowed) {
-				//show_404();\
-				echo 'No permission to view this page!';
+				show_401();
 				die();
 			}
 		}	
-		
+
 		Module_manager::load_modules();
 	}
 			

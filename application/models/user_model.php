@@ -172,13 +172,14 @@ class User_model extends SCADSY_Model {
 	 * returns FALSE if login unsuccesfull (no user found or password invalid).
 	 * Otherwise stores user-data in sessions and return TRUE.
 	 */
-	public function login(){
+	public function login(){	
 		$query = Database_manager::get_db()->get_where('user',array('username'=>$this->input->post('username')));
 
 		if($query->num_rows() == 0 || $query->row()->password != $this->get_hashed_password($this->input->post('password'),$query->row()->password_salt))
 		{
 			return FALSE;
 		}		
+
 		$newdata = array(
 			'id'=>$query->row()->id
     	);

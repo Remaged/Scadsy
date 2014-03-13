@@ -12,6 +12,23 @@ class Permission_manager {
 	}
 
 	/**
+	 * Request whether or not the permissions should be checked. 
+	 */
+	 public function should_check_permissions() {
+	 	$CI =& get_instance();
+		if(defined("ENTERPRISE")) {
+			if($CI->user_model->user_logged_in()) {
+				if(Database_manager::get_db()->database == ENTERPRISE){
+					return FALSE;
+				}
+			} else {
+				return FALSE;
+			}
+		}
+		return TRUE;
+	 }
+
+	/**
 	 * Check the permission of the current page
 	 * @param $action
 	 * 		The name of the current action
@@ -21,22 +38,26 @@ class Permission_manager {
 	 * 		The default groups that are allowed to view this page. This can be either an array or a single string.
 	 */	
 	public function check_permissions($action, $module, $default_groups) {
-		$CI =& get_instance();
-		$user_group = $CI->user_model->get_group();
-		$is_allowed = $this->check_permissions_database($action, $module, $user_group);
-		
-		if($is_allowed === NULL) {
-
-			if(in_array($user_group, $default_groups)){
-				$is_allowed = TRUE;
-			} else {
-				$is_allowed = FALSE;
+		if ($this->should_check_permissions()){
+			$CI =& get_instance();
+			$user_group = $CI->user_model->get_group();
+			$is_allowed = $this->check_permissions_database($action, $module, $user_group);
+			
+			if($is_allowed === NULL) {
+	
+				if(in_array($user_group, $default_groups)){
+					$is_allowed = TRUE;
+				} else {
+					$is_allowed = FALSE;
+				}
+				
+				$CI->permission_model->add_permission($action, $module, $default_groups, TRUE);
 			}
-			
-			$CI->permission_model->add_permission($action, $module, $default_groups, TRUE);
+				
+			return $is_allowed;
+		} else {
+			return TRUE;
 		}
-			
-		return $is_allowed;
 	}
 	
 	/**

@@ -15,7 +15,6 @@ class Module extends SCADSY_Controller{
 	 * Default action, resulting in the overview of all modules of all schools.
 	 */
 	public function index() {
-
 		parent::init(array(
 			'module' => "login",
 			'action' => "index",

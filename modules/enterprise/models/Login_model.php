@@ -40,7 +40,11 @@ class Login_model extends SCADSY_Model {
 		if($this->form_validation->run() === FALSE){
 			return '';
 		}		
-		Database_manager::set_db($this->input->post('school'));
+			
+		if(!($this->input->post('school') === 'none' && defined('ENTERPRISE'))) {
+			Database_manager::set_db($this->input->post('school'));
+		}
+		
 		if($this->user_model->login() === FALSE){
 			Database_manager::disconnect();
 			return '<div id="login_failed">The username or password was not correct.</div>';
