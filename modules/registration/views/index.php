@@ -1,7 +1,6 @@
-
 <?php echo validation_errors(); ?>
 
-<?php echo form_open('register'); ?>
+<?php echo form_open(uri_string()); ?>
 	
 	
 	<fieldset>

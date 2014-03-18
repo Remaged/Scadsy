@@ -4,7 +4,7 @@ class Module extends SCADSY_Controller{
 
 	public function __construct() {
 		parent::__construct();
-		//$this->module_manager->add_new_modules();
+		$this->module_manager->add_new_modules();
 	}
 
 	public function index() {

@@ -15,17 +15,24 @@ class Registration extends SCADSY_Controller{
 	 * Default action. Either results in the registration form (first load or failed submit) or a succes page.
 	 */
 	function index(){
+		parent::init(array(
+			'module' => "registration",
+			'action' => "index",
+			'group' => array('admin')
+			)
+		);
+		
 		$this->registration_model->setup_form_validation();	
 		if ($this->registration_model->form_validation->run() === FALSE){
 			$data['groups'] = $this->registration_model->get_groups();
 			$data['ethnicities'] = $this->registration_model->get_ethnicities();		
 			$data['languages'] = $this->registration_model->get_languages();	
 			$data['grades'] = $this->registration_model->get_grades();				
-			$this->view('registration/registration/index',$data);
+			$this->view('index',$data);
 		}
 		else{
 			$this->user_model->add_user();	
-			$this->view('registration/succes');
+			$this->view('succes');
 		}
 	}
 	

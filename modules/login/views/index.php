@@ -1,7 +1,7 @@
 
 <?php echo validation_errors(); ?>
 
-<?php echo form_open('login/login/index'); ?>
+<?php echo form_open(uri_string()); ?>
 <?php echo $failed_message; ?>
 	
 	<div>
