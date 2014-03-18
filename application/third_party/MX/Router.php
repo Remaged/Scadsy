@@ -73,55 +73,47 @@ class MX_Router extends CI_Router
 		if (isset($segments[0]) AND $routes = Modules::parse_routes($segments[0], implode('/', $segments))) {
 			$segments = $routes;
 		}
-	
+
 		/* get the segments array elements */
 		list($module, $directory, $controller) = array_pad($segments, 3, NULL);
 
-		/* check modules */
-		foreach (Modules::$locations as $location => $offset) {
-					
-			/* module exists? */
-			if (is_dir($source = $location.$module.'/controllers/')) {
-				
-				$this->module = $module;
-				$this->directory = $offset.$module.'/controllers/';
-				
-				/* module sub-controller exists? */
-				if($directory AND is_file($source.$directory.$ext)) {
-					return array_slice($segments, 1);
-				}
-					
-				/* module sub-directory exists? */
-				if($directory AND is_dir($source.$directory.'/')) {
+		if($directory != NULL) {
+			/* check modules */
+			foreach (Modules::$locations as $location => $offset) {
 
-					$source = $source.$directory.'/'; 
-					$this->directory .= $directory.'/';
-
-					/* module sub-directory controller exists? */
-					if(is_file($source.$directory.$ext)) {
+				/* module exists? */
+				if (is_dir($source = $location.$module.'/controllers/')) {
+					
+					$this->module = $module;
+					$this->directory = $offset.$module.'/controllers/';
+					
+					/* module sub-controller exists? */
+					if($directory AND is_file($source.$directory.$ext)) {
 						return array_slice($segments, 1);
 					}
-				
-					/* module sub-directory sub-controller exists? */
-					if($controller AND is_file($source.$controller.$ext))	{
-						return array_slice($segments, 2);
+						
+					/* module sub-directory exists? */
+					if($directory AND is_dir($source.$directory.'/')) {
+	
+						$source = $source.$directory.'/'; 
+						$this->directory .= $directory.'/';
+	
+						/* module sub-directory controller exists? */
+						if(is_file($source.$directory.$ext)) {
+							return array_slice($segments, 1);
+						}
+					
+						/* module sub-directory sub-controller exists? */
+						if($controller AND is_file($source.$controller.$ext))	{
+							return array_slice($segments, 2);
+						}
 					}
-				}
-				
-				/* module controller exists? */			
-				if(is_file($source.$module.$ext)) {
-					return $segments;
-				}
-			} else {
-				/* Check if it isn't a second controller in a module */
-				$module_directories = preg_grep('/^([^.])/', scandir($location));
-				foreach($module_directories as $module_directory) {
-					if(is_file($location.$module_directory.'/controllers/'.$module.$ext)) {
-						$this->module = $module_directory;
-						$this->directory = $offset.$module_directory.'/controllers/';
+					
+					/* module controller exists? */			
+					if(is_file($source.$module.$ext)) {
 						return $segments;
 					}
-				}
+				} 
 			}
 		}
 		

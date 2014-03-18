@@ -9,6 +9,7 @@ class Attendance extends SCADSY_Controller{
 		parent::init(array(
 				'module' => "attendance",
 				'action' => "index",
+				'controller' =>'attendance',
 				'group' => array('admin', 'teacher')
 				)
 			);

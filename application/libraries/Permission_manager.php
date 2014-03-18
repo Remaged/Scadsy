@@ -37,11 +37,11 @@ class Permission_manager {
 	 * @param $default_groups
 	 * 		The default groups that are allowed to view this page. This can be either an array or a single string.
 	 */	
-	public function check_permissions($action, $module, $default_groups) {
+	public function check_permissions($action, $controller, $module, $default_groups) {	
 		if ($this->should_check_permissions()){
 			$CI =& get_instance();
 			$user_group = $CI->user_model->get_group();
-			$is_allowed = $this->check_permissions_database($action, $module, $user_group);
+			$is_allowed = $this->check_permissions_database($action, $controller, $module, $user_group);
 			
 			if($is_allowed === NULL) {
 	
@@ -50,8 +50,7 @@ class Permission_manager {
 				} else {
 					$is_allowed = FALSE;
 				}
-				
-				$CI->permission_model->add_permission($action, $module, $default_groups, TRUE);
+				$CI->permission_model->add_permission($action, $controller, $module, $default_groups, TRUE);
 			}
 				
 			return $is_allowed;
@@ -64,6 +63,8 @@ class Permission_manager {
 	 * Check if the database hase user_permissions stored for this action. If it has, use those.
 	 * @param $action
 	 * 		The name of the current action
+	 * @param $controller
+	 * 		The name of the controller
 	 * @param $module
 	 * 		The name of the current module
 	 * @param $group
@@ -73,7 +74,7 @@ class Permission_manager {
 	 * 		TRUE if the current group is allowed to see the current action
 	 * 		NULL if no data could be found in the database about this action
 	 */
-	private function check_permissions_database($action, $module, $group) {
+	private function check_permissions_database($action, $controller, $module, $group) {
 		if($group === NULL) {
 			return TRUE;
 		}
@@ -82,14 +83,14 @@ class Permission_manager {
 		$is_allowed = NULL;
 		if(is_array($group)) {
 			foreach($group as $item) {
-				$permission = $CI->permission_model->get_permission($action, $module, $item);
+				$permission = $CI->permission_model->get_permission($action, $controller, $module, $item);
 				if($permission !== NULL) {
 					$is_allowed = $permission->allowed;
 					break;
 				}
 			}
 		} else {
-			$permission = $CI->permission_model->get_permission($action, $module, $group);
+			$permission = $CI->permission_model->get_permission($action, $controller, $module, $group);
 			if($permission !== NULL) {
 				$is_allowed = $permission->allowed;
 			}

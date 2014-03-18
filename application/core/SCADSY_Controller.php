@@ -61,7 +61,11 @@ class SCADSY_Controller extends MX_Controller {
 	 */
 	protected function init(Array $settings) {
 		if(isset($settings['action']) && isset($settings['module'])) {
-			$is_allowed = $this->permission_manager->check_permissions($settings['action'], $settings['module'], $settings['group']);
+			if(isset($settings['controller'])) {
+				$is_allowed = $this->permission_manager->check_permissions($settings['action'], $settings['controller'], $settings['module'], $settings['group']);
+			} else {
+				$is_allowed = $this->permission_manager->check_permissions($settings['action'], $settings['module'], $settings['module'], $settings['group']);
+			}
 			if(!$is_allowed) {
 				show_401();
 				die();

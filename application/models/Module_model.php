@@ -23,6 +23,24 @@ class Module_model extends SCADSY_Model {
 	}
 	
 	/**
+	 * Get the modules with the permissions
+	 * @param $status
+	 * 		The status of the module. Can be 'enabled', 'disabled' or all
+	 * @return
+	 * 		The modules including the permissions
+	 */
+	 public function get_modules_with_permissions($status = 'all') {
+	 	$this->load->model('permission_model');
+	 	$modules = $this->get_modules($status);
+		
+		foreach($modules as &$module) {
+			$module->permissions = $this->permission_model->get_module_permissions($module->directory);
+		}
+		
+		return $modules;
+	 }
+	
+	/**
 	 * Enable a module
 	 * @param $directory
 	 * 		The directory of the module
@@ -102,8 +120,9 @@ class Module_model extends SCADSY_Model {
 		
 		foreach($module_actions as $action) {
 	 		Database_manager::get_db()->insert('module_action', array(
-																"name" => $action,
-																"module" => $module_metadata['directory']
+																"name" => $action['action'],
+																"module" => $module_metadata['directory'],
+																"controller" => $action['controller']
 																));
 	 	}
 		

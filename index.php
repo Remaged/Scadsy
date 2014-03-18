@@ -18,7 +18,7 @@
  *
  */
 	define('ENVIRONMENT', 'development');
-	define('ENTERPRISE','codeigniter');
+	//define('ENTERPRISE','codeigniter');
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING

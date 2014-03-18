@@ -30,7 +30,7 @@ class Template_manager {
 		$styles = $CI->config->item('template_styles');
 		
 		foreach($scripts as $identifier => $url) {
-			$this->add_script($identifier, $CI->config->item('assets_location')['scripts'].'/'.$url);
+			$this->add_global_script($identifier, $CI->config->item('assets_location')['scripts'].'/'.$url);
 		}
 		
 		foreach($styles as $identifier => $url) {
@@ -39,7 +39,7 @@ class Template_manager {
 	 }
 
 	/**
-	 * Add a script
+	 * Add a script that always gets added to the header
 	 * @param $identifier
 	 * 		The identifier for the script. 
 	 * @param $url
@@ -48,21 +48,105 @@ class Template_manager {
 	 * 		Whether or not the scripts should be placed in the header. If FALSE, the scripts is
 	 * 		loaded in the footer
 	 */
-	public function add_script($identifier, $url, $header = TRUE) {
+	public function add_global_script($identifier, $url, $header = TRUE) {
 		if($header === TRUE) {
 			if(array_key_exists ($identifier, $this->scripts_header)) {
 				die('<h1>Duplicate header script!</h1><br/> <strong>Identifier: </strong> '.$identifier.'<br/><strong>Url: </strong> '.$url);
 			}
 			
-			$this->scripts_header[$identifier] = $url;
+			$this->scripts_header[$identifier] = array("url" => $url, "type" => "global");
 		} else {
 			if(isset($this->scripts_footer[$identifier])) {
 				die('<h1>Duplicate footer script!</h1><br/> <strong>Identifier: </strong> '.$identifier.'<br/><strong>Url: </strong> '.$url);
 			}
 						
-			$this->scripts_footer[$identifier] = $url;
+			$this->scripts_footer[$identifier] = array("url" => $url, "type" => "global");
 		}
 	}	
+	
+	/**
+	 * Add a script for a certain module
+	 * @param $identifier
+	 * 		The identifier for the script. 
+	 * @param $url
+	 * 		The relative url to the script.
+	 * @param $module
+	 * 		The module to load the script for.
+	 * @param $header
+	 * 		Whether or not the scripts should be placed in the header. If FALSE, the scripts is
+	 * 		loaded in the footer
+	 */
+	public function add_module_script($identifier, $url, $module, $header = TRUE) {
+		if($header === TRUE) {
+			if(array_key_exists ($identifier, $this->scripts_header)) {
+				die('<h1>Duplicate header script!</h1><br/> <strong>Identifier: </strong> '.$identifier.'<br/><strong>Url: </strong> '.$url);
+			}
+			
+			$this->scripts_header[$identifier] = array("url" => $url, "type" => "module", "module" => $module);
+		} else {
+			if(isset($this->scripts_footer[$identifier])) {
+				die('<h1>Duplicate footer script!</h1><br/> <strong>Identifier: </strong> '.$identifier.'<br/><strong>Url: </strong> '.$url);
+			}
+						
+			$this->scripts_footer[$identifier] = array("url" => $url, "type" => "module", "module" => $module);;
+		}
+	}
+	
+		/**
+	 * Add a script for a certain controller
+	 * @param $identifier
+	 * 		The identifier for the script. 
+	 * @param $url
+	 * 		The relative url to the script.
+	 * @param $controller
+	 * 		The controller to load the script for.
+	 * @param $header
+	 * 		Whether or not the scripts should be placed in the header. If FALSE, the scripts is
+	 * 		loaded in the footer
+	 */
+	public function add_controller_script($identifier, $url, $module, $controller, $header = TRUE) {
+		if($header === TRUE) {
+			if(array_key_exists ($identifier, $this->scripts_header)) {
+				die('<h1>Duplicate header script!</h1><br/> <strong>Identifier: </strong> '.$identifier.'<br/><strong>Url: </strong> '.$url);
+			}
+			
+			$this->scripts_header[$identifier] = array("url" => $url, "type" => "controller", "module" => $module, "controller" => $controller);
+		} else {
+			if(isset($this->scripts_footer[$identifier])) {
+				die('<h1>Duplicate footer script!</h1><br/> <strong>Identifier: </strong> '.$identifier.'<br/><strong>Url: </strong> '.$url);
+			}
+						
+			$this->scripts_footer[$identifier] = array("url" => $url, "type" => "controller", "module" => $module, "controller" => $controller);
+		}
+	}
+	
+	/**
+	 * Add a script for a certain method
+	 * @param $identifier
+	 * 		The identifier for the script. 
+	 * @param $url
+	 * 		The relative url to the script.
+	 * @param $page
+	 * 		The page to load the script for.
+	 * @param $header
+	 * 		Whether or not the scripts should be placed in the header. If FALSE, the scripts is
+	 * 		loaded in the footer
+	 */
+	public function add_method_script($identifier, $url, $module, $controller, $method, $header = TRUE) {
+		if($header === TRUE) {
+			if(array_key_exists ($identifier, $this->scripts_header)) {
+				die('<h1>Duplicate header script!</h1><br/> <strong>Identifier: </strong> '.$identifier.'<br/><strong>Url: </strong> '.$url);
+			}
+			
+			$this->scripts_header[$identifier] = array("url" => $url, "type" => "method", "module" => $module, "controller" => $controller, "method" => $method);
+		} else {
+			if(isset($this->scripts_footer[$identifier])) {
+				die('<h1>Duplicate footer script!</h1><br/> <strong>Identifier: </strong> '.$identifier.'<br/><strong>Url: </strong> '.$url);
+			}
+						
+			$this->scripts_footer[$identifier] = array("url" => $url, "type" => "method", "module" => $module, "controller" => $controller, "method" => $method);
+		}
+	}
 	
 	/**
 	 * Get the scripts
@@ -75,20 +159,53 @@ class Template_manager {
 	 public function get_scripts($header = TRUE, $as_html = TRUE) {
 	 	if($header === TRUE && $as_html === TRUE) {
 	 		Hook_manager::execute_hook('pre_scripts_header_generate', $this);
-			$html = $this->get_scripts_html($this->scripts_header);
+			$scripts = $this->get_load_scripts($this->scripts_header);
+			$html = $this->get_scripts_html($scripts);
 			Hook_manager::execute_hook('post_scripts_header_generate', $html);
 			return $html;
 	 	} else if ($header === FALSE && $as_html === TRUE) {
 	 		Hook_manager::execute_hook('pre_scripts_footer_generate', $this);
-			$html = $this->get_scripts_html($this->scripts_footer);
+			$scripts = $this->get_load_scripts($this->scripts_footer);
+			$html = $this->get_scripts_html($scripts);
 			Hook_manager::execute_hook('post_scripts_footer_generate', $html);
 			return $html;
 	 	} else if ($header === TRUE) {
-	 		return $this->scripts_header;
+	 		return $this->get_load_scripts($this->scripts_header);
 	 	} else {
-	 		return $this->scripts_footer;
+	 		return $this->get_load_scripts($this->scripts_footer);
 	 	}
 	 }
+	 
+	 /**
+	  * Get the scripts that should get loaded
+	  * @param $scripts
+	  * 	All the scripts
+	  * @return The scripts that should get loaded
+	  */
+	  private function get_load_scripts($scripts) {
+	  	$CI =& get_instance();
+	  	$load_scripts = array();
+		
+		foreach($scripts as $script) {
+			if($script['type'] == 'global') {
+				$load_scripts[] = $script;
+			}
+			
+			if($script['type'] == 'module' && $CI->router->get_module() == $script['module']) {
+				$load_scripts[] = $script;
+			}
+			
+			if($script['type'] == 'controller' && $CI->router->get_module() == $script['module'] && $CI->router->fetch_class() == $script['controller'] ) {
+				$load_scripts[] = $script;
+			}
+			
+			if($script['type'] == 'method' && $CI->router->get_module() == $script['module'] && $CI->router->fetch_class() == $script['controller'] && $CI->router->fetch_method() == $script['method']) {
+				$load_scripts[] = $script;
+			}
+		}
+		
+		return $load_scripts;
+	  }
 
 	/** 
 	 * Get the scripts html
@@ -100,7 +217,7 @@ class Template_manager {
 	 	$html = '';
 		
 		foreach($scripts as $script) {
-			$html .= '<script type="text/javascript" src="'.base_url($script).'"></script>';
+			$html .= '<script type="text/javascript" src="'.base_url($script['url']).'"></script>';
 		}
 		
 		return $html;

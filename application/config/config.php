@@ -9,7 +9,9 @@
 | folder, change it here.
 |
 */
-$config['modules_locations'] = array('modules/' => '../../modules/',);
+$config['modules_locations'] = array(
+	'modules/' => '../../modules/'
+);
 
 /*
 |--------------------------------------------------------------------------

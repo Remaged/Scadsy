@@ -38,7 +38,6 @@ class Module_manager {
 		// Get files and directories without the . and .. folders
 		foreach($CI->config->item('modules_locations') as $key => $value) {
 			$directories = preg_grep('/^([^.])/', scandir($key));
-				
 			// Scan all files/folders found
 			foreach($directories as $dir) {
 				// If it is a dir and has the correct file name
@@ -46,7 +45,7 @@ class Module_manager {
 						&& is_file($key.$dir . '\index.php')) {
 							
 					$module_metadata = self::get_module_metadata($key.$dir . '\index.php', $dir);
-					$module_actions = self::get_module_actions($key.$dir.'\controllers\\'.$dir.'.php', $dir);
+					$module_actions = self::get_module_actions($key.$dir.'\controllers\\');
 					$module_permissions = self::get_module_permissions($key.$dir . '\index.php');
 	
 					if($CI->module_model->get_module($module_metadata['directory']) === NULL){
@@ -113,25 +112,33 @@ class Module_manager {
 	
 	/**
 	 * Get the actions a certain module can perform
-	 * @param $filepath
-	 * 		The complete filepath to the controller file
+	 * @param $directory
+	 * 		The controllers directory
 	 * @return 
 	 * 		An array with action names
 	 */
-	private static function get_module_actions($filepath, $directory) {							
-		include_once($filepath);
-		
-		$reflection_class = new ReflectionClass($directory);
-		$results = $reflection_class->getMethods(ReflectionMethod::IS_PUBLIC);
+	private static function get_module_actions($directory) {		
+		$directories = preg_grep('/^([^.])/', scandir($directory));		
+		$module_actions = array();
 
-		$methods = array();
-		foreach($results as $result) {
-			if(strtolower($result->class) == strtolower($directory) && $result->name != '__construct') {
-				$methods[] = $result->name;
+		foreach($directories as $file) {
+			if(strpos($file, ".php") !== FALSE) {
+				$classname = str_replace(".php", "", $file);
+				include_once($directory.$file);
+		
+				$reflection_class = new ReflectionClass($classname);
+				$results = $reflection_class->getMethods(ReflectionMethod::IS_PUBLIC);
+		
+				$methods = array();
+				foreach($results as $result) {
+					if(strtolower($result->class) == strtolower($classname) && $result->name != '__construct') {
+						$module_actions[] = array("controller" => strtolower($result->class), "action" => $result->name);
+					}
+				}
 			}
 		}
 		
-		return $methods;
+		return $module_actions;
 	}
 }
 

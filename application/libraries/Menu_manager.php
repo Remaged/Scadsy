@@ -23,7 +23,11 @@ class Menu_manager {
 	 	$CI =& get_instance();
 		
 		foreach($CI->config->item('template_menu') as $item) {
-			$this->add_menu_item($item['link'], $item['description'], $item['default_groups'], $item['priority']);
+			if(isset($item["parent"])) {
+				$this->add_submenu_item($item['parent'], $item['link'], $item['description'], $item['default_groups']);
+			} else {
+				$this->add_menu_item($item['link'], $item['description'], $item['default_groups'], $item['priority']);
+			}			
 		}
 	 }
 	
@@ -43,7 +47,12 @@ class Menu_manager {
 		
 		$exploded = explode('/', $link);
 		
-		if($CI->permission_manager->check_permissions($exploded[1], $exploded[0], $default_groups)) {
+		if(count($exploded) == 2) {
+			$exploded[] = $exploded[1];
+			$exploded[1] = $exploded[0];
+		}
+
+		if($CI->permission_manager->check_permissions($exploded[2], $exploded[1], $exploded[0], $default_groups)) {
 			$this->menu_items[$priority][$link] = $description;
 		}		
 	}
@@ -62,7 +71,12 @@ class Menu_manager {
 		
 		$exploded = explode('/', $link);
 		
-		if($CI->permission_manager->check_permissions($exploded[1], $exploded[0], $default_groups)) {
+		if(count($exploded) == 2) {
+			$exploded[] = $exploded[1];
+			$exploded[1] = $exploded[0];
+		}
+
+		if($CI->permission_manager->check_permissions($exploded[2], $exploded[1], $exploded[0], $default_groups)) {
 			$this->submenu_items[$parent][$link] = $description;		
 		}
 	}

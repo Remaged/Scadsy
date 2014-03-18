@@ -59,6 +59,7 @@ body {
 }
 
 #menu ul.sub_menu_0 {
+	z-index:999;
 	display:none;
 	position:absolute;
 	background: white;
@@ -83,6 +84,7 @@ body {
 }
 
 #menu ul.sub_menu_1 {
+	z-index:999;
 	display:none;
 	position:absolute;
 	left:150px;
@@ -103,16 +105,87 @@ body {
 	line-height:20px;
 }
 
-table {
-	border:1px solid black;
+#page div.table {
+	display: block;
+	clear:both;
 }
 
-td, th {
+#page div.td {
 	padding:10px;
 	text-align:left;
 	border:1px solid black;
+	display: block;
+	float:left;
+	width:100px;
 }
 
-th {
+#page div.td.switchbutton, #page div.th.switchbutton {
+	width:175px;
+	height: 18px;
+}
+
+#page div.tr {
+	display: table-row;
+	clear:both;
+}
+
+#page div.th {
+	padding:10px;
+	text-align:left;
+	border:1px solid black;
 	background: #ACFFFF;
+	display: block;
+	float:left;
+	width:100px;
+}
+
+#page h2 {
+	font-size:16px;
+	font-weight:bold;
+	padding:10px 0;
+}
+
+.switch-button-label {
+    float: left;
+
+    font-size: 10pt;
+    cursor: pointer;
+}
+
+.switch-button-label.off {
+    color: #adadad;
+}
+
+.switch-button-label.on {
+    color: #0088CC;
+}
+
+.switch-button-background {
+    float: left;
+    position: relative;
+
+    background: #ccc;
+    border: 1px solid #aaa;
+
+    margin: 1px 10px;
+
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+
+    cursor: pointer;
+}
+
+.switch-button-button {
+    position: absolute;
+
+    left: -1px;
+    top : -1px;
+
+    background: #FAFAFA;
+    border: 1px solid #aaa;
+
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
 }

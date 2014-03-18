@@ -7,8 +7,9 @@ class Scheme extends SCADSY_Controller{
 
 	public function index() {
 		parent::init(array(
-			'module' => "scheme",
+			'module' => "attendance",
 			'action' => "index",
+			'controller' => "scheme",
 			'group' => array('admin', 'teacher')
 			)
 		);
@@ -16,6 +17,17 @@ class Scheme extends SCADSY_Controller{
 		$this->view('scheme');
 	}
 
+	public function something() {
+		parent::init(array(
+			'module' => "attendance",
+			'action' => "index",
+			'controller' => "scheme",
+			'group' => array('admin', 'teacher')
+			)
+		);
+		
+		$this->view('something');
+	}
 }
 
 /* End of file login.php */
