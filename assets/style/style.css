@@ -203,3 +203,7 @@ body {
     -moz-border-radius: 4px;
     border-radius: 4px;
 }
+
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}

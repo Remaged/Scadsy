@@ -75,9 +75,10 @@ class MX_Router extends CI_Router
 		}
 
 		/* get the segments array elements */
-		list($module, $directory, $controller) = array_pad($segments, 3, NULL);
+		//list($module, $directory, $controller) = array_pad($segments, 3, NULL);
+		list($module, $controller, $action) = array_pad($segments, 3, NULL);
 
-		if($directory != NULL) {
+		if($action != NULL) {
 			/* check modules */
 			foreach (Modules::$locations as $location => $offset) {
 
@@ -88,27 +89,10 @@ class MX_Router extends CI_Router
 					$this->directory = $offset.$module.'/controllers/';
 					
 					/* module sub-controller exists? */
-					if($directory AND is_file($source.$directory.$ext)) {
+					if($controller AND is_file($source.$module.$ext)) {
 						return array_slice($segments, 1);
 					}
-						
-					/* module sub-directory exists? */
-					if($directory AND is_dir($source.$directory.'/')) {
-	
-						$source = $source.$directory.'/'; 
-						$this->directory .= $directory.'/';
-	
-						/* module sub-directory controller exists? */
-						if(is_file($source.$directory.$ext)) {
-							return array_slice($segments, 1);
-						}
-					
-						/* module sub-directory sub-controller exists? */
-						if($controller AND is_file($source.$controller.$ext))	{
-							return array_slice($segments, 2);
-						}
-					}
-					
+				
 					/* module controller exists? */			
 					if(is_file($source.$module.$ext)) {
 						return $segments;
@@ -120,18 +104,6 @@ class MX_Router extends CI_Router
 		/* application controller exists? */			
 		if (is_file(APPPATH.'controllers/'.$module.$ext)) {
 			return $segments;
-		}
-		
-		/* application sub-directory controller exists? */
-		if($directory AND is_file(APPPATH.'controllers/'.$module.'/'.$directory.$ext)) {
-			$this->directory = $module.'/';
-			return array_slice($segments, 1);
-		}
-		
-		/* application sub-directory default controller exists? */
-		if (is_file(APPPATH.'controllers/'.$module.'/'.$this->default_controller.$ext)) {
-			$this->directory = $module.'/';
-			return array($this->default_controller);
 		}
 	}
 
