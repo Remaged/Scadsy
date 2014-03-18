@@ -105,6 +105,20 @@ body {
 	line-height:20px;
 }
 
+#page table {
+	border:1px solid black;
+}
+
+#page td, #page th {
+	padding:10px;
+	text-align:left;
+	border:1px solid black;
+}
+
+#page th {
+	background: #ACFFFF;
+}
+
 #page div.table {
 	display: block;
 	clear:both;
