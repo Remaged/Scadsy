@@ -11,7 +11,7 @@
 				<div class="th switchbutton">Status</div>
 			</div>
 		<?php foreach($module->permissions as $permission) { ?>
-			<?php echo form_open('module/permissionEdit'); ?>
+			<?php echo form_open('module/module/permissionEdit'); ?>
 			<div class="tr">			
 				<?php echo form_hidden(array(
 								"action" => $permission->action_name, 

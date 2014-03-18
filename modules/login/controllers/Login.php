@@ -10,10 +10,10 @@ class Login extends SCADSY_Controller{
 	 */
 	public function index(){
 		if($this->session->userdata('id') || $this->_validate_login() === TRUE){
-			redirect('module');
+			redirect('welcome/welcome/index');
 		}		
 		else{
-			$this->view('login/index',$this->data, 'template/header_without_menu');
+			$this->view('index',$this->data, 'template/header_without_menu');
 		}		
 	}
 	
@@ -41,11 +41,11 @@ class Login extends SCADSY_Controller{
 	 */
 	public function logout(){		
 		$this->user_model->logout();
-		redirect('login');
+		redirect('login/login/index');
 	}
 		
 }
 
 
 /* End of file login.php */
-/* Location: ./application/controllers/login.php */
+/* Location: ./models/login/controllers/login.php */

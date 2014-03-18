@@ -9,9 +9,11 @@ Author: Bob van den Berge
 Author URI: http://www.seoduct.com/
 */
 
+
 Hook_manager::add_hook('pre_menu_generate', 'welcome_pre_menu_generated');
+
 function welcome_pre_menu_generated($menu_manager) {
-	$menu_manager->add_submenu_item('module/index', 'welcome/welcome/index', 'Welcome', array('student', 'admin'));
+	$menu_manager->add_menu_item('welcome/welcome/index', 'Welcome', array('admin'));
 }
 
 Hook_manager::add_hook('pre_scripts_header_generate', 'welcome_pre_scripts_header_generated');
@@ -28,3 +30,7 @@ Hook_manager::add_hook('pre_stylesheets_generate', 'welcome_pre_stylesheets_gene
 function welcome_pre_stylesheets_generated($template_manager) {
 	$template_manager->add_stylesheet('welcome_stylesheet', 'modules/welcome/assets/style/style.css');
 }
+
+
+/* End of file index.php */
+/* Location: ./modules/welcome/index.php */

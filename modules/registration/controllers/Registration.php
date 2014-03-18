@@ -3,7 +3,7 @@
 /**
  * The registration controller, handles the registration form.
  */
-class Register extends SCADSY_Controller{
+class Registration extends SCADSY_Controller{
 	
 	public function __construct()
 	{
@@ -21,7 +21,7 @@ class Register extends SCADSY_Controller{
 			$data['ethnicities'] = $this->registration_model->get_ethnicities();		
 			$data['languages'] = $this->registration_model->get_languages();	
 			$data['grades'] = $this->registration_model->get_grades();				
-			$this->view('registration/index',$data);
+			$this->view('registration/registration/index',$data);
 		}
 		else{
 			$this->user_model->add_user();	
@@ -31,5 +31,5 @@ class Register extends SCADSY_Controller{
 	
 }
 
-/* End of file register.php */
-/* Location: ./application/controllers/register.php */
+/* End of file registration.php */
+/* Location: ./models/registration/controllers/registration.php */

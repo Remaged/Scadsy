@@ -19,6 +19,7 @@ $config['template_styles'] = array(
 );
 
 $config['template_menu'] = array(
+/*
 	array(
 		"link" => "module/index",
 		"description" => "Modules",
@@ -38,6 +39,7 @@ $config['template_menu'] = array(
 		"default_groups" => array("student", "admin", "school"),
 		"priority" => 11
 	)
+ * */
 );
 
 /* End of file template.php */

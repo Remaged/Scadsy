@@ -4,7 +4,7 @@ class Module extends SCADSY_Controller{
 
 	public function __construct() {
 		parent::__construct();
-		$this->module_manager->add_new_modules();
+		//$this->module_manager->add_new_modules();
 	}
 
 	public function index() {
@@ -14,10 +14,10 @@ class Module extends SCADSY_Controller{
 			'group' => array('admin')
 			)
 		);
-		
+
 		$data['modules'] = $this->module_model->get_modules();
-		
-		$this->view('module/list', $data);
+		$this->load->helper('form');
+		$this->view('list', $data);
 	}
 	
 	public function enable($directory) {
@@ -28,18 +28,6 @@ class Module extends SCADSY_Controller{
 	
 	public function disable($directory) {
 		$this->module_model->disable_module($directory);
-		
-		redirect('module/index');
-	}
-	
-	public function install($directory) {
-		$this->module_manager->install_module($directory);
-		
-		redirect('module/index');
-	}
-	
-	public function uninstall($directory) {
-		$this->module_manager->uninstall_module($directory);
 		
 		redirect('module/index');
 	}
@@ -67,7 +55,7 @@ class Module extends SCADSY_Controller{
 
 		$data['modules'] = $this->module_model->get_modules_with_permissions('enabled');
 		
-		$this->view('module/permissions', $data);
+		$this->view('permissions', $data);
 	 }
 	 
 	 /**
@@ -93,4 +81,4 @@ class Module extends SCADSY_Controller{
 
 
 /* End of file Module.php */
-/* Location: ./application/controllers/Module.php */
+/* Location: ./modules/module/controllers/Module.php */
