@@ -41,17 +41,17 @@ class Permission_model extends SCADSY_Model {
 	 */
 	 public function get_module_permissions($module) {
 		
-		$this->db->select('module_action.module AS module_name');
-		$this->db->select('module_action.name AS action_name');
-		$this->db->select('module_action.controller AS controller_name');
-		$this->db->select('group.name AS group_name');
-		$this->db->select('permission.allowed AS allowed');
-		$this->db->from('module_action');
-		$this->db->where('module_action.module', $module);
-		$this->db->join('group', 'group.name = group.name', 'inner');
-		$this->db->join('permission','group.name = permission.group_name AND permission.module_action_module = module_action.module AND permission.module_action_name = module_action.name AND permission.module_action_controller = module_action.controller','left');
-	 	$this->db->order_by('module_action.module, module_action.controller, module_action.name, group.name');
-	 	$query = $this->db->get();
+		Database_manager::get_db()->select('module_action.module AS module_name');
+		Database_manager::get_db()->select('module_action.name AS action_name');
+		Database_manager::get_db()->select('module_action.controller AS controller_name');
+		Database_manager::get_db()->select('group.name AS group_name');
+		Database_manager::get_db()->select('permission.allowed AS allowed');
+		Database_manager::get_db()->from('module_action');
+		Database_manager::get_db()->where('module_action.module', $module);
+		Database_manager::get_db()->join('group', 'group.name = group.name', 'inner');
+		Database_manager::get_db()->join('permission','group.name = permission.group_name AND permission.module_action_module = module_action.module AND permission.module_action_name = module_action.name AND permission.module_action_controller = module_action.controller','left');
+	 	Database_manager::get_db()->order_by('module_action.module, module_action.controller, module_action.name, group.name');
+	 	$query = Database_manager::get_db()->get();
 
 		if($query->num_rows() > 0) {
 			return $query->result();

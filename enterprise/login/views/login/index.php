@@ -1,6 +1,6 @@
 <?php echo validation_errors(); ?>
 
-<?php echo form_open('login'); ?>
+<?php echo form_open('login/login'); ?>
 
 	<?php echo $failed_message; ?>
 	

@@ -28,7 +28,7 @@ class Login extends SCADSY_Controller{
 		else{
 			$this->data['failed_message'] = $validate_login;
 			$this->data['schools'] = $this->login_model->get_databases();
-			$this->view('login/index',$this->data,'template/header_without_menu');
+			$this->view('login/login/index',$this->data,'template/header_without_menu');
 		}
 	}
 	
