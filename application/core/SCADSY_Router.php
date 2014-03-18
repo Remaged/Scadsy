@@ -8,13 +8,12 @@ require APPPATH."third_party/MX/Router.php";
  */
 class SCADSY_Router extends MX_Router {
 	public function __construct() {
-		if(defined('ENTERPRISE')){
-			if(isset($_COOKIE['scadsy_db_cookie'])){
-				unset(Modules::$locations['enterprise/']);
-			}
-			else{
-				unset(Modules::$locations['modules/']);
-			}
+		global $CFG;
+		if(!defined('ENTERPRISE') || isset($_COOKIE['scadsy_db_cookie'])){
+			Modules::$locations = $CFG->item('modules_locations');
+		}
+		else{
+			Modules::$locations = $CFG->item('enterprise_locations');
 		}
 		
 		parent::__construct();

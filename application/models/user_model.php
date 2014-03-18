@@ -165,6 +165,7 @@ class User_model extends SCADSY_Model {
 			'id'=>''
     	);
 		$this->session->unset_userdata($user_session_data);
+		Database_manager::disconnect();
 	}
 
 	/**

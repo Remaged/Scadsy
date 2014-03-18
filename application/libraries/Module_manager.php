@@ -10,6 +10,7 @@ class Module_manager {
 	 */
 	public static function load_modules() {
 		$CI =& get_instance();
+		/* //OUD
 		if(!$CI->permission_manager->should_check_permissions()){				
 			$CI->config->load('enterprise');
 			$modules = $CI->config->item('enterprise_modules');
@@ -18,6 +19,16 @@ class Module_manager {
 			$CI->load->model('module_model');			
 			$modules = $CI->module_model->get_modules('enabled');
 		}
+		*/
+		//NIEUW
+		if(!defined('ENTERPRISE') || isset($_COOKIE['scadsy_db_cookie'])){
+			$CI->load->model('module_model');			
+			$modules = $CI->module_model->get_modules('enabled');
+		}
+		else{
+			$modules = self::get_enterprise_modules();
+		}
+
 		foreach($modules as $module) {
 			$module = (array) $module;
 			foreach($CI->config->item('modules_locations') as $key => $value) {
@@ -54,6 +65,31 @@ class Module_manager {
 				}
 			}
 		}
+	}
+	
+	
+	/**
+	 * Scan for all enterprise modules, retrieving their metadata.
+	 * @return
+	 * 		array with the metadata of each enterprise module.
+	 */
+	private static function get_enterprise_modules(){
+		$modules_data = array();
+		$CI =& get_instance();
+		$enterprise_locations = array_keys($CI->config->item('enterprise_locations'));
+		foreach($enterprise_locations AS $enterprise_location){					
+			$module_dirs = scandir(getcwd().'/'.$enterprise_location);					
+			foreach($module_dirs AS $module_dir){
+				if(is_dir($module_dir) && $module_dir != '.' && $module_dir != '..'){
+					$dirpath = getcwd().'/'.$enterprise_location.$module_dir;
+					$index_filepath = $dirpath.'/index.php';
+					if(is_file($index_filepath)){
+						$modules_data[] = self::get_module_metadata($index_filepath,$dirpath);
+					}
+				}
+			}
+		}
+		return $modules_data;
 	}
 	
 	/**

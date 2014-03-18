@@ -41,7 +41,7 @@ class Login extends SCADSY_Controller{
 	 */
 	public function logout(){		
 		$this->user_model->logout();
-		$this->view('login/logout');
+		redirect('login');
 	}
 		
 }
