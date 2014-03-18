@@ -16,14 +16,16 @@
 			<?php 
 				if($module->status == 'enabled') {
 					echo anchor('module/disable/'.$module->directory, 'Disable');
-				} else {
+				} else if ($module->status == 'disabled') {
 					echo anchor('module/enable/'.$module->directory, 'Enable');
+				} else if ($module->status == 'not_installed') {
+					echo anchor('module/install/'.$module->directory, 'Install');
 				}
 			?>
 		</td>
 		<td>
 			<?php if($module->status == 'disabled') { ?>
-				<a class="delete" href="<?php echo base_url('module/delete/'.$module->directory); ?>">Delete</a>					
+				<a href="<?php echo site_url('module/uninstall/'.$module->directory); ?>">Uninstall</a>					
 			<?php } ?>
 		</td>
 	</tr>
@@ -32,7 +34,7 @@
 </table>
 
 <div id="dialog-confirm" title="Remove module?">
-  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This module will be permanently deleted and cannot be recovered. Are you sure?</p>
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>When this model gets deleted all of its data will be removed. Are you sure you want to delete this module?</p>
 </div>
 
 <script>
@@ -41,21 +43,25 @@
       dialogClass: "no-close",
       autoOpen: false,
       resizable: false,
-      height:160,
+      height:180,
       modal: true,
       buttons: {
-        "Delete module": function() {
+        "OK": function() {
           $( this ).dialog( "close" );
-          alert("IMPLEMENT THIS");
         },
-        Cancel: function() {
+        "Cancel": function() {
           $( this ).dialog( "close" );
         }
       }
     });
     
-    $('.delete').click(function() {
-    	$( "#dialog-confirm" ).dialog( "open" );
+    $('.uninstall').click(function() {
+    	var result = $( "#dialog-confirm" ).dialog( "open" );
+    	if(result == "OK") {
+    		alert("OK");
+    	} else {
+    		alert("NOT OK");
+    	}
     	return false;
     });
   });

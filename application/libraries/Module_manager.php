@@ -5,28 +5,48 @@
  */
 class Module_manager {
 
+	/** 
+	 * Install a module 
+	 **/	
+	public function install_module($directory) {
+		$CI =& get_instance();
+		foreach(Modules::$locations as $location => $offset) {
+			$file = $location.$directory.'/install.php';
+			if(is_file($file)) {
+				include_once($file);
+				$CI->module_model->disable_module($directory);
+				return;
+			}
+		}
+	}
+	
+	/** 
+	 * Uninstall a module 
+	 **/	
+	public function uninstall_module($directory) {
+		$CI =& get_instance();
+		foreach(Modules::$locations as $location => $offset) {
+			$file = $location.$directory.'/uninstall.php';
+			if(is_file($file)) {
+				include_once($file);
+				$CI->module_model->uninstall_module($directory);
+				return;
+			}
+		}
+	}
+
 	/**
 	 * Load all the currently active modules
 	 */
-	public static function load_modules() {
+	public function load_modules() {
 		$CI =& get_instance();
-		/* //OUD
-		if(!$CI->permission_manager->should_check_permissions()){				
-			$CI->config->load('enterprise');
-			$modules = $CI->config->item('enterprise_modules');
-		}
-		else{
-			$CI->load->model('module_model');			
-			$modules = $CI->module_model->get_modules('enabled');
-		}
-		*/
-		//NIEUW
+
 		if(!defined('ENTERPRISE') || isset($_COOKIE['scadsy_db_cookie'])){
 			$CI->load->model('module_model');			
 			$modules = $CI->module_model->get_modules('enabled');
 		}
 		else{
-			$modules = self::get_enterprise_modules();
+			$modules = $this->get_enterprise_modules();
 		}
 
 		foreach($modules as $module) {
@@ -42,7 +62,7 @@ class Module_manager {
 	/**
 	 * Scan for new modules and add them to the database
 	 */
-	public static function add_new_modules() {
+	public function add_new_modules() {
 		$CI =& get_instance();
 		$CI->load->model('module_model');
 		
@@ -55,9 +75,9 @@ class Module_manager {
 				if(is_dir($key.$dir) 
 						&& is_file($key.$dir . '\index.php')) {
 							
-					$module_metadata = self::get_module_metadata($key.$dir . '\index.php', $dir);
-					$module_actions = self::get_module_actions($key.$dir.'\controllers\\');
-					$module_permissions = self::get_module_permissions($key.$dir . '\index.php');
+					$module_metadata = $this->get_module_metadata($key.$dir . '\index.php', $dir);
+					$module_actions = $this->get_module_actions($key.$dir.'\controllers\\');
+					$module_permissions = $this->get_module_permissions($key.$dir . '\index.php');
 	
 					if($CI->module_model->get_module($module_metadata['directory']) === NULL){
 						$CI->module_model->add_module($module_metadata, $module_actions, $module_permissions);					
@@ -73,7 +93,7 @@ class Module_manager {
 	 * @return
 	 * 		array with the metadata of each enterprise module.
 	 */
-	private static function get_enterprise_modules(){
+	private function get_enterprise_modules(){
 		$modules_data = array();
 		$CI =& get_instance();
 		$enterprise_locations = array_keys($CI->config->item('enterprise_locations'));
@@ -84,7 +104,7 @@ class Module_manager {
 					$dirpath = getcwd().'/'.$enterprise_location.$module_dir;
 					$index_filepath = $dirpath.'/index.php';
 					if(is_file($index_filepath)){
-						$modules_data[] = self::get_module_metadata($index_filepath,$dirpath);
+						$modules_data[] = $this->get_module_metadata($index_filepath,$dirpath);
 					}
 				}
 			}
@@ -101,7 +121,7 @@ class Module_manager {
 	 * @return
 	 * 		The meta data extracted from the module
 	 */
-	private static function get_module_metadata($filepath, $directory) {
+	private function get_module_metadata($filepath, $directory) {
 		// Load the class		
 		$module_data = file_get_contents($filepath);
 		
@@ -130,7 +150,7 @@ class Module_manager {
 	 * @return 
 	 * 		The permissions for the module
 	 */
-	private static function get_module_permissions($filepath) {
+	private function get_module_permissions($filepath) {
 		// Load the class		
 		$module_data = file_get_contents($filepath);
 		
@@ -153,7 +173,7 @@ class Module_manager {
 	 * @return 
 	 * 		An array with action names
 	 */
-	private static function get_module_actions($directory) {		
+	private function get_module_actions($directory) {		
 		$directories = preg_grep('/^([^.])/', scandir($directory));		
 		$module_actions = array();
 

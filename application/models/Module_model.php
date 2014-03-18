@@ -61,6 +61,16 @@ class Module_model extends SCADSY_Model {
 	 }
 	 
 	 /**
+	 * Uninstall a module
+	 * @param $directory
+	 * 		The directory of the module
+	 */
+	 public function uninstall_module($directory) {
+	 	Database_manager::get_db()->where('directory', $directory);
+	 	Database_manager::get_db()->update('module', array('status' => 'not_installed'));
+	 }
+	 
+	 /**
 	  * Stores status for all modules.
 	  * @param $statusses
 	  * 		associative array in which keynames match the module directory names

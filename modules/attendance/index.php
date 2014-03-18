@@ -17,8 +17,5 @@ function attendance_pre_menu_generated($menu_manager) {
 	$menu_manager->add_submenu_item('attendance/attendance/index','attendance/scheme/something', 'Something', array('admin', 'teacher'));
 }
 
-
-
-
 /* End of file index.php */
 /* Location: ./modules/attendance/index.php */

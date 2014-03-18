@@ -32,6 +32,18 @@ class Module extends SCADSY_Controller{
 		redirect('module/index');
 	}
 	
+	public function install($directory) {
+		$this->module_manager->install_module($directory);
+		
+		redirect('module/index');
+	}
+	
+	public function uninstall($directory) {
+		$this->module_manager->uninstall_module($directory);
+		
+		redirect('module/index');
+	}
+	
 	/**
 	 * Stores all enable/disable data of all modules
 	 */
