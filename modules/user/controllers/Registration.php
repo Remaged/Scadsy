@@ -28,15 +28,15 @@ class Registration extends SCADSY_Controller{
 			$data['ethnicities'] = $this->registration_model->get_ethnicities();		
 			$data['languages'] = $this->registration_model->get_languages();	
 			$data['grades'] = $this->registration_model->get_grades();				
-			$this->view('index',$data);
+			$this->view('registration/index',$data);
 		}
 		else{
 			$this->user_model->add_user();	
-			$this->view('succes');
+			$this->view('registration/succes');
 		}
 	}
 	
 }
 
 /* End of file registration.php */
-/* Location: ./models/registration/controllers/registration.php */
+/* Location: ./models/user/controllers/registration.php */

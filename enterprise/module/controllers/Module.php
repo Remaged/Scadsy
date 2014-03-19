@@ -8,6 +8,7 @@ class Module extends SCADSY_Controller{
 
 	public function __construct() {
 		parent::__construct();
+		$this->module_manager->load_modules();
 		$this->load->model('module_all_schools_model');	
 	}
 	
@@ -16,14 +17,14 @@ class Module extends SCADSY_Controller{
 	 */
 	public function index() {
 		parent::init(array(
-			'module' => "login",
+			'module' => "module",
 			'action' => "index",
-			'group' => array('admin','student','teacher')
+			'group' => array('admin')
 			)
 		);
 		$data['modules_per_school'] = $this->module_all_schools_model->get_schools_modules();
 		$this->load->helper(array('form', 'url'));
-		$this->view('module_manager/index',$data);
+		$this->view('module_manager',$data);
 	}
 	
 	/**

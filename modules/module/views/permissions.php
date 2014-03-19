@@ -33,7 +33,7 @@
 
 <script>
 $(function() {
-	$( "#accordion" ).accordion({ collapsible: true, active: false });
+	$( "#accordion" ).accordion({ collapsible: true, active: false, heightStyle: "content" });
 	
 	// Change the submit for each form
 	$("#accordion form").each(function() {

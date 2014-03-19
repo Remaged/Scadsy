@@ -77,12 +77,12 @@ class MX_Router extends CI_Router
 		/* get the segments array elements */
 		//list($module, $directory, $controller) = array_pad($segments, 3, NULL);
 		list($module, $controller, $action) = array_pad($segments, 3, NULL);
-		
-		$action = $action ?: 'index';
+
+		$action = $action ?: 'index';		
 				
 		/* check modules */
 		foreach (Modules::$locations as $location => $offset) {
-
+			
 			/* module exists? */
 			if (is_dir($source = $location.$module.'/controllers/')) {
 				
@@ -90,12 +90,12 @@ class MX_Router extends CI_Router
 				$this->directory = $offset.$module.'/controllers/';
 				
 				/* module sub-controller exists? */
-				if($controller AND is_file($source.$module.$ext)) {
+				if($controller AND is_file($source.$controller.$ext)) {
 					return array_slice($segments, 1);
 				}
 			
 				/* module controller exists? */			
-				if(is_file($source.$module.$ext)) {
+				if(is_file($source.$controller.$ext)) {
 					return $segments;
 				}
 			} 

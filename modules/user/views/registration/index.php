@@ -1,3 +1,33 @@
+<style>
+	fieldset{
+		border: 1px solid black;
+		margin: 15px 0px;
+		padding: 10px;
+	}
+	label{
+		display: inline-block;
+		width: 130px;
+	}
+</style>
+<script>
+	$(function(){
+		show_hide_fields();
+		$("select[name='group']").change(show_hide_fields);
+	});
+	
+	function show_hide_fields(){
+		$("#fields_student_information").hide();
+		$("#fields_enrollment_information").hide();
+		var group = $("select[name='group']").val();
+		if(group == 'student'){
+			$("#fields_student_information,#fields_enrollment_information").show();
+		}
+		else if(group == 'teacher'){
+			$("#fields_enrollment_information").show();
+		}
+	}
+</script>
+
 <?php echo validation_errors(); ?>
 
 <?php echo form_open(uri_string()); ?>
@@ -27,7 +57,7 @@
 		</div>
 	</fieldset>
 	
-	<fieldset>
+	<fieldset id="fields_student_information">
 		<legend>Student information</legend>
 		<div>
 			<label>Alternate ID</label>
@@ -44,7 +74,7 @@
 		</div>
 	</fieldset>
 	
-	<fieldset>
+	<fieldset id="fields_enrollment_information">
 		<legend>Enrollment information</legend>
 		<div>
 			<label>Start date</label>

@@ -9,11 +9,11 @@ class Login extends SCADSY_Controller{
 	 * Default action. When user not logged in this results in a login form. Otherwise a succes page will be shown.
 	 */
 	public function index(){
-		if($this->session->userdata('id') || $this->_validate_login() === TRUE){
+		if($this->user_model->user_logged_in() || $this->_validate_login() === TRUE){
 			redirect('welcome/welcome/index');
 		}		
 		else{
-			$this->view('index',$this->data, 'template/header_without_menu');
+			$this->view('login/index',$this->data, 'template/header_without_menu');
 		}		
 	}
 	
@@ -41,11 +41,11 @@ class Login extends SCADSY_Controller{
 	 */
 	public function logout(){		
 		$this->user_model->logout();
-		redirect('login/login/index');
+		redirect('user/login/index');
 	}
 		
 }
 
 
 /* End of file login.php */
-/* Location: ./models/login/controllers/login.php */
+/* Location: ./models/user/controllers/login.php */

@@ -66,4 +66,4 @@ class Login_model extends SCADSY_Model {
 
 
 /* End of file login_model.php */
-/* Location: ./modules/enterprise/models/Login_model.php */
+/* Location: ./enterprise/user/models/Login_model.php */

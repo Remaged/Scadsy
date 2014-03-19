@@ -23,12 +23,12 @@ class Login extends SCADSY_Controller{
 				'group' => array('admin','student','teacher')
 				)
 			);
-			$this->view('login/succes');
+			redirect('welcome/welcome/index');
 		}		
 		else{
 			$this->data['failed_message'] = $validate_login;
 			$this->data['schools'] = $this->login_model->get_databases();
-			$this->view('login/login/index',$this->data,'template/header_without_menu');
+			$this->view('index',$this->data,'template/header_without_menu');
 		}
 	}
 	
@@ -37,11 +37,11 @@ class Login extends SCADSY_Controller{
 	 */
 	public function logout(){
 		$this->login_model->logout();
-		redirect('login');
+		redirect('user/login');
 	}
 		
 }
 
 
 /* End of file login.php */
-/* Location: ./modules/enterprise/controllers/login.php */
+/* Location: ./enterprise/user/controllers/login.php */

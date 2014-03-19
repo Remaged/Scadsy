@@ -20,17 +20,26 @@ class Module extends SCADSY_Controller{
 		$this->view('list', $data);
 	}
 	
-	public function enable($directory) {
-		$this->module_model->enable_module($directory);
-		
-		redirect('module/index');
+	/**
+	 * Enables a single module.
+	 * (used for jquery-post)
+	 */
+	public function enable() {
+		$this->module_model->enable_module(
+			$this->input->post('module')
+		);	
 	}
 	
-	public function disable($directory) {
-		$this->module_model->disable_module($directory);
-		
-		redirect('module/index');
+	/**
+	 * Disables a single module.
+	 * (used for jquery-post)
+	 */
+	public function disable() {
+		$this->module_model->disable_module(
+			$this->input->post('module')
+		);	
 	}
+
 	
 	/**
 	 * Stores all enable/disable data of all modules

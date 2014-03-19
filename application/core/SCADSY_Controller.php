@@ -11,7 +11,7 @@ class SCADSY_Controller extends MX_Controller {
 	/**
 	 * Construct a new instance of the SCADSY_Controller class
 	 */
-	public function __construct() {		
+	public function __construct() {	
 		parent::__construct();	
 		$this->redirect_to_login();
 		$this->load_managers();	
@@ -25,7 +25,7 @@ class SCADSY_Controller extends MX_Controller {
 	 */
 	protected function redirect_to_login(){
 		if($this->user_model->user_logged_in() === FALSE && get_class($this) != 'Login'){
-			redirect('login/login/index');
+			redirect('user/login/index');
 		}
 	}
 	

@@ -7,16 +7,16 @@
 </style>
 <script>
 $(function(){
-	$( "#accordion" ).accordion({ collapsible: true, active: false });
+	$( "#accordion" ).accordion({ collapsible: true, active: false, heightStyle: "content" });
 
 	$(".switchbutton input").switchButton({
 		on_label: 'ENABLED',
 		off_label: 'DISABLED',
 		on_callback: function() {
-			save_module_status(this,'enabled');
+			save_module_status(this,'enable');
 		},
 		off_callback: function() {  
-			save_module_status(this,'disabled');	
+			save_module_status(this,'disable');	
 		}	
 	});
 		
@@ -31,7 +31,7 @@ function save_module_status(input_elm, action){
 		csrf_token : $("#modules_form_superadmin input[name='csrf_token']").val()
 	};
 	$.post(
-		'module/'+action,
+		action,
 		postdata,
 		function(data){
 			$(elm).closest("tr").find(".status_field").text(action+'d');
@@ -41,7 +41,7 @@ function save_module_status(input_elm, action){
 </script>
 
 <?php echo validation_errors(); ?>
-<?php echo form_open('module/save_modules',array('id'=>'modules_form_superadmin')); ?>
+<?php echo form_open('module/module/save_modules',array('id'=>'modules_form_superadmin')); ?>
 
 <div id="accordion">
 

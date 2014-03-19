@@ -1,62 +1,70 @@
+<script>
+$(function(){
+	$(".switchbutton input").switchButton({
+		on_label: 'ENABLED',
+		off_label: 'DISABLED',
+		on_callback: function() {
+			save_module_status(this,'enable');
+		},
+		off_callback: function() {  
+			save_module_status(this,'disable');	
+		}	
+	});
+	
+	$("#modules_form_admin [name='submit']").remove();
+})
+
+function save_module_status(input_elm, action){
+	var postdata = {
+		module : $(input_elm).attr('data-module'),
+		csrf_token : $("#modules_form_admin input[name='csrf_token']").val()
+	};
+	$.post(
+		action,
+		postdata,
+		function(data){
+			$("#module_manager_notices").html("Reload page for changes to become visible.");
+			$(elm).closest("tr").find(".status_field").text(action+'d');
+		}
+	);
+}
+</script>
+
+<div id="module_manager_notices">
+	<?php echo validation_errors(); ?>
+</div>
+
+<?php echo form_open('module/module/save_modules',array('id'=>'modules_form_admin')); ?>
+
+
 <table border=1>
 	<tr>
 		<th>Name</th>
 		<th>Directory</th>
-		<th>Enabled</th>
-		<th>Action</th>
-		<th>Remove</th>
+		<th>Status</th>
 	</tr>
 
 <?php foreach($modules as $module) { ?>
 	<tr>
 		<td><?php echo $module->name; ?></td>
 		<td><?php echo $module->directory; ?></td>
-		<td><?php echo $module->status; ?></td>
 		<td>
+			<div class="switchbutton">
 			<?php 
-				if($module->status == 'enabled') {
-					echo anchor('module/disable/'.$module->directory, 'Disable');
-				} else {
-					echo anchor('module/enable/'.$module->directory, 'Enable');
-				}
+				$checkbox_data = array(
+					'name' => 'status['.$module->directory.']',
+					'checked' => $module->status == 'enabled' ? TRUE : FALSE,
+					'value' => '1',
+					'data-module' => $module->directory
+				);			
+				echo form_checkbox($checkbox_data); 
 			?>
-		</td>
-		<td>
-			<?php if($module->status == 'disabled') { ?>
-				<a class="delete" href="<?php echo base_url('module/delete/'.$module->directory); ?>">Delete</a>					
-			<?php } ?>
+			</div>
 		</td>
 	</tr>
 <?php } ?>
-
 </table>
 
-<div id="dialog-confirm" title="Remove module?">
-  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This module will be permanently deleted and cannot be recovered. Are you sure?</p>
-</div>
+<?php echo form_submit('submit', 'Save');?>
 
-<script>
-  $(function() {
-    $( "#dialog-confirm" ).dialog({
-      dialogClass: "no-close",
-      autoOpen: false,
-      resizable: false,
-      height:160,
-      modal: true,
-      buttons: {
-        "Delete module": function() {
-          $( this ).dialog( "close" );
-          alert("IMPLEMENT THIS");
-        },
-        Cancel: function() {
-          $( this ).dialog( "close" );
-        }
-      }
-    });
-    
-    $('.delete').click(function() {
-    	$( "#dialog-confirm" ).dialog( "open" );
-    	return false;
-    });
-  });
-  </script>
+<?php echo form_close(); ?>

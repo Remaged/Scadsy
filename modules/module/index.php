@@ -1,12 +1,12 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
-Module Name: Attendance monitor
-Module Permissions: teacher, admin
-Module URI: http://seoduct.com/attendance_monitor/
-Description: This module allows teachers to monitor the attendance of students
+Module Name: Module
+Module Permissions: admin
+Module URI: 
+Description: This module allows the school-admin to manage the modules inside the schoolsystem.
 Version: 1.0
-Author: Bob van den Berge
-Author URI: http://www.seoduct.com/
+Author: -
+Author URI: -
 */
 
 Hook_manager::add_hook('pre_menu_generate', 'module_pre_menu_generated');

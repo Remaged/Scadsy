@@ -82,4 +82,4 @@ class Registration_model extends SCADSY_Model {
 
 
 /* End of file registration_model.php */
-/* Location: ./application/models/registration_model.php */
+/* Location: ./modules/user/models/registration_model.php */

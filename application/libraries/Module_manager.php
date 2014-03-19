@@ -40,18 +40,19 @@ class Module_manager {
 	 */
 	public function load_modules() {
 		$CI =& get_instance();
-
+		$module_locations = $CI->config->item('modules_locations');
 		if(!defined('ENTERPRISE') || isset($_COOKIE['scadsy_db_cookie'])){
 			$CI->load->model('module_model');			
 			$modules = $CI->module_model->get_modules('enabled');
 		}
 		else{
-			$modules = $this->get_enterprise_modules();
+			$module_locations = $CI->config->item('enterprise_locations');
+			$modules = self::get_enterprise_modules();
 		}
 
 		foreach($modules as $module) {
 			$module = (array) $module;
-			foreach($CI->config->item('modules_locations') as $key => $value) {
+			foreach($module_locations as $key => $value) {
 				if(is_file($key.$module['directory'].'\index.php')) {
 					include_once($key.$module['directory'].'\index.php');	
 				}
@@ -98,13 +99,13 @@ class Module_manager {
 		$CI =& get_instance();
 		$enterprise_locations = array_keys($CI->config->item('enterprise_locations'));
 		foreach($enterprise_locations AS $enterprise_location){					
-			$module_dirs = scandir(getcwd().'/'.$enterprise_location);					
+			$module_dirs = scandir(getcwd().'/'.$enterprise_location);			
 			foreach($module_dirs AS $module_dir){
-				if(is_dir($module_dir) && $module_dir != '.' && $module_dir != '..'){
-					$dirpath = getcwd().'/'.$enterprise_location.$module_dir;
-					$index_filepath = $dirpath.'/index.php';
+				$module_dir_path = getcwd().'/'.$enterprise_location.$module_dir;			
+				if(is_dir($module_dir_path) && $module_dir != '.' && $module_dir != '..'){
+					$index_filepath = $module_dir_path.'/index.php';
 					if(is_file($index_filepath)){
-						$modules_data[] = $this->get_module_metadata($index_filepath,$dirpath);
+						$modules_data[] = self::get_module_metadata($index_filepath,$module_dir);
 					}
 				}
 			}
