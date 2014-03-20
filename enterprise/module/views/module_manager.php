@@ -61,18 +61,22 @@ function save_module_status(input_elm, action){
 				<td><?php echo $module->name; ?></td>
 				<td><?php echo $module->directory; ?></td>
 				<td>
-					<div class="switchbutton">
-					<?php 
-						$checkbox_data = array(
-							'name' => 'status['.$school_db.']['.$module->directory.']',
-							'checked' => $module->status == 'enabled' ? TRUE : FALSE,
-							'value' => '1',
-							'data-school' => $school_db,
-							'data-module' => $module->directory
-						);			
-						echo form_checkbox($checkbox_data); 
-					?>
-					</div>
+					<?php if($module->status === NULL): ?>
+						Not installed
+					<?php else: ?>
+						<div class="switchbutton">
+						<?php 
+							$checkbox_data = array(
+								'name' => 'status['.$school_db.']['.$module->directory.']',
+								'checked' => $module->status == 'enabled' ? TRUE : FALSE,
+								'value' => '1',
+								'data-school' => $school_db,
+								'data-module' => $module->directory
+							);			
+							echo form_checkbox($checkbox_data); 
+						?>
+						</div>
+					<?php endif; ?>
 				</td>
 			</tr>
 		<?php endforeach; ?>

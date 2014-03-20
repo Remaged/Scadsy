@@ -26,15 +26,35 @@ class Module_all_schools_model extends SCADSY_Model {
 	 * 		values contain array of module objects.
 	 */ 
 	public function get_schools_modules(){
+		$modules_list = $this->module_manager->get_all_modules_from_directory();
+
 		$modules_per_school = array();
 		$school_databases = $this->get_databases();
 		foreach($school_databases AS $school_db){
 			if($school_db->name == ENTERPRISE){ continue; }
 			Database_manager::set_db($school_db->name);			
-			$modules_per_school[$school_db->name] = $this->module_model->get_modules();
+			$this->add_missing_modules($this->module_model->get_modules(),$modules_list);
+			$school_models = $this->add_missing_modules($this->module_model->get_modules(),$modules_list);
+			$modules_per_school[$school_db->name] = $school_models;
 		}
 		Database_manager::disconnect();
 		return $modules_per_school;
+	}
+	
+	private function add_missing_modules($school_modules, $all_modules){
+		$school_module_directories = array();
+		foreach($school_modules AS $school_module){
+			$school_module_directories[] = $school_module->directory;
+		}
+
+		foreach($all_modules AS $module){
+			if(!in_array($module['directory'],$school_module_directories)){
+				$module_obj = (object)$module;
+				$module_obj->status = NULL;
+				$school_modules[] = $module_obj;
+			}
+		}
+		return $school_modules;
 	}
 
 	/**
