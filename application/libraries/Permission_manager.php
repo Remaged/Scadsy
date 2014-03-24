@@ -37,7 +37,7 @@ class Permission_manager {
 	 * @param $default_groups
 	 * 		The default groups that are allowed to view this page. This can be either an array or a single string.
 	 */	
-	public function check_permissions($action, $controller, $module, $default_groups) {	
+	public function check_permissions($action, $controller, $module, $default_groups) {
 		if ($this->should_check_permissions()){
 			$CI =& get_instance();
 			$user_group = $CI->user_model->get_group();

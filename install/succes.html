@@ -2,6 +2,8 @@
 <html>
 <head>
 <title>SCADSY - Installer</title>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery.password.js"></script>
 <style>
 	@font-face {
 	  font-family: 'Open Sans';
@@ -72,49 +74,127 @@
 		font-family: 'Open Sans', sans-serif;
 		color:black;
 		font-size:13px;
-		background: #f3f3f7;
+		background: white;
 	}
 	
 	#container {
-		width:600px;
+		width:700px;
 		margin:0 auto;
 		padding: 10px;
 	}
 	
 	#content {
-		border: 1px solid #C4C4C4;
 		padding:10px;
 		background:white;
 	}
 	
 	#content h1 {
-		font-size:18px;
+		font-size:35px;
 		font-weight:bold;
 		text-align:center;
 		padding-bottom:20px;
 	}
 	
 	#content h2 {
-		font-size:16px;
-		font-weight:bold;
-		text-align:center;
+		font-size:20px;
+		padding:5px 0;
+		margin: 15px 0;
+		text-align:left;
+		border-bottom:1px solid #C0C0C0;
 	}
 	
 	p {
 		font-size:13px;
 		line-height:20px;
-		margin: 5px 0;
+		margin: 5px 0 15px;
 	}
 	
 	label {
 		font-weight:bold;
 		display:inline-block;
-		margin-right:20px;
 	}
 	
-	input, select {
-		padding:2px;
+	input {
+		padding:8px;
 		width:200px;
+	}
+	
+	select {
+		padding:8px;
+		width:214px;
+	}
+	
+	table {
+		width:100%;
+	}
+	
+	tr {
+		background: #F2F2F2;
+		border-bottom: 4px solid white;
+		width:100%;
+	}
+	
+	tr span.hint {
+		font-size:10px;
+		display:block;
+		line-height:14px;
+		padding-top:2px;
+	}
+	
+	tr>:first-child {
+		width:130px;
+	}
+	
+	span.testresult {
+		padding:9px 0 10px 20px;
+		margin-left: 15px;
+	}
+	
+	span.testresult span {
+		font-weight:bold;
+		font-size:12px;
+		margin-left:15px;
+		padding:10px 15px 10px 5px;	
+	}
+	
+	span.testresult.shortPass {
+		background: url('images/red.png') no-repeat;
+	}
+	
+	span.testresult.shortPass span {
+		background: url('images/red.png') no-repeat top right;
+	}
+	
+	span.testresult.badPass {
+		background: url('images/red.png') no-repeat;
+	}
+	
+	span.testresult.badPass span {
+		background: url('images/red.png') no-repeat top right;
+	}
+	
+	span.testresult.goodPass {
+		background: url('images/yellow.png') no-repeat;
+	}
+	
+	span.testresult.goodPass span {
+		background: url('images/yellow.png') no-repeat top right;
+	}
+	
+	span.testresult.strongPass {
+		background: url('images/green.png') no-repeat;
+	}
+	
+	span.testresult.strongPass span {
+		background: url('images/green.png') no-repeat top right;
+	}
+	
+	td {
+		padding:10px;
+	}
+	
+	input.submit:hover {
+		cursor: pointer;
 	}
 </style>
 </head>
@@ -123,10 +203,12 @@
 
 <div id="container">
 	<div id="content">
-		<h1>SCADSY Installer: Succes!</h1>
+		<h1>SCADSY</h1>
+		<h2>Installation succes!</h2>
 		<p>
-			Scadsy was succesfully installed. Please remove this folder because of security reasons.
-		</p>		
+			Scadsy has been installed succesfully. In order to use the system you have to delete the "install" directory in the root.
+		</p>
+		
 	</div>
 </div>
 

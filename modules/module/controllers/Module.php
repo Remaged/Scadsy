@@ -8,12 +8,7 @@ class Module extends SCADSY_Controller{
 	}
 
 	public function index() {
-		parent::init(array(
-			'module' => "module",
-			'action' => "index",
-			'group' => array('admin')
-			)
-		);
+		parent::init(array('admin'));
 
 		$data['modules'] = $this->module_model->get_modules();
 		$this->load->helper('form');

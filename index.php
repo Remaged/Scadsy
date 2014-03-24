@@ -1,4 +1,8 @@
 <?php
+if(is_dir("install")) {
+	die("Please go to the install directory and install the system before you start using it.");
+}
+
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT
