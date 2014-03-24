@@ -18,7 +18,7 @@ class Permission_manager {
 	 	$CI =& get_instance();
 		if(defined("ENTERPRISE")) {
 			if($CI->user_model->user_logged_in()) {
-				if(Database_manager::get_db()->database == ENTERPRISE){
+				if(Database_manager::get_db()->database == ENTERPRISE){ 
 					return FALSE;
 				}
 			} else {
@@ -50,7 +50,7 @@ class Permission_manager {
 				} else {
 					$is_allowed = FALSE;
 				}
-				$CI->permission_model->add_permission($action, $controller, $module, $default_groups, TRUE);
+				$CI->permission_model->add_permission($action, $controller, $module, $user_group, $is_allowed);
 			}
 				
 			return $is_allowed;
