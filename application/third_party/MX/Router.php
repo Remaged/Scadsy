@@ -38,6 +38,8 @@ require dirname(__FILE__).'/Modules.php';
 class MX_Router extends CI_Router
 {
 	protected $module;
+	protected $controller;
+	protected $action;
 	
 	public function fetch_module() {
 		return $this->module;
@@ -64,7 +66,7 @@ class MX_Router extends CI_Router
 	
 	/** Locate the controller **/
 	public function locate($segments) {		
-		
+
 		$this->module = NULL;
 		$this->directory = '';
 		$ext = $this->config->item('controller_suffix').EXT;
@@ -78,7 +80,7 @@ class MX_Router extends CI_Router
 		//list($module, $directory, $controller) = array_pad($segments, 3, NULL);
 		list($module, $controller, $action) = array_pad($segments, 3, NULL);
 
-		$action = $action ?: 'index';		
+		$action = $action ?: 'index';			
 				
 		/* check modules */
 		foreach (Modules::$locations as $location => $offset) {
@@ -91,11 +93,15 @@ class MX_Router extends CI_Router
 				
 				/* module sub-controller exists? */
 				if($controller AND is_file($source.$controller.$ext)) {
+					$this->controller = $controller;
+					$this->action = $action;
 					return array_slice($segments, 1);
 				}
 			
 				/* module controller exists? */			
 				if(is_file($source.$controller.$ext)) {
+					$this->controller = $controller;
+					$this->action = $action;
 					return $segments;
 				}
 			} 
@@ -113,5 +119,13 @@ class MX_Router extends CI_Router
 
 	public function get_module() {
 		return $this->module;
+	}
+	
+	public function get_controller() {
+		return $this->controller;
+	}
+	
+	public function get_action() {
+		return $this->action;
 	}
 }

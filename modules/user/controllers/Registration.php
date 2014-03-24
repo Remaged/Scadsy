@@ -16,7 +16,8 @@ class Registration extends SCADSY_Controller{
 	 */
 	function index(){
 		parent::init(array(
-			'module' => "registration",
+			'module' => "user",
+			'controller' => "registration",
 			'action' => "index",
 			'group' => array('admin')
 			)

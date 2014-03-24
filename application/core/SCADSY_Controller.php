@@ -18,6 +18,7 @@ class SCADSY_Controller extends MX_Controller {
 		if ($this->permission_manager->should_check_permissions()){			
 			$this->check_module_enabled();
 		}		
+		Module_manager::load_modules();
 	}
 	
 	/**
@@ -33,11 +34,9 @@ class SCADSY_Controller extends MX_Controller {
 	 * Check if this controller should be loaded
 	 */
 	 private function check_module_enabled() {
-	 	$class_name = $this->router->get_module();
-		if($class_name === NULL) {
-			$class_name = $this->router->fetch_class();
-		}
-	 	$query = Database_manager::get_db()->get_where('module', array('directory' => $class_name, 'status' => 'enabled'));
+	 	$module = $this->router->get_module();
+		
+	 	$query = Database_manager::get_db()->get_where('module', array('directory' => $module, 'status' => 'enabled'));
 		if($query->num_rows() == 0) {
 			show_401();
 			die();
@@ -56,23 +55,20 @@ class SCADSY_Controller extends MX_Controller {
 
 	/**
 	 * Initialize the SCADSY_Controller
-	 * @param $settings
-	 * 		The permission settings used for the current page
+	 * @param $groups
+	 * 		The default groups that are allowed to view this page
 	 */
-	protected function init(Array $settings) {
-		if(isset($settings['action']) && isset($settings['module'])) {
-			if(isset($settings['controller'])) {
-				$is_allowed = $this->permission_manager->check_permissions($settings['action'], $settings['controller'], $settings['module'], $settings['group']);
-			} else {
-				$is_allowed = $this->permission_manager->check_permissions($settings['action'], $settings['module'], $settings['module'], $settings['group']);
-			}
-			if(!$is_allowed) {
-				show_401();
-				die();
-			}
-		}	
+	protected function init(Array $groups) {
+		$module = $this->router->get_module();
+		$controller = $this->router->get_controller();
+		$action = $this->router->get_action();
 
-		Module_manager::load_modules();
+		$is_allowed = $this->permission_manager->check_permissions($action, $controller, $module, $groups);
+
+		if(!$is_allowed) {
+			show_401();
+			die();
+		}	
 	}
 			
 	/**
