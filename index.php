@@ -1,10 +1,10 @@
 <?php
-
-if(is_dir("install")) {
-	$root = "http://".$_SERVER['HTTP_HOST'];
-	$install_dir .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']).'install';
-	$header = "Location: ".$install_dir;
-	header($header);
+if(is_dir("install")){
+$root = "http://".$_SERVER['HTTP_HOST'];
+$root .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']).'install';
+$header = "Location: ".$root;
+header($header);
+exit();
 }
 
 /*
