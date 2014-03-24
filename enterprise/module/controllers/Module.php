@@ -55,8 +55,21 @@ class Module extends SCADSY_Controller{
 	 */
 	public function save_modules(){
 		$this->module_all_schools_model->save_all_module_settings($this->input->post('status'));
-		redirect('module');
+		redirect('module/module');
 	}
+
+	public function install($directory) {
+		$this->module_manager->install_module($directory);
+		
+		redirect('module/module');
+	}
+	
+	public function uninstall($directory) {
+		$this->module_manager->uninstall_module($directory);
+		
+		redirect('module/module');
+	}
+
 		
 }
 

@@ -88,6 +88,31 @@ class Module_manager {
 		}
 	}
 	
+	/**
+	 * Scan for all modules in the given locations, retrieving their metadata.
+	 * @param $config_item
+	 * 		Optional (default = enterprise_locations). Key (string) for the config item in which the locations are stored. 
+	 * @return
+	 * 		array with the metadata of each module.
+	 */
+	public function get_all_modules_from_directory($config_item = 'modules_locations'){
+		$modules_data = array();
+		$CI =& get_instance();
+		$locations = array_keys($CI->config->item($config_item));
+		foreach($locations AS $location){					
+			$module_dirs = scandir(getcwd().'/'.$location);			
+			foreach($module_dirs AS $module_dir){
+				$module_dir_path = getcwd().'/'.$location.$module_dir;			
+				if(is_dir($module_dir_path) && $module_dir != '.' && $module_dir != '..'){
+					$index_filepath = $module_dir_path.'/index.php';
+					if(is_file($index_filepath)){
+						$modules_data[] = self::get_module_metadata($index_filepath,$module_dir);
+					}
+				}
+			}
+		}
+		return $modules_data;
+	}
 	
 	/**
 	 * Scan for all enterprise modules, retrieving their metadata.
@@ -95,6 +120,8 @@ class Module_manager {
 	 * 		array with the metadata of each enterprise module.
 	 */
 	private function get_enterprise_modules(){
+		return self::get_all_modules_from_directory('enterprise_locations');
+		/*
 		$modules_data = array();
 		$CI =& get_instance();
 		$enterprise_locations = array_keys($CI->config->item('enterprise_locations'));
@@ -111,6 +138,7 @@ class Module_manager {
 			}
 		}
 		return $modules_data;
+		 * */
 	}
 	
 	/**
