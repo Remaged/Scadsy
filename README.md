@@ -8,9 +8,9 @@ This is still a development version, we are working hard to get the first releas
 
 ## How to install ##
 
-1. Clone the latest release version into your local computer and/or server. 
-2. With your browser, go to the location where you clones Scadsy.
-3. Follow the install procedure.
+1. Clone the latest release version onto your computer and/or server. 
+2. With your browser, go to the location where you cloned Scadsy.
+3. Follow the given install procedure.
 4. Remove the install directory.
-5. Go to your base_url, you should be ready to go now.
+5. Go to your installation location, you should be ready to go now.
 
