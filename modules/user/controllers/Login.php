@@ -10,7 +10,7 @@ class Login extends SCADSY_Controller{
 	 */
 	public function index(){
 		if($this->user_model->user_logged_in() || $this->_validate_login() === TRUE){
-			redirect('welcome/welcome/index');
+			redirect(site_url());
 		}		
 		else{
 			$this->view('login/index',$this->data, 'template/header_without_menu');

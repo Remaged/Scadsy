@@ -1,6 +1,10 @@
 <?php
+
 if(is_dir("install")) {
-	die("Please go to the install directory and install the system before you start using it.");
+	$root = "http://".$_SERVER['HTTP_HOST'];
+	$install_dir .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']).'install';
+	$header = "Location: ".$install_dir;
+	header($header);
 }
 
 /*
