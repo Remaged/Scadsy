@@ -1,150 +1,94 @@
 <style>
-	fieldset{
-		border: 1px solid black;
-		margin: 15px 0px;
-		padding: 10px;
+	legend{
+		width: 100%;
+		font-size:20px;
+		padding:5px 0;
+		margin: 15px 0;
+		text-align:left;
+		border-bottom:1px solid #C0C0C0;
 	}
-	label{
-		display: inline-block;
-		width: 130px;
+	fieldset>div{
+		background: #F2F2F2;
+		border-bottom: 4px solid white;
+		padding:5px;
+	}
+	fieldset>div>label{
+		width:130px;
+		font-weight: bold;
+	}
+	fieldset>div>*{
+		padding: 5px;
 	}
 </style>
-<script>
-	$(function(){
-		show_hide_fields();
-		$("select[name='group']").change(show_hide_fields);
-	});
-	
-	function show_hide_fields(){
-		$("#fields_student_information").hide();
-		$("#fields_enrollment_information").hide();
-		var group = $("select[name='group']").val();
-		if(group == 'student'){
-			$("#fields_student_information,#fields_enrollment_information").show();
-		}
-		else if(group == 'teacher'){
-			$("#fields_enrollment_information").show();
-		}
-	}
-</script>
-
 <?php echo validation_errors(); ?>
 
 <?php echo form_open(uri_string()); ?>
-	
-	
-	<fieldset>
-		<legend>Acces information</legend>
-		<div>
-			<label>Username</label>
-			<input type="text" name="username" value="<?php echo set_value('username', ''); ?>" size="50" />
-		</div>
-		<div>
-			<label>Password</label>
-			<input type="password" name="password" value="" size="50" />
-		</div>
-		<div>
-			<label>Password Confirm</label>
-			<input type="password" name="password_confirm" value="" size="50" />
-		</div>
-		<div>
-		<label>Group</label>
-			<select name="group">
-				<?php foreach($groups AS $group): ?>
-					<option value="<?php echo $group->name ?>" <?php echo set_select('group', $group->name); ?>><?php echo $group->name ?></option>
-				<?php endforeach; ?>
-			</select>
-		</div>
-	</fieldset>
-	
-	<fieldset id="fields_student_information">
-		<legend>Student information</legend>
-		<div>
-			<label>Alternate ID</label>
-			<input type="text" name="alternate_id" value="<?php echo set_value('alternate_id', ''); ?>" size="50" />
-		</div>
-		
-		<div>
-			<label>Grade</label>
-			<select name="grade">
-				<?php foreach($grades AS $grade): ?>
-					<option value="<?php echo $grade->name ?>" <?php echo set_select('grade', $grade->name); ?>><?php echo $grade->name ?></option>
-				<?php endforeach; ?>
-			</select>
-		</div>
-	</fieldset>
-	
-	<fieldset id="fields_enrollment_information">
-		<legend>Enrollment information</legend>
-		<div>
-			<label>Start date</label>
-			<input type="date" name="start_date" value="<?php echo set_value('start_date', ''); ?>" size="50" />
-		</div>
-		<div>
-			<label>End date</label>
-			<input type="date" name="end_date" value="<?php echo set_value('end_date', ''); ?>" size="50" />
-		</div>
-	</fieldset>
+	<h1>
+		Add new user
+	</h1>
 
-	<fieldset>
-		<legend>Personal information</legend>
-		<div>
-			<label>First name</label>
-			<input type="text" name="first_name" value="<?php echo set_value('first_name', ''); ?>" size="50" />
-		</div>
-		<div>
-			<label>Middle name</label>
-			<input type="text" name="middle_name" value="<?php echo set_value('middle_name', ''); ?>" size="50" />
-		</div>
-		<div>
-			<label>Last name</label>
-			<input type="text" name="last_name" value="<?php echo set_value('last_name', ''); ?>" size="50" />
-		</div>
-		<div>
-			<label>Date of birth</label>
-			<input type="date" name="date_of_birth" value="<?php echo set_value('date_of_birth', ''); ?>" size="50" />
-		</div>
-		<div>
-			<label>Gender</label>
-			<select name="gender">
-				<option value="male" <?php echo set_select('gender', 'male'); ?>>Male</option>
-				<option value="female" <?php echo set_select('gender', 'female'); ?>>Female</option>
-			</select>
-		</div>
-		<div>
-			<label>Primary Language</label>
-			<select name="language">
-				<?php foreach($languages AS $language): ?>
-					<option value="<?= $language->name ?>" <?php echo set_select('language', $language->name); ?>><?= $language->name ?></option>
-				<?php endforeach; ?>
-			</select>
-		</div>
-		<div>
-			<label>Ethnicity</label>
-			<select name="ethnicity">
-				<?php foreach($ethnicities AS $ethnicity): ?>
-					<option value="<?= $ethnicity->name ?>" <?php echo set_select('ethnicity', $ethnicity->name); ?>><?= $ethnicity->name ?></option>
-				<?php endforeach; ?>
-			</select>
-		</div>
-	</fieldset>
+	<?php echo form_fieldset('Acces information'); ?>
+		<?php echo form_label_input('username'); ?>
+		<?php echo form_label_password('password'); ?>
+		<?php echo form_label_password('password_confirm'); ?>
+		<?php echo form_label_input('username'); ?>		
+		<?php 
+			$group_options = array(); 
+			foreach($groups AS $group){
+				$group_options[$group->name] = $group->name;
+			}
+			echo form_label_dropdown('group',$group_options); 
+		?>
+	<?php echo form_fieldset_close(); ?>
 	
-	<fieldset>
-		<legend>Contact information</legend>	
-		
-		<div>
-			<label>Email</label>
-			<input type="email" name="email" value="<?php echo set_value('email', ''); ?>" size="50" />
-		</div>
-		<div>
-			<label>Phone number</label>
-			<input type="text" name="phone_number" value="<?php echo set_value('phone_number', ''); ?>" size="50" />
-		</div>
-	</fieldset>
+	<?php echo form_fieldset('Student information',array('id'=>'fields_student_information')); ?>
+		<?php echo form_label_input('alternate_id','Alternate ID'); ?>
+		<?php 
+			$grade_options = array(); 
+			foreach($groups AS $group){
+				$grade_options[$group->name] = $group->name;
+			}
+			echo form_label_dropdown('grade',$grade_options); 
+		?>
+	<?php echo form_fieldset_close(); ?>
 	
+	<?php echo form_fieldset('Enrollment information',array('id'=>'fields_enrollment_information')); ?>
+		<?php echo form_label_date('start_date'); ?>	
+		<?php echo form_label_date('end_date'); ?>	
+	<?php echo form_fieldset_close(); ?>
+	
+	<?php echo form_fieldset('Personal information'); ?>
+		<?php echo form_label_input('first_name'); ?>	
+		<?php echo form_label_input('middle_name'); ?>	
+		<?php echo form_label_input('last_name'); ?>			
+		<?php echo form_label_date('date_of_birth'); ?>	
+		<?php 
+			$gender_options = array('male'=>'Male','female'=>'Female'); 
+			echo form_label_dropdown('gender',$gender_options); 
+		?>
+		<?php 
+			$language_options = array(); 
+			foreach($languages AS $language){
+				$language_options[] = $language->name;
+			}
+			echo form_label_dropdown('language',$language_options, 'Primary Language'); 
+		?>		
+		<?php 
+			$ethnicity_options = array(); 
+			foreach($ethnicities AS $ethnicity){
+				$ethnicity_options[] = $ethnicity->name;
+			}
+			echo form_label_dropdown('ethnicity',$ethnicity_options); 
+		?>
+	<?php echo form_fieldset_close(); ?>
+	
+	<?php echo form_fieldset('Contact information'); ?>
+		<?php echo form_label_email('email'); ?>
+		<?php echo form_label_input('phone_number'); ?>
+	<?php echo form_fieldset_close(); ?>
 	
 	<div>
-		<input type="submit" value="Submit" />
+		<?php echo form_submit('submit','Submit'); ?>
 	</div>
 </form>
 

@@ -1,16 +1,10 @@
 <?php
-if(is_dir("install")){
-$root = "http://".$_SERVER['HTTP_HOST'];
-$root .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']).'install';
-$header = "Location: ".$root;
-header($header);
-exit();
-}
+
 
 /*
- *---------------------------------------------------------------
+ *-------------------------------------------------------------------------------
  * APPLICATION ENVIRONMENT
- *---------------------------------------------------------------
+ *-------------------------------------------------------------------------------
  *
  * You can load different configurations depending on your
  * current environment. Setting the environment also influences
@@ -25,11 +19,30 @@ exit();
  * NOTE: If you change these, also change the error_reporting() code below
  *
  */
-	define('ENVIRONMENT', 'development');
+ 	define('ENVIRONMENT', 'development');
+	
+ /*
+ *-------------------------------------------------------------------------------
+ * INSTALLATION
+ *-------------------------------------------------------------------------------
+ *
+ * In the production environment the application needs some configurations
+ * which can be done through an installation. 
+ * The installation will be ignored when the ENVIRONMENT is set to 'development'.
+ */
+ 
+if(is_dir("install") && (!defined('ENVIRONMENT') || ENVIRONMENT != 'development')){
+	$root = "http://".$_SERVER['HTTP_HOST'];
+	$root .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']).'install';
+	$header = "Location: ".$root;
+	header($header);
+	exit();
+}
+ 
 /*
- *---------------------------------------------------------------
+ *-------------------------------------------------------------------------------
  * ERROR REPORTING
- *---------------------------------------------------------------
+ *-------------------------------------------------------------------------------
  *
  * Different environments will require different levels of error reporting.
  * By default development will show errors but testing and live will hide them.
@@ -54,9 +67,9 @@ if (defined('ENVIRONMENT'))
 }
 
 /*
- *---------------------------------------------------------------
+ *-------------------------------------------------------------------------------
  * SYSTEM FOLDER NAME
- *---------------------------------------------------------------
+ *-------------------------------------------------------------------------------
  *
  * This variable must contain the name of your "system" folder.
  * Include the path if the folder is not in the same  directory
@@ -66,9 +79,9 @@ if (defined('ENVIRONMENT'))
 	$system_path = 'system';
 
 /*
- *---------------------------------------------------------------
+ *-------------------------------------------------------------------------------
  * APPLICATION FOLDER NAME
- *---------------------------------------------------------------
+ *-------------------------------------------------------------------------------
  *
  * If you want this front controller to use a different "application"
  * folder then the default one you can set its name here. The folder

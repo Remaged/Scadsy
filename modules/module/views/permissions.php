@@ -1,35 +1,66 @@
+<style>
+	#accordion table{
+		border-collapse:separate;
+		border-spacing: 0px 5px;
+		width: 100%;
+		border: 0px;
+	}
+	#accordion table th{
+		background: white;
+		font-weight: bold;
+		margin: 15px 0;
+		text-align:left;
+		border: 0px;
+		border-bottom:1px solid #C0C0C0;
+	}
+	
+	#accordion table td{
+		background: #F2F2F2;
+		border: 0px;
+	}
+</style>
+
+<h1>Manage permissions</h1>
+
+
+
 <div id="accordion">
 <?php foreach($modules as $module) { ?>
 	<h3><?php echo $module->name; ?> (<?php echo $module->directory;?>)</h3>
-	<div>
-		<div class="table">
-			<div class="tr">
-				<div class="th">Page</div>
-				<div class="th">Controller</div>
-				<div class="th">Module</div>
-				<div class="th">Group</div>
-				<div class="th switchbutton">Status</div>
-			</div>
+	<div>		
+		<?php $module_pages = array(); ?>
+		<table>
 		<?php foreach($module->permissions as $permission) { ?>
-			<?php echo form_open('module/module/permissionEdit'); ?>
-			<div class="tr">			
-				<?php echo form_hidden(array(
-								"action" => $permission->action_name, 
-								"controller" => $permission->controller_name,
-								"module" => $permission->module_name,
-								"group" => $permission->group_name)); ?>
-				<div class="td"><?php echo $permission->action_name; ?> </div>
-				<div class="td"><?php echo $permission->controller_name; ?></div>
-				<div class="td"><?php echo $permission->module_name; ?></div>
-				<div class="td"><?php echo $permission->group_name; ?></div>
-				<div class="td switchbutton"><input type="checkbox" value="1" name="allowed" <?php echo ($permission->allowed == 1) ? 'checked' : '';?>></div>		
-			</div>
-				<?php echo form_close(); ?>
+			<?php if(!in_array($permission->controller_name.'/'.$permission->action_name, $module_pages)): ?>
+				<?php $module_pages[] = $permission->controller_name.'/'.$permission->action_name; ?>		
+				<tr>
+					<th colspan="2">
+						<?php echo $permission->controller_name.'/'.$permission->action_name; ?>
+					</th>
+				</tr>		
+			<?php endif; ?>		
+			<tr>											
+				<td style="width: 130px;"><?php echo $permission->group_name; ?></td>
+				<td>
+					<?php echo form_open('module/module/permissionEdit'); ?>
+						<?php echo form_hidden(array(
+									"action" => $permission->action_name, 
+									"controller" => $permission->controller_name,
+									"module" => $permission->module_name,
+									"group" => $permission->group_name)); ?>
+						<div class="switchbutton">
+							<input type="checkbox" value="1" name="allowed" <?php echo ($permission->allowed == 1) ? 'checked' : '';?>>
+						</div>
+					<?php echo form_close(); ?>
+				</td>		
+			</tr>
+				
 		<?php } ?>	
-		</div>
+		</table>
 	</div>
 <?php } ?>
 </div>
+
 
 <script>
 $(function() {
@@ -52,8 +83,8 @@ $(function() {
 	});
 	
 	$(".switchbutton input").switchButton({
-		on_label: 'ENABLED',
-		off_label: 'DISABLED',
+		on_label: 'ALLOW',
+		off_label: 'DENY',
 		on_callback: function() {
 			$(this).closest('form').submit();
 		},

@@ -1,10 +1,25 @@
 <style>
-	h2{
+	#accordion table{
+		border-collapse:separate;
+		border-spacing: 0px 5px;
+		width: 100%;
+		border: 0px;
+	}
+	#accordion table th{
+		background: white;
 		font-weight: bold;
-		font-size: 1.2em;
-		margin: 10px 0px;
+		margin: 15px 0;
+		text-align:left;
+		border: 0px;
+		border-bottom:1px solid #C0C0C0;
+	}
+	
+	#accordion table td{
+		background: #F2F2F2;
+		border: 0px;
 	}
 </style>
+
 <script>
 $(function(){
 	$( "#accordion" ).accordion({ collapsible: true, active: false, heightStyle: "content" });
@@ -39,6 +54,9 @@ function save_module_status(input_elm, action){
 	);
 }
 </script>
+<h1>
+	Manage modules
+</h1>
 
 <?php echo validation_errors(); ?>
 <?php echo form_open('module/module/save_modules',array('id'=>'modules_form_superadmin')); ?>

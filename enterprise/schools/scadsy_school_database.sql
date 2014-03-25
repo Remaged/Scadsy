@@ -119,7 +119,6 @@ CREATE TABLE IF NOT EXISTS `group` (
 INSERT INTO `group` (`name`) VALUES
 ('admin'),
 ('parent'),
-('school'),
 ('student'),
 ('teacher');
 

@@ -34,8 +34,8 @@ class Login_model extends SCADSY_Model {
 	 * 		TRUE if succesfull
 	 * 		string with error-message if failed.
 	 */
-	public function validate_login(){
-		$this->setup_form_validation();			
+	public function validate_login($admin_login = FALSE){
+		$this->setup_form_validation($admin_login);			
 		if($this->form_validation->run() === FALSE){
 			return '';
 		}		
@@ -54,10 +54,12 @@ class Login_model extends SCADSY_Model {
 	/**
 	 * Sets rules for the login form validation.
 	 */
-	public function setup_form_validation(){
+	public function setup_form_validation($admin_login = FALSE){
 		$this->load->helper(array('form', 'url'));
 		$this->load->library('form_validation');
-		$this->form_validation->set_rules('school', 'School', 'required|trim|xss_clean'); 
+		if($admin_login === FALSE){
+			$this->form_validation->set_rules('school', 'School', 'required|trim|xss_clean'); 
+		}
 		$this->form_validation->set_rules('username', 'Username','required|trim|xss_clean');				
 		$this->form_validation->set_rules('password', 'Password', 'required|trim|xss_clean');	
 	}	

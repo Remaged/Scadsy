@@ -28,7 +28,8 @@ class Registration extends SCADSY_Controller{
 			$data['groups'] = $this->registration_model->get_groups();
 			$data['ethnicities'] = $this->registration_model->get_ethnicities();		
 			$data['languages'] = $this->registration_model->get_languages();	
-			$data['grades'] = $this->registration_model->get_grades();				
+			$data['grades'] = $this->registration_model->get_grades();		
+			$this->template_manager->add_module_script('registration_form','modules/user/assets/scripts/registration_form_handler.js','user',TRUE);	
 			$this->view('registration/index',$data);
 		}
 		else{
