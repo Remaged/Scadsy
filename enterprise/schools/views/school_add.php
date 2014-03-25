@@ -10,6 +10,12 @@
 	}
 </style>
 
+<h2>Add new school</h2>
+
+<p>
+	By submitting the form below a new school will be created. Because it creates a new database
+	it might take a while to be completed.
+</p>
 
 <?php echo validation_errors(); ?>
 
@@ -32,7 +38,7 @@
 		<?php echo form_password('password',set_value('password')); ?>
 	</div>	
 	<div>	
-		<?php echo form_submit('submit', 'Log in'); ?>
+		<?php echo form_submit('submit', 'Save'); ?>
 	</div>
 	
 <?php echo form_close(); ?>

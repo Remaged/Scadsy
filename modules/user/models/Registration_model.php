@@ -47,6 +47,9 @@ class Registration_model extends SCADSY_Model {
 	 * Sets rules for the registration form validation.
 	 */
 	public function setup_form_validation(){
+		//$query = Database_manager::get_db()->query("SELECT * FROM (`user`) WHERE `email` = 'marc@student.scadsy.co.za' LIMIT 1");
+		//print_r($query); exit();
+		
 		$this->load->helper(array('form', 'url'));
 		$this->load->library('form_validation');
 		//required			

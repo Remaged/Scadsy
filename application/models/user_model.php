@@ -149,12 +149,6 @@ class User_model extends SCADSY_Model {
 	 */
 	public function login(){	
 		$query = Database_manager::get_db()->get_where('user',array('username'=>$this->input->post('username')));
-		/*
-		if($query->num_rows() == 0 || $query->row()->password != $this->get_hashed_password($this->input->post('password'),$query->row()->password_salt))
-		{
-			return FALSE;
-		}	
-		 */
 		if($query->num_rows() == 0 || password_verify($this->input->post('password'),$query->row()->password) === FALSE){
 			return FALSE; 	
 		} 	

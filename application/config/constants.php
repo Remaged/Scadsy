@@ -14,7 +14,7 @@
 | When schools have their own webserver, this contstant should be removed.
 |
 */
-//define('ENTERPRISE','codeigniter');
+define('ENTERPRISE','codeigniter');
 
 
 /*
