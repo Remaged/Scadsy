@@ -56,6 +56,18 @@ class Module_all_schools_model extends SCADSY_Model {
 		}
 		return $school_modules;
 	}
+	
+	public function install_module($directory,$school_db) {
+		Database_manager::set_db($school_db);	
+		$this->module_manager->install_module($directory);
+		Database_manager::disconnect();
+	}
+	
+	public function uninstall_module($directory,$school_db) {
+		Database_manager::set_db($school_db);	
+		$this->module_manager->uninstall_module($directory);
+		Database_manager::disconnect();
+	}
 
 	/**
 	 * Enable a module

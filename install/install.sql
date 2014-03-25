@@ -366,7 +366,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `middle_name` varchar(100) DEFAULT NULL,
   `last_name` varchar(100) NOT NULL,
   `username` varchar(100) NOT NULL,
-  `password` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `email` varchar(100) NOT NULL,
   `phone_number` varchar(40) NOT NULL,
   `date_of_birth` date NOT NULL,
@@ -386,8 +386,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Gegevens worden uitgevoerd voor tabel `user`
 --
 
-INSERT INTO `user` (`id`, `title`, `first_name`, `middle_name`, `last_name`, `username`, `password`, `email`, `phone_number`, `date_of_birth`, `gender`, `status`, `ethnicity`, `language`, `group_key`, `password_salt`) VALUES
-(5, 'Mr', 'admin', 'admin', 'admin', '{USERNAME}', '{PASSWORD}', '{EMAIL}', '234234234', '2014-03-19', 'male', 'enabled', NULL, NULL, 'admin', '{SALT}');
+INSERT INTO `user` (`id`, `title`, `first_name`, `middle_name`, `last_name`, `username`, `password`, `email`, `phone_number`, `date_of_birth`, `gender`, `status`, `ethnicity`, `language`, `group_key`) VALUES
+(5, 'Mr', 'admin', 'admin', 'admin', '{USERNAME}', '{PASSWORD}', '{EMAIL}', '234234234', '2014-03-19', 'male', 'enabled', NULL, NULL, 'admin');
 
 -- --------------------------------------------------------
 

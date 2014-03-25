@@ -14,9 +14,6 @@ class User_model extends SCADSY_Model {
 	 * Adds a new user into the database, using the POST-data of the registration form
 	 */
 	public function add_user(){
-		$salt = mcrypt_create_iv(16, MCRYPT_DEV_URANDOM);	
-		$hashed_password = $this->get_hashed_password($this->input->post('password'),$salt);
-		
 		$data = array(
 			'username' => $this->input->post('username'),
 			'email' => $this->input->post('email'),
@@ -26,8 +23,7 @@ class User_model extends SCADSY_Model {
 			'last_name' => $this->input->post('last_name'),
 			'phone_number' => $this->input->post('phone_number'),
 			'date_of_birth' => $this->input->post('date_of_birth'),
-			'password' => $hashed_password,
-			'password_salt' => $salt 
+			'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT)
 		);
 		Database_manager::get_db()->trans_start();		
 		Database_manager::get_db()->insert('user', $data);
@@ -133,29 +129,7 @@ class User_model extends SCADSY_Model {
 			'start_date' => $this->input->post('start_date')			
 		);	
 		Database_manager::get_db()->insert('teacher', $data);
-	}
-		
-	/**
-	 * Hashes a provided password, using the 'SHA512' hash and the provided salt.
-	 * Returns the hashed password.
-	 *
-	 * @param	password
-	 * 		The password to be hashed
-	 * @param	salt
-	 * 		salt to use in the hashing
-	 * @return
-	 * 		hashed password
-	 */
-	public function get_hashed_password($password,$salt){
-		if (CRYPT_SHA512 != 1) {
-			exit("The server doesn't seem to support the required hashing algorithm. Please contact the administrator");
-		}
-		$hashString = crypt($password, '$6$rounds=5005$'.$salt);
-		$hash_explode = explode($salt,$hashString);
-
-		return $hash_explode[1];
-	}
-	
+	}	
 	
 	/**
 	 * Ends session-data for the current logged in user. 
@@ -175,11 +149,15 @@ class User_model extends SCADSY_Model {
 	 */
 	public function login(){	
 		$query = Database_manager::get_db()->get_where('user',array('username'=>$this->input->post('username')));
-
+		/*
 		if($query->num_rows() == 0 || $query->row()->password != $this->get_hashed_password($this->input->post('password'),$query->row()->password_salt))
 		{
 			return FALSE;
-		}		
+		}	
+		 */
+		if($query->num_rows() == 0 || password_verify($this->input->post('password'),$query->row()->password) === FALSE){
+			return FALSE; 	
+		} 	
 
 		$newdata = array(
 			'id'=>$query->row()->id

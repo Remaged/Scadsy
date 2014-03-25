@@ -58,6 +58,23 @@ class Module extends SCADSY_Controller{
 		redirect('module/module');
 	}
 
+	public function install() {
+		$this->module_all_schools_model->install_module(
+			$this->input->post('module'),
+			$this->input->post('school_db')
+		);		
+		redirect('module/module');
+	}
+	
+	public function uninstall() {
+		$this->module_all_schools_model->uninstall_module(
+			$this->input->post('module'),
+			$this->input->post('school_db')
+		);		
+		redirect('module/module');
+	}
+
+/*	//OUD (staat CSRF toe)
 	public function install($directory) {
 		$this->module_manager->install_module($directory);
 		
@@ -69,10 +86,10 @@ class Module extends SCADSY_Controller{
 		
 		redirect('module/module');
 	}
-
+*/
 		
 }
 
 
 /* End of file Module.php */
-/* Location: ./modules/enterprise/controllers/Module.php */
+/* Location: ./enterprise/module/controllers/Module.php */

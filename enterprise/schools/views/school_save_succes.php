@@ -1,0 +1,1 @@
+<h2>School successfully added</h2>
