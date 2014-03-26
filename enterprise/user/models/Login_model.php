@@ -40,7 +40,7 @@ class Login_model extends SCADSY_Model {
 			return '';
 		}		
 			
-		if(!(defined('ENTERPRISE') && $this->input->post('school') === ENTERPRISE)) {
+		if($admin_login === FALSE) {
 			Database_manager::set_db($this->input->post('school'));
 		}
 		
