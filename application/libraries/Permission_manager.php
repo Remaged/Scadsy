@@ -4,20 +4,20 @@
  * The Permission_manager class. This class manages the permissions.
  */
 class Permission_manager {
+	private $CI;
 
 	public function __construct() {
-		$CI =& get_instance();
-		$CI->load->model('permission_model');
-		$CI->load->model('user_model');
+		$this->CI =& get_instance();
+		$this->CI->load->model('permission_model');
+		$this->CI->load->model('user_model');
 	}
 
 	/**
 	 * Request whether or not the permissions should be checked. 
 	 */
 	 public function should_check_permissions() {
-	 	$CI =& get_instance();
 		if(defined("ENTERPRISE")) {
-			if($CI->user_model->user_logged_in()) {
+			if($this->CI->user_model->user_logged_in()) {
 				if(Database_manager::get_db()->database == ENTERPRISE){ 
 					return FALSE;
 				}
@@ -39,8 +39,7 @@ class Permission_manager {
 	 */	
 	public function check_permissions($action, $controller, $module, $default_groups) {
 		if ($this->should_check_permissions()){
-			$CI =& get_instance();
-			$user_group = $CI->user_model->get_group();
+			$user_group = $this->CI->user_model->get_group();
 			$is_allowed = $this->check_permissions_database($action, $controller, $module, $user_group);
 			
 			if($is_allowed === NULL) {
@@ -50,7 +49,7 @@ class Permission_manager {
 				} else {
 					$is_allowed = FALSE;
 				}
-				$CI->permission_model->add_permission($action, $controller, $module, $user_group, $is_allowed);
+				$this->CI->permission_model->add_permission($action, $controller, $module, $user_group, $is_allowed);
 			}
 				
 			return $is_allowed;
@@ -79,18 +78,17 @@ class Permission_manager {
 			return TRUE;
 		}
 		
-		$CI =& get_instance();
 		$is_allowed = NULL;
 		if(is_array($group)) {
 			foreach($group as $item) {
-				$permission = $CI->permission_model->get_permission($action, $controller, $module, $item);
+				$permission = $this->CI->permission_model->get_permission($action, $controller, $module, $item);
 				if($permission !== NULL) {
 					$is_allowed = $permission->allowed;
 					break;
 				}
 			}
 		} else {
-			$permission = $CI->permission_model->get_permission($action, $controller, $module, $group);
+			$permission = $this->CI->permission_model->get_permission($action, $controller, $module, $group);
 			if($permission !== NULL) {
 				$is_allowed = $permission->allowed;
 			}

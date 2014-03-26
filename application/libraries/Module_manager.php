@@ -4,17 +4,21 @@
  * The module_manager class. This class manages the initialising and loading of modules.
  */
 class Module_manager {
-
+	private $CI;
+	
+	public function __construct() {
+		$this->CI =& get_instance();
+	}
+	
 	/** 
 	 * Install a module 
 	 **/	
 	public function install_module($directory) {
-		$CI =& get_instance();
 		foreach(Modules::$locations as $location => $offset) {
 			$file = $location.$directory.'/install.php';
 			if(is_file($file)) {
 				include_once($file);
-				$CI->module_model->disable_module($directory);
+				$this->CI->module_model->disable_module($directory);
 				return;
 			}
 		}
@@ -24,12 +28,11 @@ class Module_manager {
 	 * Uninstall a module 
 	 **/	
 	public function uninstall_module($directory) {
-		$CI =& get_instance();
 		foreach(Modules::$locations as $location => $offset) {
 			$file = $location.$directory.'/uninstall.php';
 			if(is_file($file)) {
 				include_once($file);
-				$CI->module_model->uninstall_module($directory);
+				$this->CI->module_model->uninstall_module($directory);
 				return;
 			}
 		}
@@ -39,15 +42,14 @@ class Module_manager {
 	 * Load all the currently active modules
 	 */
 	public function load_modules() {
-		$CI =& get_instance();
-		$module_locations = $CI->config->item('modules_locations');
+		$module_locations = $this->CI->config->item('modules_locations');
 		if(!defined('ENTERPRISE') || isset($_COOKIE['scadsy_db_cookie'])){
-			$CI->load->model('module_model');			
-			$modules = $CI->module_model->get_modules('enabled');
+			$this->CI->load->model('module_model');			
+			$modules = $this->CI->module_model->get_modules('enabled');
 		}
 		else{
-			$module_locations = $CI->config->item('enterprise_locations');
-			$modules = self::get_enterprise_modules();
+			$module_locations = $this->CI->config->item('enterprise_locations');
+			$modules = $this->get_enterprise_modules();
 		}
 
 		foreach($modules as $module) {
@@ -64,11 +66,10 @@ class Module_manager {
 	 * Scan for new modules and add them to the database
 	 */
 	public function add_new_modules() {
-		$CI =& get_instance();
-		$CI->load->model('module_model');
+		$this->CI->load->model('module_model');
 		
 		// Get files and directories without the . and .. folders
-		foreach($CI->config->item('modules_locations') as $key => $value) {
+		foreach($this->CI->config->item('modules_locations') as $key => $value) {
 			$directories = preg_grep('/^([^.])/', scandir($key));
 			// Scan all files/folders found
 			foreach($directories as $dir) {
@@ -80,8 +81,8 @@ class Module_manager {
 					$module_actions = $this->get_module_actions($key.$dir.'\controllers\\');
 					$module_permissions = $this->get_module_permissions($key.$dir . '\index.php');
 	
-					if($CI->module_model->get_module($module_metadata['directory']) === NULL){
-						$CI->module_model->add_module($module_metadata, $module_actions, $module_permissions);					
+					if($this->CI->module_model->get_module($module_metadata['directory']) === NULL){
+						$this->CI->module_model->add_module($module_metadata, $module_actions, $module_permissions);					
 					}
 				}
 			}
@@ -97,8 +98,7 @@ class Module_manager {
 	 */
 	public function get_all_modules_from_directory($config_item = 'modules_locations'){
 		$modules_data = array();
-		$CI =& get_instance();
-		$locations = array_keys($CI->config->item($config_item));
+		$locations = array_keys($this->CI->config->item($config_item));
 		foreach($locations AS $location){					
 			$module_dirs = scandir(getcwd().'/'.$location);			
 			foreach($module_dirs AS $module_dir){
@@ -106,7 +106,7 @@ class Module_manager {
 				if(is_dir($module_dir_path) && $module_dir != '.' && $module_dir != '..'){
 					$index_filepath = $module_dir_path.'/index.php';
 					if(is_file($index_filepath)){
-						$modules_data[] = self::get_module_metadata($index_filepath,$module_dir);
+						$modules_data[] = $this->get_module_metadata($index_filepath,$module_dir);
 					}
 				}
 			}
@@ -120,25 +120,7 @@ class Module_manager {
 	 * 		array with the metadata of each enterprise module.
 	 */
 	private function get_enterprise_modules(){
-		return self::get_all_modules_from_directory('enterprise_locations');
-		/*
-		$modules_data = array();
-		$CI =& get_instance();
-		$enterprise_locations = array_keys($CI->config->item('enterprise_locations'));
-		foreach($enterprise_locations AS $enterprise_location){					
-			$module_dirs = scandir(getcwd().'/'.$enterprise_location);			
-			foreach($module_dirs AS $module_dir){
-				$module_dir_path = getcwd().'/'.$enterprise_location.$module_dir;			
-				if(is_dir($module_dir_path) && $module_dir != '.' && $module_dir != '..'){
-					$index_filepath = $module_dir_path.'/index.php';
-					if(is_file($index_filepath)){
-						$modules_data[] = self::get_module_metadata($index_filepath,$module_dir);
-					}
-				}
-			}
-		}
-		return $modules_data;
-		 * */
+		return $this->get_all_modules_from_directory('enterprise_locations');
 	}
 	
 	/**

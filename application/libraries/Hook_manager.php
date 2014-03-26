@@ -6,15 +6,16 @@ Hook_manager::init();
  * The hook_manager class. This class is responsible for accepting and executing hooks.
  */
 class Hook_manager {
-	static $hooks = array();
+	private static $hooks = array();
+	private static $CI = NULL;
 	
 	/**
 	 * Init the hook manager.
 	 */
 	public static function init() {
-		$CI =& get_instance();
+		self::$CI =& get_instance();
 		
-		foreach($CI->config->item('system_hooks') as $tag) {
+		foreach(self::$CI->config->item('system_hooks') as $tag) {
 			self::set_hook($tag);
 		}	
 	}

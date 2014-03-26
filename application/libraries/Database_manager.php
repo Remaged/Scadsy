@@ -6,15 +6,16 @@ Database_manager::init();
  * The database manager. This class is responsible for handling the database object.
  */
 class Database_manager {
-	static $DB = NULL;
+	private static $DB = NULL;
+	private static $CI = NULL;
 	
 	/**
 	 * Initialize the Database_manager.
 	 */
 	public static function init() {
-		$CI =& get_instance();
+		self::$CI =& get_instance();
 		
-		$db_name = $CI->input->cookie('scadsy_db_cookie', TRUE);
+		$db_name = self::$CI->input->cookie('scadsy_db_cookie', TRUE);
 		if($db_name !== FALSE)
 		{
 			self::connect($db_name);
@@ -38,20 +39,19 @@ class Database_manager {
 	 * 		The currently active database object
 	 */ 
 	public static function get_db($ci_db = FALSE) {
-		$CI =& get_instance();
 		if($ci_db === FALSE) {
 			if(self::$DB === NULL) {
-				$db_name = $CI->input->cookie('scadsy_db_cookie', TRUE);
+				$db_name = self::$CI->input->cookie('scadsy_db_cookie', TRUE);
 				if($db_name !== FALSE) {
 					return self::$DB;
 				} else {
-					return $CI->db;
+					return self::$CI->db;
 				}
 			} else {
 				return self::$DB;
 			}			
 		} else {
-			return $CI->db;
+			return self::$CI->db;
 		}
 	}	
 
@@ -61,11 +61,10 @@ class Database_manager {
 	 * 		The database to connect to
 	 */
 	private static function connect($db_name) {
-		$CI =& get_instance();
 		if(empty($CI->db)){
-			$CI->load->database();
+			self::$CI->load->database();
 		}
-		$query = $CI->db->get_where('database', array('name' => $db_name));
+		$query = self::$CI->db->get_where('database', array('name' => $db_name));
 	
 		if($query->num_rows() == 1) {
 
@@ -77,14 +76,14 @@ class Database_manager {
 			$config['database'] = $row->name;
 			$config['dbdriver'] = 'mysql';
 
-			self::$DB = &$CI->load->database($config, TRUE);
+			self::$DB = &self::$CI->load->database($config, TRUE);
 			
 			$cookie = array(
 			    'name'   => 'scadsy_db_cookie',
 			    'value'  => $db_name,
 			    'expire' => 0
 			);			
-			$CI->input->set_cookie($cookie,TRUE);
+			self::$CI->input->set_cookie($cookie,TRUE);
 		}
 	}
 	
@@ -92,13 +91,12 @@ class Database_manager {
 	 * Disconnect from the currently active database
 	 */
 	public static function disconnect() {
-		$CI =& get_instance();
 		self::$DB = NULL;
 		$cookie = array(
 		    'name'   => 'scadsy_db_cookie',
 		    'value'  => FALSE
 		);			
-		$CI->input->set_cookie($cookie);
+		self::$CI->input->set_cookie($cookie);
 	}
 }
 

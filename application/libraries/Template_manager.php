@@ -8,6 +8,7 @@ class Template_manager {
 	private $scripts_header;
 	private $scripts_footer;
 	private $stylesheets;	
+	private $CI;
 
 	/**
 	 * Construct a new instance of the template_manager class.
@@ -16,6 +17,7 @@ class Template_manager {
 		$this->scripts_footer = array();
 		$this->scripts_header = array();
 		$this->stylesheets = array();
+		$this->CI =& get_instance();
 		
 		$this->load_framework_assets();
 	}
@@ -23,18 +25,16 @@ class Template_manager {
 	/**
 	 * Load the frameworks scripts and styles
 	 */
-	 private function load_framework_assets() {
-	 	$CI =& get_instance();
-		
-		$scripts = $CI->config->item('template_scripts');
-		$styles = $CI->config->item('template_styles');
+	 private function load_framework_assets() {		
+		$scripts = $this->CI->config->item('template_scripts');
+		$styles = $this->CI->config->item('template_styles');
 		
 		foreach($scripts as $identifier => $url) {
-			$this->add_global_script($identifier, $CI->config->item('assets_location')['scripts'].'/'.$url);
+			$this->add_global_script($identifier, $this->CI->config->item('assets_location')['scripts'].'/'.$url);
 		}
 		
 		foreach($styles as $identifier => $url) {
-			$this->add_stylesheet($identifier, $CI->config->item('assets_location')['styles'].'/'.$url);
+			$this->add_stylesheet($identifier, $this->CI->config->item('assets_location')['styles'].'/'.$url);
 		}
 	 }
 
@@ -183,7 +183,6 @@ class Template_manager {
 	  * @return The scripts that should get loaded
 	  */
 	  private function get_load_scripts($scripts) {
-	  	$CI =& get_instance();
 	  	$load_scripts = array();
 		
 		foreach($scripts as $script) {
@@ -191,15 +190,15 @@ class Template_manager {
 				$load_scripts[] = $script;
 			}
 			
-			if($script['type'] == 'module' && $CI->router->get_module() == $script['module']) {
+			if($script['type'] == 'module' && $this->CI->router->get_module() == $script['module']) {
 				$load_scripts[] = $script;
 			}
 			
-			if($script['type'] == 'controller' && $CI->router->get_module() == $script['module'] && $CI->router->fetch_class() == $script['controller'] ) {
+			if($script['type'] == 'controller' && $this->CI->router->get_module() == $script['module'] && $this->CI->router->fetch_class() == $script['controller'] ) {
 				$load_scripts[] = $script;
 			}
 			
-			if($script['type'] == 'method' && $CI->router->get_module() == $script['module'] && $CI->router->fetch_class() == $script['controller'] && $CI->router->fetch_method() == $script['method']) {
+			if($script['type'] == 'method' && $this->CI->router->get_module() == $script['module'] && $this->CI->router->fetch_class() == $script['controller'] && $this->CI->router->fetch_method() == $script['method']) {
 				$load_scripts[] = $script;
 			}
 		}

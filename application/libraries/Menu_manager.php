@@ -6,6 +6,7 @@
 class Menu_manager {
 	private $menu_items;
 	private $submenu_items;
+	private $CI;
 	
 	/**
 	 * Construct a new instance of the menu_manager class.
@@ -13,16 +14,15 @@ class Menu_manager {
 	public function __construct() {
 		$this->menu_items = array();
 		$this->submenu_items = array();
+		$this->CI =& get_instance();
 		$this->load_template_menu();
 	}
 	
 	/**
 	 * Load the template menu items
 	 */
-	 private function load_template_menu() {
-	 	$CI =& get_instance();
-		
-		foreach($CI->config->item('template_menu') as $item) {
+	 private function load_template_menu() {		
+		foreach($this->CI->config->item('template_menu') as $item) {
 			if(isset($item["parent"])) {
 				$this->add_submenu_item($item['parent'], $item['link'], $item['description'], $item['default_groups']);
 			} else {
@@ -42,9 +42,7 @@ class Menu_manager {
 	 * @param $priority
 	 * 		Optional, the priority for the menu item
 	 */
-	public function add_menu_item($link, $description, $default_groups, $priority = 10) {
-		$CI =& get_instance();
-		
+	public function add_menu_item($link, $description, $default_groups, $priority = 10) {		
 		$exploded = explode('/', $link);
 		
 		if(count($exploded) == 2) {
@@ -52,7 +50,7 @@ class Menu_manager {
 			$exploded[1] = $exploded[0];
 		}
 
-		if($CI->permission_manager->check_permissions($exploded[2], $exploded[1], $exploded[0], $default_groups)) {
+		if($this->CI->permission_manager->check_permissions($exploded[2], $exploded[1], $exploded[0], $default_groups)) {
 			$this->menu_items[$priority][$link] = $description;
 		}		
 	}
@@ -66,9 +64,7 @@ class Menu_manager {
 	 * @param $description
 	 * 		The description of the link (for example: "home")
 	 */
-	public function add_submenu_item($parent, $link, $description, $default_groups) {
-		$CI =& get_instance();
-		
+	public function add_submenu_item($parent, $link, $description, $default_groups) {		
 		$exploded = explode('/', $link);
 		
 		if(count($exploded) == 2) {
@@ -76,7 +72,7 @@ class Menu_manager {
 			$exploded[1] = $exploded[0];
 		}
 
-		if($CI->permission_manager->check_permissions($exploded[2], $exploded[1], $exploded[0], $default_groups)) {
+		if($this->CI->permission_manager->check_permissions($exploded[2], $exploded[1], $exploded[0], $default_groups)) {
 			$this->submenu_items[$parent][$link] = $description;		
 		}
 	}
