@@ -18,7 +18,7 @@ class SCADSY_Controller extends MX_Controller {
 		if ($this->permission_manager->should_check_permissions()){			
 			$this->check_module_enabled();
 		}		
-		Module_manager::load_modules();
+		$this->module_manager->load_modules();
 	}
 	
 	/**

@@ -20,9 +20,11 @@ class Module extends SCADSY_Controller{
 	 * (used for jquery-post)
 	 */
 	public function enable() {
-		$this->module_model->enable_module(
-			$this->input->post('module')
-		);	
+		if($this->input->post('module') !== FALSE) {
+			$this->module_model->enable_module(
+				$this->input->post('module')
+			);	
+		}
 	}
 	
 	/**
@@ -30,11 +32,38 @@ class Module extends SCADSY_Controller{
 	 * (used for jquery-post)
 	 */
 	public function disable() {
-		$this->module_model->disable_module(
-			$this->input->post('module')
-		);	
+		if($this->input->post('module') !== FALSE) {
+			$this->module_model->disable_module(
+				$this->input->post('module')
+			);
+		}	
 	}
 
+	/**
+	 * Install a single module.
+	 * (used for jquery-post)
+	 */
+	public function install() {
+		if($this->input->post('module') !== FALSE) {
+			$this->module_manager->install_module($this->input->post('module'));
+			$this->module_model->disable_module(
+				$this->input->post('module')
+			);	
+		}
+	}
+	
+	/**
+	 * Uninstall a single module.
+	 * (used for jquery-post)
+	 */
+	public function uninstall() {
+		if($this->input->post('module') !== FALSE) {
+			$this->module_manager->uninstall_module($this->input->post('module'));
+			$this->module_model->uninstall_module(
+				$this->input->post('module')
+			);	
+		}
+	}
 	
 	/**
 	 * Stores all enable/disable data of all modules

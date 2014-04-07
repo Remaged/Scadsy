@@ -1,34 +1,4 @@
-<script>
-$(function(){
-	$(".switchbutton input").switchButton({
-		on_label: 'ENABLED',
-		off_label: 'DISABLED',
-		on_callback: function() {
-			save_module_status(this,'enable');
-		},
-		off_callback: function() {  
-			save_module_status(this,'disable');	
-		}	
-	});
-	
-	$("#modules_form_admin [name='submit']").remove();
-})
 
-function save_module_status(input_elm, action){
-	var postdata = {
-		module : $(input_elm).attr('data-module'),
-		csrf_token : $("#modules_form_admin input[name='csrf_token']").val()
-	};
-	$.post(
-		action,
-		postdata,
-		function(data){
-			$("#module_manager_notices").html("Reload page for changes to become visible.");
-			$(elm).closest("tr").find(".status_field").text(action+'d');
-		}
-	);
-}
-</script>
 <style>
 	table#module_list{
 		border-collapse:separate;
@@ -65,7 +35,8 @@ function save_module_status(input_elm, action){
 	<tr>
 		<th>Name</th>
 		<th>Directory</th>
-		<th class="switchbutton">Status</th>
+		<th>Status</th>
+		<th>Action</th>
 	</tr>
 
 <?php foreach($modules as $module): ?>
@@ -75,6 +46,7 @@ function save_module_status(input_elm, action){
 		<td class="switchbutton">
 
 			<?php 
+			if($module->status !== 'not_installed') {
 				$checkbox_data = array(
 					'name' => 'status['.$module->directory.']',
 					'checked' => $module->status == 'enabled' ? TRUE : FALSE,
@@ -82,8 +54,16 @@ function save_module_status(input_elm, action){
 					'data-module' => $module->directory
 				);			
 				echo form_checkbox($checkbox_data); 
+			}
 			?>
 
+		</td>
+		<td>
+			<?php if ($module->status === 'not_installed') { ?>
+				<?php echo post_link('module/module/install', 'Install', array("module" => $module->directory)); ?>
+			<?php } else if ($module->status === 'disabled') { ?>
+				<?php echo post_link('module/module/uninstall', 'Uninstall', array("module" => $module->directory)); ?>
+			<?php } ?>	
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -92,3 +72,35 @@ function save_module_status(input_elm, action){
 <?php echo form_submit('submit', 'Save');?>
 
 <?php echo form_close(); ?>
+
+<script>
+$(function(){
+	$(".switchbutton input").switchButton({
+		on_label: 'ENABLED',
+		off_label: 'DISABLED',
+		on_callback: function() {
+			save_module_status(this,'enable');
+		},
+		off_callback: function() {  
+			save_module_status(this,'disable');	
+		}	
+	});
+	
+	$("#modules_form_admin [name='submit']").remove();
+})
+
+function save_module_status(input_elm, action){
+	var postdata = {
+		module : $(input_elm).attr('data-module'),
+		csrf_token : $("#modules_form_admin input[name='csrf_token']").val()
+	};
+	$.post(
+		action,
+		postdata,
+		function(data){
+			$("#module_manager_notices").html("Reload page for changes to become visible.");
+			$(elm).closest("tr").find(".status_field").text(action+'d');
+		}
+	);
+}
+</script>
