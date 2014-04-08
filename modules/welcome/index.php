@@ -31,6 +31,15 @@ function welcome_pre_stylesheets_generated($template_manager) {
 	$template_manager->add_stylesheet('welcome_stylesheet', 'modules/welcome/assets/style/style.css');
 }
 
+//Just an example for adding extra fields to a form using hooks.
+Hook_manager::add_hook('pre_form_fields_generate', 'add_extra_fields_to_welcome_form');
+function add_extra_fields_to_welcome_form($form_manager){
+	$form_manager->add_extra_fields('some_test_fields',array(
+		form_label_input('from_user_module',NULL,NULL,'placeholder="added using hooks"')
+	));		
+}
+
+
 
 /* End of file index.php */
 /* Location: ./modules/welcome/index.php */

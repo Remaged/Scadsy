@@ -7,7 +7,6 @@ class Extra_forms_example_model extends SCADSY_Model {
 
 	public function load_extra_forms(){
 		$this->load->helper('form');			
-		$this->load->library('form_manager');
 		$this->form_manager->add_extra_fields('some_test_fields',array(
 			"<div><label>using html</label><input type='text' name='just_some_custom_form' value='Hello!' /></div>",
 			form_label_input('just_some_form_helper_input_field','using form_helper'),

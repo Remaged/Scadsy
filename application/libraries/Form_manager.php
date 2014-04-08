@@ -43,6 +43,8 @@ class Form_manager {
 	 * 		array containing code for making fields.
 	 */
 	public function get_extra_fields($identifier){
+		Hook_manager::execute_hook('pre_form_fields_generate', $this);
+		
 		if( ! key_exists($identifier,$this->extra_fields)){
 			return array();
 		}
