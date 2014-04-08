@@ -18,23 +18,18 @@ class Welcome extends SCADSY_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 	public function index()
-	{
-		if(isset($_POST['somepost'])){
-			exit ("post!");
-		}	
+	{	
 		parent::init(array(
 			'module' => "welcome",
 			'action' => "index",
 			'group' => array('student','school','admin')
 			)
 		);
-		$this->load->model('Extra_forms_example_model');
-		$this->Extra_forms_example_model->load_extra_forms();
+		
 		$data['menu'] = $this->menu_manager->get_menu();
+		
 		$this->view('welcome_message', $data);
 	}
-
-	
 }
 
 /* End of file welcome.php */

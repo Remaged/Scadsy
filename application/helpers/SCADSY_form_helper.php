@@ -1,5 +1,30 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+// ------------------------------------------------------------------------
+
+/**
+ * Form Extra
+ * 
+ * Selects a specific part of the extra_fields array (using the identifier) and outputs that array as a string.
+ *
+ * @access	public
+ * @param	string
+ * @return	string
+ */
+
+if ( ! function_exists('form_extra')){
+	function form_extra($identifier){
+		$html_output = "";	
+		$CI =& get_instance();
+		$CI->load->library('form_manager');
+		$form_extras = $CI->form_manager->get_extra_fields($identifier);
+		foreach($form_extras AS $form_helper_function){
+			$html_output .= $form_helper_function;
+		}
+		return $html_output;
+	}
+}
+
 
 // ------------------------------------------------------------------------
 
