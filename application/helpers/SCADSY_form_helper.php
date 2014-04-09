@@ -17,7 +17,7 @@ if ( ! function_exists('form_extra')){
 		$html_output = "";	
 		$CI =& get_instance();
 		$CI->load->library('form_manager');
-		$form_extras = $CI->form_manager->get_extra_fields($identifier);
+		$form_extras = $CI->form_manager->get_fields($identifier);
 		foreach($form_extras AS $form_helper_function){
 			$html_output .= $form_helper_function;
 		}
