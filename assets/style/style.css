@@ -112,53 +112,6 @@ body {
 	line-height:20px;
 }
 
-#page table {
-	border:1px solid black;
-}
-
-#page td, #page th {
-	padding:10px;
-	text-align:left;
-	border:1px solid black;
-}
-
-#page th {
-	background: #ACFFFF;
-}
-
-#page div.table {
-	display: block;
-	clear:both;
-}
-
-#page div.td {
-	padding:10px;
-	text-align:left;
-	border:1px solid black;
-	display: block;
-	float:left;
-	width:100px;
-}
-
-#page div.td.switchbutton, #page div.th.switchbutton,#page td.switchbutton, #page th.switchbutton {
-	width:175px;
-	height: 18px;
-}
-
-#page div.tr {
-	display: table-row;
-	clear:both;
-}
-
-#page div.th {
-	padding:10px;
-	text-align:left;
-	border:1px solid black;
-	background: #ACFFFF;
-	display: block;
-	float:left;
-	width:100px;
-}
 
 #page h2 {
 	font-size:16px;
@@ -189,10 +142,32 @@ body {
 	padding: 5px;
 }
 
+/*
+ * page-table style
+ */
+#page table{
+	border-collapse:separate;
+	border-spacing: 0px 5px;
+	width: 100%;
+}
 
+#page th, #page td{
+	padding: 10px;
+	text-align:left;
+}
 
+#page th{
+	font-weight: bold;
+	border-bottom:1px solid #C0C0C0;
+}
 
+#page td{
+	background: #F2F2F2;
+}
 
+/*
+ * Switch button style
+ */
 .switch-button-label {
     float: left;
 

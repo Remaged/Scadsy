@@ -1,28 +1,4 @@
-<style>
-	#accordion table{
-		border-collapse:separate;
-		border-spacing: 0px 5px;
-		width: 100%;
-		border: 0px;
-	}
-	#accordion table th{
-		background: white;
-		font-weight: bold;
-		margin: 15px 0;
-		text-align:left;
-		border: 0px;
-		border-bottom:1px solid #C0C0C0;
-	}
-	
-	#accordion table td{
-		background: #F2F2F2;
-		border: 0px;
-	}
-</style>
-
 <h1>Manage permissions</h1>
-
-
 
 <div id="accordion">
 <?php foreach($modules as $module) { ?>
@@ -60,37 +36,3 @@
 	</div>
 <?php } ?>
 </div>
-
-
-<script>
-$(function() {
-	$( "#accordion" ).accordion({ collapsible: true, active: false, heightStyle: "content" });
-	
-	// Change the submit for each form
-	$("#accordion form").each(function() {
-		$(this).submit(function() {
-			$.ajax({
-	           type: "POST",
-	           url: $(this).attr('action'),
-	           data: $(this).serialize(), 
-	           success: function(data)
-	           {
-	           }
-	         });
-	
-		    return false; 
-	    });
-	});
-	
-	$(".switchbutton input").switchButton({
-		on_label: 'ALLOW',
-		off_label: 'DENY',
-		on_callback: function() {
-			$(this).closest('form').submit();
-		},
-		off_callback: function() {  
-			$(this).closest('form').submit(); 	
-		}	
-	});
-});
-</script>

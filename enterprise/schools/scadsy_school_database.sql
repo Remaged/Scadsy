@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `module` (
   `version` varchar(20) DEFAULT NULL,
   `author` varchar(100) DEFAULT NULL,
   `author_uri` varchar(200) DEFAULT NULL,
-  `status` enum('enabled','disabled') NOT NULL DEFAULT 'disabled',
+  `status` enum('not_installed','enabled','disabled') NOT NULL DEFAULT 'not_installed',
   PRIMARY KEY (`directory`),
   KEY `directory` (`directory`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

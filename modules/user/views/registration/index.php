@@ -1,25 +1,3 @@
-<style>
-	legend{
-		width: 100%;
-		font-size:20px;
-		padding:5px 0;
-		margin: 15px 0;
-		text-align:left;
-		border-bottom:1px solid #C0C0C0;
-	}
-	fieldset>div{
-		background: #F2F2F2;
-		border-bottom: 4px solid white;
-		padding:5px;
-	}
-	fieldset>div>label{
-		width:130px;
-		font-weight: bold;
-	}
-	fieldset>div>*{
-		padding: 5px;
-	}
-</style>
 <?php echo validation_errors(); ?>
 
 <?php echo form_open(uri_string()); ?>
@@ -90,5 +68,5 @@
 	<div>
 		<?php echo form_submit('submit','Submit'); ?>
 	</div>
-</form>
 
+<?php form_close(); ?>

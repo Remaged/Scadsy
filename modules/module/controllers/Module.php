@@ -8,8 +8,8 @@ class Module extends SCADSY_Controller{
 	}
 
 	public function index() {
-		parent::init(array('admin'));
-
+		parent::init(array('admin'));		
+		$this->template_manager->add_controller_script('module_list_js_script','modules/module/assets/scripts/module_list.js','module','module',TRUE);	
 		$data['modules'] = $this->module_model->get_modules();
 		$this->load->helper('form');
 		$this->view('list', $data);
@@ -85,9 +85,8 @@ class Module extends SCADSY_Controller{
 			'group' => array('admin')
 			)
 		);
-
+		$this->template_manager->add_controller_script('permission_list_js_script','modules/module/assets/scripts/permission_list.js','module','module',TRUE);			
 		$data['modules'] = $this->module_model->get_modules_with_permissions('enabled');
-		
 		$this->view('permissions', $data);
 	 }
 	 

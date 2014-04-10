@@ -2,7 +2,7 @@
 
 if ( ! function_exists('post_link'))
 {
-	function post_link($page, $text, Array $data, $final = '')
+	function post_link($page, $text, Array $data, $succes = '', $fail = '')
 	{
   		$CI =& get_instance();
 		$crsf_hash = $CI->security->get_csrf_hash();
@@ -14,7 +14,9 @@ if ( ! function_exists('post_link'))
 				$post_jquery .= $key.":"."'".$value."',";
 			}
 		$post_jquery .= "}).done(function(data){";
-			$post_jquery .= $final;
+			$post_jquery .= $succes;
+		$post_jquery .= "}).fail(function(data){";
+			$post_jquery .= $fail;
 		$post_jquery .= "}); return false; ";
 		
 		return '<a href="#" onclick="'.$post_jquery.'">'.$text.'</a>';

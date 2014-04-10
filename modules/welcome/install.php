@@ -2,6 +2,7 @@
 
 $CI =& get_instance();
 $CI->load->dbforge();
+$CI->dbforge->db = Database_manager::get_db();
 
 $fields = array(
                         'blog_id' => array(

@@ -22,6 +22,7 @@ class Module extends SCADSY_Controller{
 			'group' => array('admin')
 			)
 		);
+		$this->template_manager->add_controller_script('all_schools_module_list_js_script','enterprise/module/assets/scripts/all_schools_module_list.js','module','module',TRUE);	
 		$data['modules_per_school'] = $this->module_all_schools_model->get_schools_modules();
 		$this->load->helper(array('form', 'url'));
 		$this->view('module_manager',$data);
