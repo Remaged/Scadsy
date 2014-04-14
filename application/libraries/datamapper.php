@@ -993,6 +993,15 @@ class DataMapper implements IteratorAggregate {
 		// get the CI instance
 		is_null($CI) AND $CI =& get_instance();
 
+		
+		//SCADSY-REPLACEMENT CODE for dynamically getting the DB.
+		if($name == 'db')
+		{
+			$this->db =& Database_manager::get_db();
+			return $this->db;
+		}
+		//OLD CODE for getting the DB
+		/*
 		// We dynamically get DB when needed, and create a copy.
 		// This allows multiple queries to be generated at the same time.
 		if($name == 'db')
@@ -1044,6 +1053,7 @@ class DataMapper implements IteratorAggregate {
 			}
 			return $this->db;
 		}
+		*/ 
 
 		// Special case to get form_validation when first accessed
 		if($name == 'form_validation')
