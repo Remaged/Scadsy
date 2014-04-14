@@ -6,6 +6,7 @@
 class Form_manager {
 	private $CI;
 	private $fields;
+	private $hook_executed;
 
 	/**
 	 * Construct a new instance of the template_manager class.
@@ -13,6 +14,7 @@ class Form_manager {
 	public function __construct() {
 		$this->CI =& get_instance();
 		$this->fields = array();
+		$this->hook_executed = false;
 	}
 	
 	/**
@@ -51,8 +53,11 @@ class Form_manager {
 	 * return
 	 * 		array containing code for making fields.
 	 */
-	public function get_fields($identifier){
-		Hook_manager::execute_hook('pre_form_fields_generate', $this);		
+	public function get_fields($identifier){		
+		if(!$this->hook_executed) {
+			Hook_manager::execute_hook('pre_form_fields_generate', $this);	
+			$this->hook_executed = true;
+		}	
 		if( ! key_exists($identifier,$this->fields)){
 			return array();
 		}
