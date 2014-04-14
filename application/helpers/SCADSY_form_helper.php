@@ -28,10 +28,11 @@ if ( ! function_exists('form_extra')){
 
 // ------------------------------------------------------------------------
 
+
 /**
- * Date Field
+ * Form any input type
  *
- * Identical to the input function but adds the "date" type
+ * same is form_input, with an aditional parameter to overwrite the type, allowing to use different type other than 'text'.
  *
  * @access	public
  * @param	mixed
@@ -39,38 +40,34 @@ if ( ! function_exists('form_extra')){
  * @param	string
  * @return	string
  */
-if ( ! function_exists('form_date')){
-	function form_date($data = '', $value = '', $extra = ''){
+ if ( ! function_exists('form_any_input_type')){
+	function form_any_input_type($data = '', $value = '', $extra = '', $type = 'text'){
 		if ( ! is_array($data)){
 			$data = array('name' => $data);
 		}
-
-		$data['type'] = 'date';
+		$data['type'] = $type;
 		return form_input($data, $value, $extra);
 	}
 }
 
-// ------------------------------------------------------------------------
+/* Same as form_input, except it uses 'date' in type-attribute. */
+if ( ! function_exists('form_date')){
+	function form_date($data = '', $value = '', $extra = ''){
+		return form_any_input_type($data, $value, $extra, 'date');
+	}
+}
 
-/**
- * Email Field
- *
- * Identical to the input function but adds the "email" type
- *
- * @access	public
- * @param	mixed
- * @param	string
- * @param	string
- * @return	string
- */
+/* Same as form_input, except it uses 'email' in type-attribute. */
 if ( ! function_exists('form_email')){
 	function form_email($data = '', $value = '', $extra = ''){
-		if ( ! is_array($data)){
-			$data = array('name' => $data);
-		}
+		return form_any_input_type($data, $value, $extra, 'email');
+	}
+}
 
-		$data['type'] = 'email';
-		return form_input($data, $value, $extra);
+/* Same as form_input, except it uses 'search' in type-attribute. */
+if ( ! function_exists('form_search')){
+	function form_search($data = '', $value = '', $extra = ''){
+		return form_any_input_type($data, $value, $extra, 'search');
 	}
 }
 
@@ -103,8 +100,8 @@ if ( ! function_exists('form_label_input')){
 }
 
 /* Same as form_label_input, except it has a type-parameter for using different input-types  */
-if ( ! function_exists('form_label_any_time')){
-	function form_label_any_time($data = '', $human_name = NULL, $default_value = '', $extra = '', $type = 'text'){
+if ( ! function_exists('form_label_any_type')){
+	function form_label_any_type($data = '', $human_name = NULL, $default_value = '', $extra = '', $type = 'text'){
 		if(!is_array($data)){
 			$data = array('name'=>$data);
 		}	
@@ -116,27 +113,84 @@ if ( ! function_exists('form_label_any_time')){
 /* Same as form_label_input, except it uses 'password' in type-attribute. */
 if ( ! function_exists('form_label_password')){
 	function form_label_password($data = '', $human_name = NULL, $default_value = '', $extra = ''){
-		return form_label_any_time($data, $human_name, $default_value, $extra, 'password');
+		return form_label_any_type($data, $human_name, $default_value, $extra, 'password');
 	}
 }
 
 /* Same as form_label_input, except it uses 'email' in type-attribute. */
 if ( ! function_exists('form_label_email')){
 	function form_label_email($data = '', $human_name = NULL, $default_value = '', $extra = ''){
-		return form_label_any_time($data, $human_name, $default_value, $extra, 'email');
+		return form_label_any_type($data, $human_name, $default_value, $extra, 'email');
 	}
 }
 
 /* Same as form_label_input, except it uses 'date' in type-attribute. */
 if ( ! function_exists('form_label_date')){
 	function form_label_date($data = '', $human_name = NULL, $default_value = '', $extra = ''){
-		return form_label_any_time($data, $human_name, $default_value, $extra, 'date');
+		return form_label_any_type($data, $human_name, $default_value, $extra, 'date');
 	}
 }
 
+/* Same as form_label_input, except it uses 'search' in type-attribute. */
+if ( ! function_exists('form_label_search')){
+	function form_label_search($data = '', $human_name = NULL, $default_value = '', $extra = ''){
+		return form_label_any_type($data, $human_name, $default_value, $extra, 'search');
+	}
+}
 
 /**
- * Label and select
+ * Label and textarea
+ *
+ * creates a set of label and textarea inside a div
+ *
+ * @access	public
+ * @param	string or array
+ * @param	string
+ * @param	string
+ * @param	string
+ * @return	string
+ */
+if ( ! function_exists('form_label_textarea')){
+	function form_label_textarea($data = '', $human_name = NULL, $default_value = '', $extra = ''){
+		$name = $data;		
+		if(is_array($data)){
+			$name = $data['name'];
+		}
+		$human_name = $human_name === NULL ? ucfirst(str_replace('_',' ',$name)) : $human_name;		
+		return
+			'<div>'.
+				form_label($human_name, $name).
+				form_textarea($data, set_value($name,$default_value), $extra).
+			'</div>';
+	}
+}
+
+/**
+ * Label and multiselect
+ *
+ * creates a set of label and multiselect inside a div
+ *
+ * @access	public
+ * @param	string
+ * @param	array
+ * @param	string
+ * @param	string
+ * @param	string
+ * @return	string
+ */
+if ( ! function_exists('form_label_multiselect')){
+	function form_label_multiselect($name = '', $options = '', $human_name = NULL, $default_value = '', $extra = ''){
+		$human_name = $human_name === NULL ? ucfirst(str_replace('_',' ',$name)) : $human_name;		
+		return
+			'<div>'.
+				form_label($human_name, $name).
+				form_multiselect($name, $options, set_value($name,$default_value), $extra).
+			'</div>';
+	}
+}
+
+/**
+ * Label and select/dropdown
  *
  * creates a set of label and select inside a div
  *

@@ -64,7 +64,7 @@ class Database_manager {
 		if(empty($CI->db)){
 			self::$CI->load->database();
 		}
-		$query = self::$CI->db->get_where('database', array('name' => $db_name));
+		$query = self::$CI->db->get_where('databases', array('name' => $db_name));
 	
 		if($query->num_rows() == 1) {
 

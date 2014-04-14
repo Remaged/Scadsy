@@ -32,11 +32,11 @@ function welcome_pre_stylesheets_generated($template_manager) {
 }
 
 //Just an example for adding extra fields to a form using hooks.
-Hook_manager::add_hook('pre_form_fields_generate', 'add_extra_fields_to_welcome_form');
+Hook_manager::add_hook('modules_loaded', 'add_extra_fields_to_welcome_form');
 function add_extra_fields_to_welcome_form($form_manager){
-	$form_manager->add_fields('some_test_fields',array(
-		form_label_input('some_test')
-	),"callback_add_fields");
+	$form_manager->add_fields('some_test_fields',
+		"test <input type='text' name='some_test' />",
+		"callback_add_fields");
 }
 
 function callback_add_fields($postdata){

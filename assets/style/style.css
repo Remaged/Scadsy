@@ -119,7 +119,9 @@ body {
 	padding:10px 0;
 }
 
-
+/*
+ * form-fieldset style
+ */
 #page form fieldset>legend{
 	width: 100%;
 	font-size:20px;
@@ -137,6 +139,7 @@ body {
 	width:130px;
 	font-weight: bold;
 	display: inline-block;
+	vertical-align: top;
 }
 #page form fieldset>div>*{
 	padding: 5px;

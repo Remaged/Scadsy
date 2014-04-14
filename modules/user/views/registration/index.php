@@ -9,7 +9,6 @@
 		<?php echo form_label_input('username'); ?>
 		<?php echo form_label_password('password'); ?>
 		<?php echo form_label_password('password_confirm'); ?>
-		<?php echo form_label_input('username'); ?>		
 		<?php 
 			$group_options = array(); 
 			foreach($groups AS $group){

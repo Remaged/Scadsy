@@ -60,6 +60,9 @@ class Module_manager {
 				}
 			}
 		}
+		
+		Hook_manager::execute_hook('modules_loaded', $this->CI->form_manager);	
+		
 	}
 	
 	/**
