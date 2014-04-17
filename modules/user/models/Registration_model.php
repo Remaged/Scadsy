@@ -10,7 +10,7 @@ class Registration_model extends SCADSY_Model {
 	 * 		array of all groups as objects.
 	 */
 	public function get_groups(){
-		return Database_manager::get_db()->get('group')->result();
+		return Database_manager::get_db()->get('groups')->result();
 	}
 	
 	/**
@@ -20,7 +20,7 @@ class Registration_model extends SCADSY_Model {
 	 * 		array of objects
 	 */
 	public function get_ethnicities(){
-		return Database_manager::get_db()->get('ethnicity')->result();
+		return Database_manager::get_db()->get('ethnicities')->result();
 	}
 	
 	/**
@@ -30,7 +30,7 @@ class Registration_model extends SCADSY_Model {
 	 * 		array of objects
 	 */
 	public function get_languages(){
-		return Database_manager::get_db()->get('language')->result();
+		return Database_manager::get_db()->get('languages')->result();
 	}
 	
 	/**
@@ -40,44 +40,36 @@ class Registration_model extends SCADSY_Model {
 	 * 		array of objects
 	 */
 	public function get_grades(){
-		return Database_manager::get_db()->get('grade')->result();
+		return Database_manager::get_db()->get('grades')->result();
 	}
-	
+
 	/**
-	 * Sets rules for the registration form validation.
+	 * Creates a user-object by using all post-data.
+	 * 
+	 * @return
+	 * 		user-object.
 	 */
-	public function setup_form_validation(){
-		//$query = Database_manager::get_db()->query("SELECT * FROM (`user`) WHERE `email` = 'marc@student.scadsy.co.za' LIMIT 1");
-		//print_r($query); exit();
+	public function add_user(){
+		$user = new User();
+		$user->username = $this->input->post('username');
+		$user->password = $this->input->post('password');
+		$user->password_confirm = $this->input->post('password_confirm');
+		$user->email = $this->input->post('email');
+		$user->first_name = $this->input->post('first_name');
+		$user->middle_name = $this->input->post('middle_name');
+		$user->last_name = $this->input->post('last_name');
+		$user->gender = $this->input->post('gender');
+		$user->group_id = $this->input->post('group_id');
+		$user->language_id = $this->input->post('language_id');
+		$user->ethnicity_id = $this->input->post('ethnicity_id');
+		$user->grade_id = $this->input->post('grade_id');
+		$user->start_date = $this->input->post('start_date');
+		$user->end_date = $this->input->post('end_date');
+		$user->alternate_id = $this->input->post('alternate_id');
+		$user->date_of_birth = $this->input->post('date_of_birth');
+		$user->phone_number = $this->input->post('phone_number');
 		
-		$this->load->helper(array('form', 'url'));
-		$this->load->library('form_validation');
-		//required			
-		$this->form_validation->set_rules('first_name', 'First name', 'required|trim|xss_clean');
-		$this->form_validation->set_rules('last_name', 'Last name', 'required|trim|xss_clean');
-		$this->form_validation->set_rules('password', 'Password', 'required|trim|xss_clean');
-		$this->form_validation->set_rules('password_confirm', 'Password Confirmation', 'matches[password]|trim|xss_clean');
-		$this->form_validation->set_rules('group', 'Group', 'required|trim|xss_clean');
-		$this->form_validation->set_rules('gender', 'Gender', 'required|trim|xss_clean');	
-		$this->form_validation->set_rules('language', 'Language', 'required|trim|xss_clean');
-		$this->form_validation->set_rules('ethnicity', 'Ethnicity', 'required|trim|xss_clean');
-		//required and unique
-		$this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[user.email]|trim|xss_clean');
-		$this->form_validation->set_rules('username', 'Username', 'required|is_unique[user.username]|trim|xss_clean');				
-		//grade is only required for students
-		if($this->input->post('group') == 'students'){
-			$this->form_validation->set_rules('grade', 'Grade', 'required|trim|xss_clean');
-		}
-		//start_date is only required for students and teachers
-		if(($this->input->post('group') == 'students' || $this->input->post('group') == 'teachers')){
-			$this->form_validation->set_rules('start_date', 'Start date', 'required|trim|xss_clean');
-		}
-		//optional
-		$this->form_validation->set_rules('end_date', 'End date','trim|xss_clean');
-		$this->form_validation->set_rules('alternate_id', 'Alternate ID','trim|xss_clean');
-		$this->form_validation->set_rules('middle_name', 'Middle name','trim|xss_clean');
-		$this->form_validation->set_rules('date_of_birth', 'Date of birth','trim|xss_clean');
-		$this->form_validation->set_rules('phone_number', 'Phone number','trim|xss_clean');	 
+		return $user;
 	}
 	
 	

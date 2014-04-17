@@ -28,13 +28,13 @@ class Template_manager {
 	 private function load_framework_assets() {		
 		$scripts = $this->CI->config->item('template_scripts');
 		$styles = $this->CI->config->item('template_styles');
-		
+		$assets_locations = $this->CI->config->item('assets_location');
 		foreach($scripts as $identifier => $url) {
-			$this->add_global_script($identifier, $this->CI->config->item('assets_location')['scripts'].'/'.$url);
+			$this->add_global_script($identifier, $assets_locations['scripts'].'/'.$url);
 		}
 		
 		foreach($styles as $identifier => $url) {
-			$this->add_stylesheet($identifier, $this->CI->config->item('assets_location')['styles'].'/'.$url);
+			$this->add_stylesheet($identifier, $assets_locations['styles'].'/'.$url);
 		}
 	 }
 

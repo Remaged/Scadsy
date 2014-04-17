@@ -1,4 +1,4 @@
-<?php echo validation_errors(); ?>
+<?php echo $errors; ?>
 
 <?php echo form_open(uri_string()); ?>
 	<h1>
@@ -12,9 +12,9 @@
 		<?php 
 			$group_options = array(); 
 			foreach($groups AS $group){
-				$group_options[$group->name] = $group->name;
+				$group_options[$group->id] = $group->name;
 			}
-			echo form_label_dropdown('group',$group_options); 
+			echo form_label_dropdown('group_id',$group_options,'User group'); 
 		?>
 	<?php echo form_fieldset_close(); ?>
 	
@@ -22,10 +22,10 @@
 		<?php echo form_label_input('alternate_id','Alternate ID'); ?>
 		<?php 
 			$grade_options = array(); 
-			foreach($groups AS $group){
-				$grade_options[$group->name] = $group->name;
+			foreach($grades AS $grade){
+				$grade_options[$grade->id] = $grade->name;
 			}
-			echo form_label_dropdown('grade',$grade_options); 
+			echo form_label_dropdown('grade_id',$grade_options,'Grade'); 
 		?>
 	<?php echo form_fieldset_close(); ?>
 	
@@ -46,16 +46,16 @@
 		<?php 
 			$language_options = array(); 
 			foreach($languages AS $language){
-				$language_options[] = $language->name;
+				$language_options[$language->id] = $language->name;
 			}
-			echo form_label_dropdown('language',$language_options, 'Primary Language'); 
+			echo form_label_dropdown('language_id',$language_options, 'Primary Language'); 
 		?>		
 		<?php 
 			$ethnicity_options = array(); 
 			foreach($ethnicities AS $ethnicity){
-				$ethnicity_options[] = $ethnicity->name;
+				$ethnicity_options[$ethnicity->id] = $ethnicity->name;
 			}
-			echo form_label_dropdown('ethnicity',$ethnicity_options); 
+			echo form_label_dropdown('ethnicity_id',$ethnicity_options,'Ethnicity'); 
 		?>
 	<?php echo form_fieldset_close(); ?>
 	

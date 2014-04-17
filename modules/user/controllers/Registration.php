@@ -5,6 +5,8 @@
  */
 class Registration extends SCADSY_Controller{
 	
+	protected $data = array();
+	
 	public function __construct()
 	{
 		parent::__construct();
@@ -14,7 +16,7 @@ class Registration extends SCADSY_Controller{
 	/**
 	 * Default action. Either results in the registration form (first load or failed submit) or a succes page.
 	 */
-	function index(){
+	public function index(){
 		parent::init(array(
 			'module' => "user",
 			'controller' => "registration",
@@ -23,20 +25,26 @@ class Registration extends SCADSY_Controller{
 			)
 		);
 		
-		$this->registration_model->setup_form_validation();	
-		if ($this->registration_model->form_validation->run() === FALSE){
-			$data['groups'] = $this->registration_model->get_groups();
-			$data['ethnicities'] = $this->registration_model->get_ethnicities();		
-			$data['languages'] = $this->registration_model->get_languages();	
-			$data['grades'] = $this->registration_model->get_grades();		
-			$this->template_manager->add_module_script('registration_form','modules/user/assets/scripts/registration_form_handler.js','user',TRUE);	
-			$this->view('registration/index',$data);
+		$this->data['errors'] = '';
+		if($this->input->post()){
+			$user = $this->registration_model->add_user();
+			if($user->save()){
+				$this->view('registration/succes');
+				return;
+			}
+			else{
+				$this->data['errors'] = $user->error->string;
+			}
 		}
-		else{
-			$this->user_model->add_user();	
-			$this->view('registration/succes');
-		}
+		
+		$this->data['groups'] = $this->registration_model->get_groups();
+		$this->data['ethnicities'] = $this->registration_model->get_ethnicities();		
+		$this->data['languages'] = $this->registration_model->get_languages();	
+		$this->data['grades'] = $this->registration_model->get_grades();		
+		$this->template_manager->add_module_script('registration_form','modules/user/assets/scripts/registration_form_handler.js','user',TRUE);	
+		$this->view('registration/index',$this->data);
 	}
+
 	
 }
 

@@ -16,7 +16,7 @@ class Login extends SCADSY_Controller{
 	 */
 	public function index() {
 		$validate_login = $this->login_model->validate_login(); 
-		if($this->user_model->user_logged_in() || $validate_login === TRUE){
+		if($this->user->user_logged_in() || $validate_login === TRUE){
 			parent::init(array(
 				'module' => "login",
 				'action' => "index",
@@ -24,6 +24,7 @@ class Login extends SCADSY_Controller{
 				)
 			);
 			redirect('welcome/welcome/index');
+			//redirect(site_url());
 		}		
 		else{
 			$this->data['failed_message'] = $validate_login;
@@ -37,7 +38,7 @@ class Login extends SCADSY_Controller{
 	 */
 	public function admin() {
 		$validate_login = $this->login_model->validate_login(TRUE); 
-		if($this->user_model->user_logged_in() || $validate_login === TRUE){
+		if($this->user->user_logged_in() || $validate_login === TRUE){
 			parent::init(array(
 				'module' => "login",
 				'action' => "admin",

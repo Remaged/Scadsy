@@ -9,7 +9,7 @@ class Permission_manager {
 	public function __construct() {
 		$this->CI =& get_instance();
 		$this->CI->load->model('permission_model');
-		$this->CI->load->model('user_model');
+		$this->CI->load->model('user');
 	}
 
 	/**
@@ -17,7 +17,7 @@ class Permission_manager {
 	 */
 	 public function should_check_permissions() {
 		if(defined("ENTERPRISE")) {
-			if($this->CI->user_model->user_logged_in()) {
+			if($this->CI->user->user_logged_in()) {
 				if(Database_manager::get_db()->database == ENTERPRISE){ 
 					return FALSE;
 				}
@@ -39,7 +39,7 @@ class Permission_manager {
 	 */	
 	public function check_permissions($action, $controller, $module, $default_groups) {
 		if ($this->should_check_permissions()){
-			$user_group = $this->CI->user_model->get_group();
+			$user_group = $this->CI->user->get_group();
 			$is_allowed = $this->check_permissions_database($action, $controller, $module, $user_group);
 			
 			if($is_allowed === NULL) {

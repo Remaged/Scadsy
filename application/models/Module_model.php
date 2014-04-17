@@ -14,10 +14,10 @@ class Module_model extends SCADSY_Model {
 	 */
 	public function get_modules($status = 'all') {
 		if($status == 'enabled' || $status == 'disabled') {
-			$query = Database_manager::get_db()->get_where('module', array('status' => $status));
+			$query = Database_manager::get_db()->get_where('modules', array('status' => $status));
 			return $query->result();
 		} else if ($status == 'all') {
-			return Database_manager::get_db()->get('module')->result();
+			return Database_manager::get_db()->get('modules')->result();
 		}
 		throw new Exception("Invalid status");
 	}
@@ -47,7 +47,7 @@ class Module_model extends SCADSY_Model {
 	 */
 	 public function enable_module($directory) {
 	 	Database_manager::get_db()->where('directory', $directory);
-	 	Database_manager::get_db()->update('module', array('status' => 'enabled'));
+	 	Database_manager::get_db()->update('modules', array('status' => 'enabled'));
 	 }
 	 
 	/**
@@ -57,7 +57,7 @@ class Module_model extends SCADSY_Model {
 	 */
 	 public function disable_module($directory) {
 	 	Database_manager::get_db()->where('directory', $directory);
-	 	Database_manager::get_db()->update('module', array('status' => 'disabled'));
+	 	Database_manager::get_db()->update('modules', array('status' => 'disabled'));
 	 }
 	 
 	 /**
@@ -67,7 +67,7 @@ class Module_model extends SCADSY_Model {
 	 */
 	 public function uninstall_module($directory) {
 	 	Database_manager::get_db()->where('directory', $directory);
-	 	Database_manager::get_db()->update('module', array('status' => 'not_installed'));
+	 	Database_manager::get_db()->update('modules', array('status' => 'not_installed'));
 	 }
 	 
 	 /**
@@ -77,7 +77,7 @@ class Module_model extends SCADSY_Model {
 	  */
 	 public function save_module_statusses($statusses){
 	 	Database_manager::get_db()->trans_start();	
-		Database_manager::get_db()->update('module',array('status'=>'disabled'));
+		Database_manager::get_db()->update('modules',array('status'=>'disabled'));
 		foreach($statusses AS $module => $val){
 			Database_manager::get_db()->where('directory',$module)->update('module',array('status'=>'enabled'));
 		}
@@ -92,7 +92,7 @@ class Module_model extends SCADSY_Model {
 	 * 		Whether or not the module is active
 	 */
 	public function is_module_active($directory) {
-		$query = Database_manager::get_db()->get_where('module', array('directory' => $directory, 'status' => 'enabled'));
+		$query = Database_manager::get_db()->get_where('modules', array('directory' => $directory, 'status' => 'enabled'));
 		
 		return $query->num_rows() > 0;
 	}
@@ -105,7 +105,7 @@ class Module_model extends SCADSY_Model {
 	 * 		The module data or NULL if no module is found
 	 */
 	public function get_module($directory) {
-		$query = Database_manager::get_db()->get_where('module', array('directory' => $directory));
+		$query = Database_manager::get_db()->get_where('modules', array('directory' => $directory));
 		
 		if($query->num_rows() == 1) {
 		 	return $query->row();
@@ -126,23 +126,26 @@ class Module_model extends SCADSY_Model {
 	 public function add_module($module_metadata, $module_actions, $module_permissions) {
 	 	Database_manager::get_db()->trans_start();
 		
-	 	Database_manager::get_db()->insert('module', $module_metadata);
+	 	Database_manager::get_db()->insert('modules', $module_metadata);
 		
+		$module_id = Database_manager::get_db()->insert_id();
 		foreach($module_actions as $action) {
-	 		Database_manager::get_db()->insert('module_action', array(
+	 		Database_manager::get_db()->insert('actions', array(
 																"name" => $action['action'],
-																"module" => $module_metadata['directory'],
+																"module_id" => $module_id,
 																"controller" => $action['controller']
 																));
 	 	}
-		
+		$action_id = Database_manager::get_db()->insert_id();
 		foreach($module_permissions as $permission) {
-			Database_manager::get_db()->insert('module_permission', array(
-																		"module" => $module_metadata['directory'],
-																		"group" => $permission
+			Database_manager::get_db()->insert('permissions', array(
+																		"action_id" => $action_id,
+																		"group_id" => Database_manager::get_db()
+																						->get_where('groups',array('name'=>$permission))
+																						->row()
+																						->id
 																		));
 		}
-		
 		Database_manager::get_db()->trans_complete();
 	 }
 }

@@ -25,7 +25,7 @@ class Login_model extends SCADSY_Model {
 	 * Logs out user
 	 */
 	public function logout(){
-		$this->user_model->logout();
+		$this->user->logout();
 	}
 	
 	/**
@@ -43,8 +43,10 @@ class Login_model extends SCADSY_Model {
 		if($admin_login === FALSE) {
 			Database_manager::set_db($this->input->post('school'));
 		}
-		
-		if($this->user_model->login() === FALSE){
+		$user = new User();
+		$user->username = $this->input->post('username');
+		$user->password = $this->input->post('password');
+		if($user->login() === FALSE){
 			Database_manager::disconnect();
 			return '<div id="login_failed">The username or password was not correct.</div>';
 		}

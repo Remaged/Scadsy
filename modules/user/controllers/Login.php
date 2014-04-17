@@ -9,7 +9,7 @@ class Login extends SCADSY_Controller{
 	 * Default action. When user not logged in this results in a login form. Otherwise a succes page will be shown.
 	 */
 	public function index(){
-		if($this->user_model->user_logged_in() || $this->_validate_login() === TRUE){
+		if($this->user->user_logged_in() || $this->_validate_login() === TRUE){
 			redirect(site_url());
 		}		
 		else{
@@ -28,7 +28,11 @@ class Login extends SCADSY_Controller{
 		if($this->form_validation->run() === FALSE){
 			return FALSE;
 		}
-		if($this->user_model->login() === FALSE){
+		
+		$u = new User();
+		$u->username = $this->input->post('username');
+		$u->password = $this->input->post('password');
+		if($u->login() === FALSE){
 			$this->data['failed_message'] = '<div id="login_failed">The username or password was not correct.</div>';
 			return FALSE;
 		}
@@ -40,7 +44,7 @@ class Login extends SCADSY_Controller{
 	 * Logs out user
 	 */
 	public function logout(){		
-		$this->user_model->logout();
+		$this->user->logout();
 		redirect('user/login/index');
 	}
 		

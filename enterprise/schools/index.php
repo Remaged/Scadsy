@@ -12,7 +12,7 @@ Author URI: http://kevindriessen.nl
 Hook_manager::add_hook('pre_menu_generate', 'school_manager_pre_menu_generated');
 function school_manager_pre_menu_generated($menu_manager) {
 	$CI =& get_instance();
-	$user = $CI->user_model->get_logged_in_user();	
+	$user = $CI->user->get_logged_in_user();	
 	if($user !== NULL){
 		$menu_manager->add_menu_item('schools/manage/index', 'Manage schools', array());
 		$menu_manager->add_submenu_item('schools/manage/index','schools/manage/add', 'Add', array());

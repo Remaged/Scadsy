@@ -64,7 +64,7 @@ $autoload['libraries'] = array('database','datamapper');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url', 'errors', 'link');
+$autoload['helper'] = array('url', 'form', 'errors', 'link');
 
 
 /*
@@ -109,8 +109,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array('user_model');
-
+$autoload['model'] = array('user');
 
 /* End of file autoload.php */
 /* Location: ./application/config/autoload.php */

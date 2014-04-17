@@ -19,7 +19,7 @@ class Permission_model extends SCADSY_Model {
 	 * 		The found permission or NULL if no permission could be found.
 	 */
 	public function get_permission($action, $controller, $module, $group) {
-		$query = Database_manager::get_db()->get_where('permission', array(
+		$query = Database_manager::get_db()->get_where('permissions', array(
 												'module_action_name' => $action,
 												'module_action_module' => $module,
 												'module_action_controller' => $controller,
@@ -40,19 +40,23 @@ class Permission_model extends SCADSY_Model {
 	 * 		The found permissions or NULL if no permissions could be found.
 	 */
 	 public function get_module_permissions($module) {
-		
-		Database_manager::get_db()->select('module_action.module AS module_name');
-		Database_manager::get_db()->select('module_action.name AS action_name');
-		Database_manager::get_db()->select('module_action.controller AS controller_name');
-		Database_manager::get_db()->select('group.name AS group_name');
-		Database_manager::get_db()->select('permission.allowed AS allowed');
-		Database_manager::get_db()->from('module_action');
-		Database_manager::get_db()->where('module_action.module', $module);
-		Database_manager::get_db()->join('group', 'group.name = group.name', 'inner');
-		Database_manager::get_db()->join('permission','group.name = permission.group_name AND permission.module_action_module = module_action.module AND permission.module_action_name = module_action.name AND permission.module_action_controller = module_action.controller','left');
-	 	Database_manager::get_db()->order_by('module_action.module, module_action.controller, module_action.name, group.name');
-	 	$query = Database_manager::get_db()->get();
+	 	Database_manager::get_db()
+	 		->select('
+	 			modules.name AS module_name,
+	 			actions.name AS action_name,
+	 			actions.controller AS controller_name,
+	 			groups.name AS group_name,
+	 			permissions.allowed AS allowed
+	 		')
+			->from('actions')
+			->where('modules.directory', $module)
+			->join('modules', 'modules.id = actions.module_id', 'inner')
+			->join('groups', 'groups.name = groups.name', 'inner')
+			->join('permissions','groups.id = permissions.group_id AND permissions.action_id = actions.id','left')
+			->order_by('modules.name, actions.controller, actions.name, groups.name');
 
+		$query = Database_manager::get_db()->get();	
+		
 		if($query->num_rows() > 0) {
 			return $query->result();
 		} else {

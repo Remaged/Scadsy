@@ -1,5 +1,30 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+
+// ------------------------------------------------------------------------
+
+/**
+ * Set Value
+ *
+ * Overwrites the set_value of the codeifniter form_helper. 
+ * Rather than only repopulating fields when form_validation is used, fields are always repopulated.
+ *
+ * @access	public
+ * @param	string
+ * @return	mixed
+ */
+if ( ! function_exists('set_value'))
+{
+	function set_value($field = '', $default = '')
+	{
+		if ( ! isset($_POST[$field]))
+		{
+			return $default;
+		}
+		return form_prep($_POST[$field], $field);
+	}
+}
+
 // ------------------------------------------------------------------------
 
 /**
