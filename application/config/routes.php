@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "module/module/index";
+$route['default_controller'] = "dashboard/dashboard/index";
 $route['404_override'] = '';
 
 

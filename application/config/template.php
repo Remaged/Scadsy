@@ -8,7 +8,8 @@
 $config['template_scripts'] = array(
 	"jquery" => "jquery-1.11.0.min.js",
 	"jquery-ui" => "jquery-ui-1.10.4.min.js",
-	"jquery-switchbutton" => "jquery.switchbutton.js"
+	"jquery-switchbutton" => "jquery.switchbutton.js",
+	"jquery-custom" => "jquery.custom.js"
 );
 
 $config['template_styles'] = array(

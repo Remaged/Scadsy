@@ -51,7 +51,7 @@ class Menu_manager {
 		}
 
 		if($this->CI->permission_manager->check_permissions($exploded[2], $exploded[1], $exploded[0], $default_groups)) {
-			$this->menu_items[$priority][$link] = $description;
+			$this->menu_items[$priority][$link] = array("description" => $description);
 		}		
 	}
 	
@@ -99,13 +99,25 @@ class Menu_manager {
 	 * Get the menu as html
 	 */
 	 private function get_menu_html() {
-	 	$html = '<ul class="main_menu">';
+	 	$html = '<ul id="sc-main-menu">';
 		for($i = 0; $i <= 11; $i++) {
 			if(isset($this->menu_items[$i])) {
 				foreach($this->menu_items[$i] as $key => $value) {
 					$html .= '<li>';
-					$html .= anchor($key, $value);
-					$html .= $this->get_submenu_html($key);
+					$style = 'side';
+					$module = explode('/', $key)[0];
+					
+					$icon = '<img class="normal" src="'.base_url('modules/').'/'.$module.'/assets/images/icon_24.png" /><img class="hover" src="'.base_url('modules/').'/'.$module.'/assets/images/icon_24_hover.png" /><img class="active" src="'.base_url('modules/').'/'.$module.'/assets/images/icon_24_active.png" />';
+					if($this->is_active($key)) {
+						$html .= anchor($key, $icon.'<span>'.$value['description'].'</span>', "class='active active-main'");
+						$style = 'down';
+					} else if($this->has_active_child($key)) {
+						$html .= anchor($key, $icon.'<span>'.$value['description'].'</span>', "class='active-child'");
+						$style = 'down';
+					} else {
+						$html .= anchor($key, $icon.'<span>'.$value['description'].'</span>');
+					}
+					$html .= $this->get_submenu_html($key, $style);
 					$html .= '</li>';
 				}
 			}
@@ -123,20 +135,57 @@ class Menu_manager {
 	  * @return
 	  * 		The generated submenu html
 	  */
-	 private function get_submenu_html($link, $depth = 0) {
+	 private function get_submenu_html($link, $style = 'side') {
 	 	$html = '';
 	 	if(isset($this->submenu_items[$link])) {
-	 		$html .= '<ul class="sub_menu sub_menu_'. $depth++ .'">';
+	 		$html .= '<ul class="sc-sub-menu '.$style.'">';
 	 		foreach($this->submenu_items[$link] as $key => $value) {
 	 			$html .= '<li>';
-				$html .= anchor($key, $value);
-				$html .= $this->get_submenu_html($key, $depth);
+				if($this->is_active($key)) {
+					$html .= anchor($key, '<span>'.$value.'</span>', "class='active active-sub'");
+				} else {
+					$html .= anchor($key, '<span>'.$value.'</span>');
+				}
+				//$html .= $this->get_submenu_html($key, $depth);
 				$html .= '</li>';
 	 		}
 			$html .= '</ul>';
 	 	}
 		return $html;
 	 }
+	 
+	 /**
+	  * Check if a certain menu_item is currently active
+	  * @param $link
+	  * 		The menu link to check
+	  * @return 
+	  * 		Whether or not the menu_item is active
+	  */
+	  private function is_active($link) {
+		return $this->CI->router->get_module().'/'.$this->CI->router->fetch_class().'/'.$this->CI->router->fetch_method() == $link;
+	  }
+	  
+	  	 /**
+	  * Check if a child of a certain menu_item is currently active
+	  * @param $link
+	  * 		The menu link to check
+	  * @return 
+	  * 		Whether or not the menu_item is active
+	  */
+	  private function has_active_child($link) {
+		if(!isset($this->submenu_items[$link])) {
+			return false;
+		}	
+		
+		foreach($this->submenu_items[$link] as $key => $value) {
+
+			if($this->is_active($key)) {
+				return true;
+			}
+		}
+		
+		return false;
+	  }
 }
 
 /* End of file Menu_manager.php */

@@ -1,5 +1,6 @@
+		</div> <!-- PAGE-CONTENT -->
 	</div> <!-- PAGE -->
-</div> <!-- CONTAINER -->
+</div> <!-- RIGHT-BOX -->
 
 <?php echo $scripts; ?>
 
