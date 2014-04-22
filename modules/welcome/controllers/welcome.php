@@ -25,21 +25,24 @@ class Welcome extends SCADSY_Controller {
 			'group' => array('student','school','admin')
 			)
 		);
-		/*
-		$u = new User(2);
-		var_dump($u->exists());
-		echo $u->username;
-		exit('exit..');
 		
-		//$u->get_where(array('username' => 'admin'),1);
-		$u->where('username','admiddn')->get();
+		/*
+		//$user = new User();
+		echo $this->user->get_logged_in_user()->username.' <br />';
+		//exit('testexit');
+		
+		$u = new User(5);
+		
+		foreach($u AS $user){
+			echo $user->username.' <br />';
+		}
 		
 		var_dump($u->exists());
 
 		
-		exit("test");
-		
+		exit("....exit....");
 		*/
+		
 		$this->load->helper(array('form', 'url'));
 		$this->load->library('form_validation');
 		$data['menu'] = $this->menu_manager->get_menu();
