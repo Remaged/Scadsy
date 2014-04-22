@@ -20,6 +20,7 @@
 				<td>
 					<?php echo form_open('module/module/permissionEdit'); ?>
 						<?php echo form_hidden(array(
+									"permission_id" => $permission->permission_id,
 									"action" => $permission->action_name, 
 									"controller" => $permission->controller_name,
 									"module" => $module->directory,
