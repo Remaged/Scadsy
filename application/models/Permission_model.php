@@ -90,9 +90,6 @@ class Permission_model extends SCADSY_Model {
 	 * 		Whether the permissions should be to allow or to disallow
 	 */
 	public function add_permission($action, $controller, $module, $default_groups, $allowed) {
-		echo $module;
-		print_r(Database_manager::get_db()
-						->get_where('modules',array('directory'=>$module),1)->row()); exit();
 		$module_id = Database_manager::get_db()
 						->get_where('modules',array('directory'=>$module),1)
 						->row()

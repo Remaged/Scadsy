@@ -12,18 +12,9 @@ class Module extends SCADSY_Controller{
 		$this->template_manager->add_controller_script('module_list_js_script','modules/module/assets/scripts/module_list.js','module','module',TRUE);	
 		$data['modules'] = $this->module_model->get_modules();
 		$this->load->helper('form');
-		$this->view('list', $data);
+		$this->view('list_new', $data);
 	}
-	
-	
-	public function list2() {
-		parent::init(array('admin'));		
-		$this->template_manager->add_controller_script('module_list_js_script','modules/module/assets/scripts/module_list.js','module','module',TRUE);	
-		$data['modules'] = $this->module_model->get_modules();
-		$this->load->helper('form');
-		$this->view('list_2', $data);
-	}
-	
+
 	/**
 	 * Enables a single module.
 	 * (used for jquery-post)

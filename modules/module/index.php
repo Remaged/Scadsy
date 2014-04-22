@@ -13,7 +13,6 @@ Hook_manager::add_hook('pre_menu_generate', 'module_pre_menu_generated');
 function module_pre_menu_generated($menu_manager) {
 	$menu_manager->add_menu_item('module/module/index', 'Module', array('admin'));
 	$menu_manager->add_submenu_item('module/module/index','module/module/index', 'Overview', array('admin', 'teacher'));
-	$menu_manager->add_submenu_item('module/module/index','module/module/list2', 'List', array('admin', 'teacher'));
 	$menu_manager->add_submenu_item('module/module/index','module/module/permissions', 'Permissions', array('admin', 'teacher'));
 }
 

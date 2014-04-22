@@ -67,8 +67,8 @@ class SCADSY_Controller extends MX_Controller {
 		$is_allowed = $this->permission_manager->check_permissions($action, $controller, $module, $groups);
 
 		if(!$is_allowed) {
-			show_401();
-			die();
+			//show_401();
+			//die();
 		}	
 	}
 			

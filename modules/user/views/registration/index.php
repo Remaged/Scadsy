@@ -1,9 +1,10 @@
 <?php echo $errors; ?>
 
-<?php echo form_open(uri_string()); ?>
 	<h1>
 		Add new user
 	</h1>
+
+<?php echo form_open(uri_string(), array("class" => "sc-form")); ?>
 
 	<?php echo form_fieldset('Acces information'); ?>
 		<?php echo form_label_input('username'); ?>
