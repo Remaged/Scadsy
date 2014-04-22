@@ -100,11 +100,13 @@ class Module extends SCADSY_Controller{
 			$action = $this->input->post('action');
 			$group = $this->input->post('group');
 			$allowed = ($this->input->post('allowed') === FALSE) ? 0 : 1;
-
-			if($this->permission_model->get_permission($action, $controller, $module, $group) === NULL) {
+			$permission_id = $this->input->post('permission_id');
+			
+			if(empty($permission_id)){
+			//if($this->permission_model->get_permission($action, $controller, $module, $group) === NULL) {				
 				$this->permission_model->add_permission($action, $controller, $module, $group, $allowed);
-			} else {
-				$this->permission_model->update_permission($action, $controller, $module, $group, $allowed);
+			} else {			
+				$this->permission_model->update_permission($permission_id, $allowed);
 			}
 				
 		}

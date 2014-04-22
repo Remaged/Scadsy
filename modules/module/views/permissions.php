@@ -29,6 +29,7 @@
 					} else {
 						echo 'Allow';
 					} ?>						
+
 				</td>		
 			</tr>
 				

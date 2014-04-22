@@ -10,7 +10,6 @@ $(function() {
 	           data: $(this).serialize(), 
 	           success: function(data)
 	           {
-
 	           }
 	         });
 	

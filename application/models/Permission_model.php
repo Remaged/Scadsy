@@ -25,18 +25,11 @@ class Permission_model extends SCADSY_Model {
 					->join('modules','modules.id = actions.module_id','inner')
 					->join('groups','groups.id = permissions.group_id','inner')
 					->where('actions.name',$action)
-					->where('modules.name',$module)
+					->where('modules.directory',$module)
 					->where('actions.controller',$controller)
 					->where('groups.name',$group)
-					->get();
-		/*	
-		$query = Database_manager::get_db()->get_where('permissions', array(
-												'module_action_name' => $action,
-												'module_action_module' => $module,
-												'module_action_controller' => $controller,
-												'group_name' => $group
-											));
-		*/
+					->get();		
+
 		if($query->num_rows() > 0) {
 			return $query->row();
 		} else {
@@ -54,6 +47,7 @@ class Permission_model extends SCADSY_Model {
 	 public function get_module_permissions($module) {
 	 	Database_manager::get_db()
 	 		->select('
+	 			permissions.id AS permission_id,
 	 			modules.name AS module_name,
 	 			actions.name AS action_name,
 	 			actions.controller AS controller_name,
@@ -103,71 +97,35 @@ class Permission_model extends SCADSY_Model {
 				$group_id = Database_manager::get_db()->get_where('groups',array('name'=>$group))->row()->id;						
 				Database_manager::get_db()->insert('permissions',array(
 						'action_id' => $action_id,
-						'group_id' => $group_id
+						'group_id' => $group_id,
+						'allowed' => $allowed
 					)
 				);
-				/*
-				Database_manager::get_db()->insert('permission', array(
-											'module_action_name' => $action,
-											'module_action_module' => $module,
-											'module_action_controller' => $controller,
-											'group_name' => $group,
-											'allowed' => $allowed
-										));
-				 */ 
 			}
 		} else {
 				$group_id = Database_manager::get_db()->get_where('groups',array('name'=>$default_groups))->row()->id;	
 				Database_manager::get_db()->insert('permissions',array(
 						'action_id' => $action_id,
-						'group_id' => $group_id
+						'group_id' => $group_id,
+						'allowed' => $allowed
 					)
-				);
-				/*
-				Database_manager::get_db()->insert('permission', array(
-													'module_action_name' => $action,
-													'module_action_module' => $module,
-													'module_action_controller' => $controller,
-													'group_name' => $default_groups,
-													'allowed' => $allowed
-												));	
-				 */ 							
+				);							
 		}
 	}
 	
 	/**
 	 * Update a permission in the database
-	 * @param $action
-	 * 		The name of the action
-	 * @param $controller
-	 * 		The name of the controller
-	 * @param $module
-	 * 		The name of the module
-	 * @param $group
-	 * 		The name of the group
+	 * @param $permission_id
+	 * 		id for the permission-record
 	 * @param $allowed
 	 * 		Whether the permissions should be to allow or to disallow
 	 */
-	public function update_permission($action, $controller, $module, $group, $allowed) {
-		$module_id = Database_manager::get_db()->get_where('modules',array('directory'=>$module))>row()->id;
-		$action_id = Database_manager::get_db()->get_where('actions',array('name'=>$action,'controller'=>$controller,'module_id'=>$module_id))->row()->id;
-		$group_id = Database_manager::get_db()->get_where('groups',array('name'=>$default_groups))->row()->id;
-		
-		Database_manager::get_db()
-			->where('action_id',$action_id)
-			->where('group_id',$group_id)
-			->update('permission', array(
+	public function update_permission($permission_id, $allowed) {
+		$query = Database_manager::get_db()
+			->where('id',$permission_id)
+			->update('permissions', array(
 				'allowed' => $allowed
-			));	
-		/*								
-		Database_manager::get_db()->where('module_action_name', $action);
-		Database_manager::get_db()->where('module_action_module', $module);
-		Database_manager::get_db()->where('module_action_controller', $controller);
-		Database_manager::get_db()->where('group_name', $group);
-		Database_manager::get_db()->update('permission', array(
-											'allowed' => $allowed
-										));	
-		 */ 							
+			));								
 	}
 	
 }
