@@ -38,12 +38,14 @@ class Permission_manager {
 	 * 		The default groups that are allowed to view this page. This can be either an array or a single string.
 	 */	
 	public function check_permissions($action, $controller, $module, $default_groups) {
+
 		if ($this->should_check_permissions()){
+			
 			$user_group = $this->CI->user->get_group();
 			$is_allowed = $this->check_permissions_database($action, $controller, $module, $user_group);
 			
 			if($is_allowed === NULL) {
-	
+	echo "JUP";
 				if(in_array($user_group, $default_groups)){
 					$is_allowed = TRUE;
 				} else {

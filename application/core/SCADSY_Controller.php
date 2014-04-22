@@ -52,6 +52,7 @@ class SCADSY_Controller extends MX_Controller {
 		$this->load->library('template_manager');
 		$this->load->library('module_manager');
 		$this->load->library('form_manager');
+		$this->load->library('notification_manager');
 	 }
 
 	/**
@@ -67,8 +68,8 @@ class SCADSY_Controller extends MX_Controller {
 		$is_allowed = $this->permission_manager->check_permissions($action, $controller, $module, $groups);
 
 		if(!$is_allowed) {
-			//show_401();
-			//die();
+			show_401();
+			die();
 		}	
 	}
 			
@@ -84,6 +85,7 @@ class SCADSY_Controller extends MX_Controller {
 		$headerdata['menu'] = $this->menu_manager->get_menu();
 		$headerdata['scripts'] = $this->template_manager->get_scripts();
 		$headerdata['stylesheets'] = $this->template_manager->get_stylesheets();
+		$headerdata['notifications'] = $this->notification_manager->get_notifications();
 		$this->load->view($header_template, $headerdata);
 		
 	    $this->load->view($page, $data);

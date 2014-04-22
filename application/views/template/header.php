@@ -42,12 +42,6 @@
 	
 	<div id="sc-page">
 		
-		<div class="sc-msg sc-msg-update">
-			<a href="#">SCADSY Alpha V0.2</a> is available! <a href="#">Update now</a>.
-		</div>
-		
-		<div class="sc-msg sc-msg-error">
-			Hearthbleed SSL has infected us to. More information <a href="#">here</a>.
-		</div>
+		<?php echo $notifications; ?>
 		
 		<div id="sc-page-content">

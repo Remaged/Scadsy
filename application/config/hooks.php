@@ -15,6 +15,8 @@ $config['system_hooks'] = array(
 		"pre_stylesheets_generate",	// Before the stylesheet links get generated (param: $template_manager)
 		"post_stylesheets_generate", // After the stylesheet link are generated (param: $html)
 		"modules_loaded", // After all modules (index files) have loaded (param: $form_manager)
+		"pre_notifications_generate", // Before the html notifications get generated (params: $notification_manager)
+		"post_notifications_generate", // After the html get generated (params: $html)
 );
 
 /* End of file hooks.php */
