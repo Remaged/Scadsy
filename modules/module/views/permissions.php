@@ -22,7 +22,7 @@
 						<?php echo form_hidden(array(
 									"action" => $permission->action_name, 
 									"controller" => $permission->controller_name,
-									"module" => $permission->module_name,
+									"module" => $module->directory,
 									"group" => $permission->group_name)); ?>
 						<div class="switchbutton">
 							<input type="checkbox" value="1" name="allowed" <?php echo ($permission->allowed == 1) ? 'checked' : '';?>>

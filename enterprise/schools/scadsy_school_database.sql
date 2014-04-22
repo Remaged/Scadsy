@@ -2,10 +2,10 @@
 -- version 4.0.9
 -- http://www.phpmyadmin.net
 --
--- Machine: 127.0.0.1
--- Genereertijd: 25 mrt 2014 om 09:38
--- Serverversie: 5.6.14
--- PHP-versie: 5.5.6
+-- Host: 127.0.0.1
+-- Generation Time: Apr 17, 2014 at 03:32 PM
+-- Server version: 5.6.14
+-- PHP Version: 5.5.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -25,34 +25,77 @@ USE `{DB_NAME}`;
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `class`
+-- Table structure for table `actions`
 --
 
-CREATE TABLE IF NOT EXISTS `class` (
+CREATE TABLE IF NOT EXISTS `actions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `module_id` int(11) DEFAULT NULL,
   `name` varchar(100) NOT NULL,
-  PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `controller` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `module_id` (`module_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=63 ;
+
+--
+-- Dumping data for table `actions`
+--
+
+INSERT INTO `actions` (`id`, `module_id`, `name`, `controller`) VALUES
+(3, NULL, 'index', 'module'),
+(11, 2, 'permissions', 'module'),
+(59, 127, 'index', 'login'),
+(60, 127, 'logout', 'login'),
+(61, 127, 'index', 'registration'),
+(62, 128, 'index', 'welcome');
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `class_subject`
+-- Table structure for table `classes`
 --
 
-CREATE TABLE IF NOT EXISTS `class_subject` (
+CREATE TABLE IF NOT EXISTS `classes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `classes_students`
+--
+
+CREATE TABLE IF NOT EXISTS `classes_students` (
+  `student` int(11) NOT NULL,
   `class` varchar(100) NOT NULL,
-  `subject` varchar(100) NOT NULL,
-  PRIMARY KEY (`class`,`subject`),
-  KEY `FK_CLASS_SUBJECT_SUBJECT` (`subject`)
+  PRIMARY KEY (`student`,`class`),
+  KEY `FK_STUDENT_CLASS_CLASS` (`class`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `enrollment_information`
+-- Table structure for table `classes_subjects`
 --
 
-CREATE TABLE IF NOT EXISTS `enrollment_information` (
+CREATE TABLE IF NOT EXISTS `classes_subjects` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `class_id` int(11) DEFAULT NULL,
+  `subject` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `class_id` (`class_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `enrollments`
+--
+
+CREATE TABLE IF NOT EXISTS `enrollments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
@@ -64,91 +107,107 @@ CREATE TABLE IF NOT EXISTS `enrollment_information` (
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `ethnicity`
+-- Table structure for table `ethnicities`
 --
 
-CREATE TABLE IF NOT EXISTS `ethnicity` (
+CREATE TABLE IF NOT EXISTS `ethnicities` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
-  PRIMARY KEY (`name`),
-  KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
--- Gegevens worden uitgevoerd voor tabel `ethnicity`
+-- Dumping data for table `ethnicities`
 --
 
-INSERT INTO `ethnicity` (`name`) VALUES
-('Black, Non-Hispanic'),
-('White, Non-Hispanic');
+INSERT INTO `ethnicities` (`id`, `name`) VALUES
+(1, 'Black, Non-Hispanic'),
+(2, 'White, Non-Hispanic');
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `grade`
+-- Table structure for table `grades`
 --
 
-CREATE TABLE IF NOT EXISTS `grade` (
+CREATE TABLE IF NOT EXISTS `grades` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
-  PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 --
--- Gegevens worden uitgevoerd voor tabel `grade`
+-- Dumping data for table `grades`
 --
 
-INSERT INTO `grade` (`name`) VALUES
-('Grade 1'),
-('Grade 2');
+INSERT INTO `grades` (`id`, `name`) VALUES
+(1, 'Grade 1'),
+(10, 'Grade 10'),
+(11, 'Grade 11'),
+(12, 'Grade 12'),
+(2, 'Grade 2'),
+(3, 'Grade 3'),
+(4, 'Grade 4'),
+(5, 'Grade 5'),
+(6, 'Grade 6'),
+(7, 'Grade 7'),
+(8, 'Grade 8'),
+(9, 'Grade 9');
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `group`
+-- Table structure for table `groups`
 --
 
-CREATE TABLE IF NOT EXISTS `group` (
+CREATE TABLE IF NOT EXISTS `groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
-  PRIMARY KEY (`name`),
+  PRIMARY KEY (`id`),
   KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
--- Gegevens worden uitgevoerd voor tabel `group`
+-- Dumping data for table `groups`
 --
 
-INSERT INTO `group` (`name`) VALUES
-('admin'),
-('parent'),
-('student'),
-('teacher');
+INSERT INTO `groups` (`id`, `name`) VALUES
+(1, 'admin'),
+(2, 'parent'),
+(3, 'student'),
+(4, 'teacher');
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `language`
+-- Table structure for table `languages`
 --
 
-CREATE TABLE IF NOT EXISTS `language` (
+CREATE TABLE IF NOT EXISTS `languages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
-  PRIMARY KEY (`name`),
-  KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
--- Gegevens worden uitgevoerd voor tabel `language`
+-- Dumping data for table `languages`
 --
 
-INSERT INTO `language` (`name`) VALUES
-('Dutch'),
-('English');
+INSERT INTO `languages` (`id`, `name`) VALUES
+(1, 'African'),
+(2, 'English');
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `module`
+-- Table structure for table `modules`
 --
 
-CREATE TABLE IF NOT EXISTS `module` (
+CREATE TABLE IF NOT EXISTS `modules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `directory` varchar(100) NOT NULL,
   `name` varchar(100) NOT NULL,
   `uri` varchar(200) DEFAULT NULL,
@@ -157,140 +216,78 @@ CREATE TABLE IF NOT EXISTS `module` (
   `author` varchar(100) DEFAULT NULL,
   `author_uri` varchar(200) DEFAULT NULL,
   `status` enum('not_installed','enabled','disabled') NOT NULL DEFAULT 'not_installed',
-  PRIMARY KEY (`directory`),
-  KEY `directory` (`directory`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `directory` (`directory`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=129 ;
 
 --
--- Gegevens worden uitgevoerd voor tabel `module`
+-- Dumping data for table `modules`
 --
 
-INSERT INTO `module` (`directory`, `name`, `uri`, `description`, `version`, `author`, `author_uri`, `status`) VALUES
-('attendance', ' Attendance monitor\r', ' http://seoduct.com/attendance_monitor/\r', ' This module allows teachers to monitor the attendance of students\r', ' 1.0\r', ' Bob van den Berge\r', ' http://www.seoduct.com/\r', 'disabled'),
-('module', ' Module Manager\r', ' http://seoduct.com/module_manager/\r', ' This is a module manager.\r', ' 1.0', ' Bob van den Berge\r', ' http://www.seoduct.com/\r', 'enabled'),
-('user', 'user', NULL, NULL, NULL, NULL, NULL, 'enabled'),
-('welcome', 'welcome', NULL, NULL, NULL, NULL, NULL, 'enabled');
+INSERT INTO `modules` (`id`, `directory`, `name`, `uri`, `description`, `version`, `author`, `author_uri`, `status`) VALUES
+(2, 'module', ' Module Manager\r', ' http://seoduct.com/module_manager/\r', ' This is a module manager.\r', ' 1.0', ' Bob van den Berge\r', ' http://www.seoduct.com/\r', 'enabled'),
+(127, 'user', ' User\r', ' \r', ' Handling users, like login, logout, registrating users, edititing user information.\r', ' 1.0\r', ' Kevin Driessen\r', ' http://kevindriessen.nl\r', 'enabled'),
+(128, 'welcome', ' Welcome Module\r', ' http://seoduct.com/welcome_module/\r', ' This is a welcome module.\r', ' 1.0\r', ' Bob van den Berge\r', ' http://www.seoduct.com/\r', 'enabled');
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `module_action`
+-- Table structure for table `parents`
 --
 
-CREATE TABLE IF NOT EXISTS `module_action` (
-  `name` varchar(100) NOT NULL,
-  `module` varchar(100) NOT NULL,
-  `controller` varchar(100) NOT NULL,
-  PRIMARY KEY (`name`,`module`,`controller`),
-  KEY `module` (`module`),
-  KEY `controller` (`controller`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Gegevens worden uitgevoerd voor tabel `module_action`
---
-
-INSERT INTO `module_action` (`name`, `module`, `controller`) VALUES
-('index', 'attendance', 'attendance'),
-('index', 'attendance', 'scheme'),
-('something', 'attendance', 'scheme'),
-('index', 'module', 'module'),
-('permissions', 'module', 'module'),
-('index', 'user', 'login'),
-('index', 'user', 'registration'),
-('logout', 'user', 'login'),
-('index', 'welcome', 'welcome');
+CREATE TABLE IF NOT EXISTS `parents` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `module_permission`
+-- Table structure for table `parents_students`
 --
 
-CREATE TABLE IF NOT EXISTS `module_permission` (
-  `module` varchar(100) NOT NULL,
-  `group` varchar(100) NOT NULL,
-  PRIMARY KEY (`module`,`group`),
-  KEY `FK_MODULE_PERMISSION_GROUP` (`group`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Gegevens worden uitgevoerd voor tabel `module_permission`
---
-
-INSERT INTO `module_permission` (`module`, `group`) VALUES
-('attendance', 'admin'),
-('attendance', 'teacher');
-
--- --------------------------------------------------------
-
---
--- Tabelstructuur voor tabel `parent`
---
-
-CREATE TABLE IF NOT EXISTS `parent` (
-  `user` int(11) NOT NULL,
-  PRIMARY KEY (`user`)
+CREATE TABLE IF NOT EXISTS `parents_students` (
+  `student` int(11) NOT NULL,
+  `parent` int(11) NOT NULL,
+  PRIMARY KEY (`student`,`parent`),
+  KEY `FK_STUDENT_PARENT_PARENT` (`parent`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `permission`
+-- Table structure for table `permissions`
 --
 
-CREATE TABLE IF NOT EXISTS `permission` (
+CREATE TABLE IF NOT EXISTS `permissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `action_id` int(11) DEFAULT NULL,
   `allowed` tinyint(1) NOT NULL,
-  `module_action_name` varchar(100) NOT NULL,
-  `module_action_module` varchar(100) NOT NULL,
-  `module_action_controller` varchar(100) NOT NULL,
-  `group_name` varchar(100) NOT NULL,
-  PRIMARY KEY (`module_action_name`,`module_action_module`,`module_action_controller`,`group_name`),
-  KEY `FK_PERMISSION_MODULE_ACTION_MODULE` (`module_action_module`),
-  KEY `FK_PERMISSION_GROUP` (`group_name`),
-  KEY `FK_PERMISSION_MODULE_ACTION_CONTROLLER` (`module_action_controller`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `group_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `module_action_id` (`action_id`),
+  KEY `group_id` (`group_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
 
 --
--- Gegevens worden uitgevoerd voor tabel `permission`
+-- Dumping data for table `permissions`
 --
 
-INSERT INTO `permission` (`allowed`, `module_action_name`, `module_action_module`, `module_action_controller`, `group_name`) VALUES
-(1, 'index', 'attendance', 'attendance', 'admin'),
-(1, 'index', 'attendance', 'scheme', 'admin'),
-(1, 'index', 'module', 'module', 'admin'),
-(0, 'index', 'module', 'module', 'student'),
-(0, 'index', 'module', 'module', 'teacher'),
-(1, 'index', 'user', 'login', 'admin'),
-(1, 'index', 'user', 'login', 'parent'),
-(1, 'index', 'user', 'login', 'school'),
-(1, 'index', 'user', 'login', 'student'),
-(1, 'index', 'user', 'login', 'teacher'),
-(1, 'index', 'user', 'registration', 'admin'),
-(0, 'index', 'user', 'registration', 'student'),
-(0, 'index', 'user', 'registration', 'teacher'),
-(1, 'index', 'welcome', 'welcome', 'admin'),
-(1, 'index', 'welcome', 'welcome', 'parent'),
-(1, 'index', 'welcome', 'welcome', 'school'),
-(1, 'index', 'welcome', 'welcome', 'student'),
-(1, 'index', 'welcome', 'welcome', 'teacher'),
-(1, 'logout', 'user', 'login', 'admin'),
-(1, 'logout', 'user', 'login', 'parent'),
-(1, 'logout', 'user', 'login', 'school'),
-(1, 'logout', 'user', 'login', 'student'),
-(1, 'logout', 'user', 'login', 'teacher'),
-(1, 'permissions', 'module', 'module', 'admin'),
-(0, 'permissions', 'module', 'module', 'student'),
-(0, 'permissions', 'module', 'module', 'teacher'),
-(1, 'something', 'attendance', 'scheme', 'admin');
+INSERT INTO `permissions` (`id`, `action_id`, `allowed`, `group_id`) VALUES
+(35, 61, 0, 1),
+(36, 62, 0, 3),
+(37, 62, 0, 1);
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `school`
+-- Table structure for table `schools`
 --
 
-CREATE TABLE IF NOT EXISTS `school` (
+CREATE TABLE IF NOT EXISTS `schools` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `ceeb` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `address` varchar(150) NOT NULL,
@@ -302,13 +299,14 @@ CREATE TABLE IF NOT EXISTS `school` (
   `base_grading_scale` double NOT NULL,
   `email` varchar(100) DEFAULT NULL,
   `website` varchar(150) DEFAULT NULL,
-  PRIMARY KEY (`ceeb`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ceeb` (`ceeb`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `sessions`
+-- Table structure for table `sessions`
 --
 
 CREATE TABLE IF NOT EXISTS `sessions` (
@@ -321,79 +319,43 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   KEY `last_activity_idx` (`last_activity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
 --
--- Gegevens worden uitgevoerd voor tabel `sessions`
+-- Table structure for table `students`
 --
 
-INSERT INTO `sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('1277cb2199d92622e12cf4117ebe96ff', '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.154 Safari/537.36', 1395732476, ''),
-('3183e572b152565a6e1c41fdfffdfd95', '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.154 Safari/537.36', 1395650582, 'a:1:{s:2:"id";s:1:"7";}'),
-('56dd7f043e19940bd3731d119e33b185', '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.154 Safari/537.36', 1395647560, ''),
-('5a3e7dbb0621f6ef474eefe0837558c0', '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.154 Safari/537.36', 1395651184, 'a:1:{s:9:"user_data";s:0:"";}'),
-('eb61fa2a268b85453ad55c548d81e0d4', '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.154 Safari/537.36', 1395732453, '');
+CREATE TABLE IF NOT EXISTS `students` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `alternate_id` int(11) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
+  `grade_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user` (`user_id`),
+  KEY `grade` (`grade_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `student`
+-- Table structure for table `subjects`
 --
 
-CREATE TABLE IF NOT EXISTS `student` (
+CREATE TABLE IF NOT EXISTS `subjects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `alternate_id` int(11) DEFAULT NULL,
-  `user` int(11) NOT NULL,
-  `grade` varchar(100) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `grade_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `user` (`user`),
-  KEY `grade` (`grade`)
+  KEY `grade_id` (`grade_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `student_class`
+-- Table structure for table `users`
 --
 
-CREATE TABLE IF NOT EXISTS `student_class` (
-  `student` int(11) NOT NULL,
-  `class` varchar(100) NOT NULL,
-  PRIMARY KEY (`student`,`class`),
-  KEY `FK_STUDENT_CLASS_CLASS` (`class`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Tabelstructuur voor tabel `student_parent`
---
-
-CREATE TABLE IF NOT EXISTS `student_parent` (
-  `student` int(11) NOT NULL,
-  `parent` int(11) NOT NULL,
-  PRIMARY KEY (`student`,`parent`),
-  KEY `FK_STUDENT_PARENT_PARENT` (`parent`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Tabelstructuur voor tabel `subject`
---
-
-CREATE TABLE IF NOT EXISTS `subject` (
-  `name` varchar(100) NOT NULL,
-  `grade` varchar(100) NOT NULL,
-  PRIMARY KEY (`name`,`grade`),
-  KEY `FK_COURSE_GRADE` (`grade`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Tabelstructuur voor tabel `user`
---
-
-CREATE TABLE IF NOT EXISTS `user` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` enum('Mr','Mrs','Ms') NOT NULL,
   `first_name` varchar(100) NOT NULL,
@@ -406,101 +368,75 @@ CREATE TABLE IF NOT EXISTS `user` (
   `date_of_birth` date NOT NULL,
   `gender` enum('male','female') NOT NULL,
   `status` enum('enabled','disabled') NOT NULL,
-  `ethnicity` varchar(100) DEFAULT NULL,
-  `language` varchar(100) DEFAULT NULL,
-  `group_key` varchar(100) NOT NULL,
+  `ethnicity_id` int(11) DEFAULT NULL,
+  `language_id` int(11) DEFAULT NULL,
+  `group_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `ethnicity` (`ethnicity`),
-  KEY `language` (`language`),
-  KEY `group` (`group_key`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+  KEY `ethnicity` (`ethnicity_id`),
+  KEY `language` (`language_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 --
--- Gegevens worden uitgevoerd voor tabel `user`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `user` (`id`, `title`, `first_name`, `middle_name`, `last_name`, `username`, `password`, `email`, `phone_number`, `date_of_birth`, `gender`, `status`, `ethnicity`, `language`, `group_key`) VALUES
-(5, 'Mr', 'admin', 'admin', 'admin', 'admin', '$2y$10$PlsdDXIY/PFCYklE0772auZd00At0fbjl0SZQclLFW31rfTsHzh82', 'bob@seoduct.com', '234234234', '2014-03-19', 'male', 'enabled', NULL, NULL, 'admin');
+INSERT INTO `users` (`id`, `title`, `first_name`, `middle_name`, `last_name`, `username`, `password`, `email`, `phone_number`, `date_of_birth`, `gender`, `status`, `ethnicity_id`, `language_id`, `group_id`) VALUES
+(5, 'Mr', 'admin', 'admin', 'admin', 'admin', '$2y$10$PlsdDXIY/PFCYklE0772auZd00At0fbjl0SZQclLFW31rfTsHzh82', 'bob@seoduct.com', '234234234', '2014-03-19', 'male', 'enabled', NULL, NULL, 0);
 
 --
--- Beperkingen voor gedumpte tabellen
+-- Constraints for dumped tables
 --
 
 --
--- Beperkingen voor tabel `class_subject`
+-- Constraints for table `actions`
 --
-ALTER TABLE `class_subject`
-  ADD CONSTRAINT `FK_CLASS_SUBJECT_CLASS` FOREIGN KEY (`class`) REFERENCES `class` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_CLASS_SUBJECT_SUBJECT` FOREIGN KEY (`subject`) REFERENCES `subject` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `actions`
+  ADD CONSTRAINT `FK_module_action_module` FOREIGN KEY (`module_id`) REFERENCES `modules` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Beperkingen voor tabel `enrollment_information`
+-- Constraints for table `classes_subjects`
 --
-ALTER TABLE `enrollment_information`
-  ADD CONSTRAINT `FK_ENROLEMENT_INFORMATION_STUDENT_ID` FOREIGN KEY (`student`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `classes_subjects`
+  ADD CONSTRAINT `FK_class_subject_class` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Beperkingen voor tabel `module_action`
+-- Constraints for table `enrollments`
 --
-ALTER TABLE `module_action`
-  ADD CONSTRAINT `FK_MODULE_ACTION_MODULE` FOREIGN KEY (`module`) REFERENCES `module` (`directory`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `enrollments`
+  ADD CONSTRAINT `FK_ENROLEMENT_INFORMATION_STUDENT_ID` FOREIGN KEY (`student`) REFERENCES `students` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Beperkingen voor tabel `module_permission`
+-- Constraints for table `parents`
 --
-ALTER TABLE `module_permission`
-  ADD CONSTRAINT `FK_MODULE_PERMISSION_GROUP` FOREIGN KEY (`group`) REFERENCES `group` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_MODULE_PERMISSION_MODULE` FOREIGN KEY (`module`) REFERENCES `module` (`directory`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `parents`
+  ADD CONSTRAINT `FK_PARENT_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Beperkingen voor tabel `parent`
+-- Constraints for table `permissions`
 --
-ALTER TABLE `parent`
-  ADD CONSTRAINT `FK_PARENT_USER_ID` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `permissions`
+  ADD CONSTRAINT `FK_PERMISSIONS_action_id` FOREIGN KEY (`action_id`) REFERENCES `actions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_PERMISSIONS_group_id` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Beperkingen voor tabel `permission`
+-- Constraints for table `students`
 --
-ALTER TABLE `permission`
-  ADD CONSTRAINT `FK_PERMISSION_GROUP` FOREIGN KEY (`group_name`) REFERENCES `group` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_PERMISSION_MODULE_ACTION_MODULE` FOREIGN KEY (`module_action_module`) REFERENCES `module_action` (`module`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_PERMISSION_MODULE_ACTION_NAME` FOREIGN KEY (`module_action_name`) REFERENCES `module_action` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_PERMISSION_MODULE_ACTION_CONTROLLER` FOREIGN KEY (`module_action_controller`) REFERENCES `module_action` (`controller`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `students`
+  ADD CONSTRAINT `FK_STUDENTS_grade_id` FOREIGN KEY (`grade_id`) REFERENCES `grades` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_STUDENTS_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Beperkingen voor tabel `student`
+-- Constraints for table `subjects`
 --
-ALTER TABLE `student`
-  ADD CONSTRAINT `FK_STUDENT_GRADE` FOREIGN KEY (`grade`) REFERENCES `grade` (`name`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_STUDENT_USER` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `subjects`
+  ADD CONSTRAINT `FK_SUBJECTS_grade_id` FOREIGN KEY (`grade_id`) REFERENCES `grades` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Beperkingen voor tabel `student_class`
+-- Constraints for table `users`
 --
-ALTER TABLE `student_class`
-  ADD CONSTRAINT `FK_STUDENT_CLASS_CLASS` FOREIGN KEY (`class`) REFERENCES `class` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_STUDENT_CLASS_STUDENT` FOREIGN KEY (`student`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Beperkingen voor tabel `student_parent`
---
-ALTER TABLE `student_parent`
-  ADD CONSTRAINT `FK_STUDENT_PARENT_PARENT` FOREIGN KEY (`parent`) REFERENCES `parent` (`user`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_STUDENT_PARENT_STUDENT` FOREIGN KEY (`student`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Beperkingen voor tabel `subject`
---
-ALTER TABLE `subject`
-  ADD CONSTRAINT `FK_COURSE_GRADE` FOREIGN KEY (`grade`) REFERENCES `grade` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Beperkingen voor tabel `user`
---
-ALTER TABLE `user`
-  ADD CONSTRAINT `FK_USER_ETHNICITY` FOREIGN KEY (`ethnicity`) REFERENCES `ethnicity` (`name`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_USER_GROUP` FOREIGN KEY (`group_key`) REFERENCES `group` (`name`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_USER_LANGUAGE` FOREIGN KEY (`language`) REFERENCES `language` (`name`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `users`
+  ADD CONSTRAINT `FK_USERS_language_id` FOREIGN KEY (`language_id`) REFERENCES `languages` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_USERS_etnicity_id` FOREIGN KEY (`ethnicity_id`) REFERENCES `ethnicities` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

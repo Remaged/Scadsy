@@ -163,7 +163,7 @@ class User extends DataMapper {
 	 */ 
     function _encrypt($field)
     {
-    	$this->{$field} = password_hash($field, PASSWORD_DEFAULT);
+    	$this->$field = password_hash($this->{$field}, PASSWORD_DEFAULT);
     }
 	
 	/**
