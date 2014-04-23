@@ -3,7 +3,7 @@
 /*
  * The current version of SCADSY
  */ 
-	define('VERSION', '0.2');
+	define('VERSION', '0.1');
 	define('UPDATE_URL', 'http://www.scadsy.com:1337/updates/scadsy/');
  
 /*

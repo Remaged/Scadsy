@@ -64,7 +64,7 @@ $autoload['libraries'] = array('database','datamapper');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url', 'form', 'errors', 'link');
+$autoload['helper'] = array('url', 'form', 'errors', 'link', 'language');
 
 
 /*
@@ -96,7 +96,7 @@ $autoload['config'] = array('hooks', 'template');
 |
 */
 
-$autoload['language'] = array();
+$autoload['language'] = array('scadsy');
 
 
 /*

@@ -13,9 +13,9 @@ if ( ! function_exists('post_link'))
 			foreach($data as $key => $value) {
 				$post_jquery .= $key.":"."'".$value."',";
 			}
-		$post_jquery .= "}).done(function(data){";
+		$post_jquery .= "}).done(function(data, textStatus){";
 			$post_jquery .= $succes;
-		$post_jquery .= "}).fail(function(data){";
+		$post_jquery .= "}).fail(function(data, textStatus){";
 			$post_jquery .= $fail;
 		$post_jquery .= "}); return false; ";
 		

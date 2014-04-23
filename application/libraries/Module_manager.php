@@ -58,6 +58,11 @@ class Module_manager {
 				if(is_file($key.$module['directory'].'\index.php')) {
 					include_once($key.$module['directory'].'\index.php');	
 				}
+
+				$file = $key.$module['directory'].'/language/'.$this->CI->config->item('language').'/'.$module['directory'].'_lang.php';
+				if(is_file($file)) {				
+					$this->CI->load->language($module['directory'], '', FALSE, TRUE, '', $module['directory']);
+				}
 			}
 		}
 		
