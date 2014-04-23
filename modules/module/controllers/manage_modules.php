@@ -14,7 +14,7 @@ class Manage_modules extends SCADSY_Controller{
 		$modules->get();
 		$data['modules'] = $modules;
 		
-		$this->load->helper('form');
+		$this->load->helper('form'); 
 		$this->view('list_new', $data);
 	}
 	
@@ -114,17 +114,14 @@ class Manage_modules extends SCADSY_Controller{
 	  */
 	  public function permission_edit() {
 	  	if($this->input->server('REQUEST_METHOD') == "POST") {
-			$module = new Module();
-			$module->get_where(array('name'=>$this->input->post('module')),1);
-			
 			$action = new Action();
-			$action->get_where(array('module_id'=>$module->id,'name'=>$this->input->post('action'),'controller'=>$this->input->post('controller')),1);
-			
+			$action->get_by_unique($this->input->post('module'),$this->input->post('controller'),$this->input->post('action'));
+
 			$group = new Group();
 			$group->get_where(array('name'=>$this->input->post('group')),1);
 			
 			$permission = new Permission();
-			$permission->get_where(array('action_id'=>$action->id,'group_id'=>$group->id),1);
+			$permission->where_related($action)->where_related($group)->get();
 			$permission->allowed = ($this->input->post('allowed') === FALSE) ? 0 : 1;
 			
 			$permission->save(array($action,$group));	

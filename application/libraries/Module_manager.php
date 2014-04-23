@@ -8,6 +8,7 @@ class Module_manager {
 	
 	public function __construct() {
 		$this->CI =& get_instance();
+		$this->module = new Module();
 	}
 	
 	/** 
@@ -17,8 +18,10 @@ class Module_manager {
 		foreach(Modules::$locations as $location => $offset) {
 			$file = $location.$directory.'/install.php';
 			if(is_file($file)) {
-				include_once($file);
-				$this->CI->module_model->disable_module($directory);
+				include_once($file);				
+				$this->module->get_where(array('directory'=>$directory));
+				$this->module->status = 'disabled';
+				$this->module->save();
 				return;
 			}
 		}
@@ -32,7 +35,7 @@ class Module_manager {
 			$file = $location.$directory.'/uninstall.php';
 			if(is_file($file)) {
 				include_once($file);
-				$this->CI->module_model->uninstall_module($directory);
+				$this->module->uninstall($directory);	
 				return;
 			}
 		}
@@ -43,9 +46,8 @@ class Module_manager {
 	 */
 	public function load_modules() {
 		$module_locations = $this->CI->config->item('modules_locations');
-		if(!defined('ENTERPRISE') || isset($_COOKIE['scadsy_db_cookie'])){
-			$this->CI->load->model('module_model');			
-			$modules = $this->CI->module_model->get_modules('enabled');
+		if(!defined('ENTERPRISE') || isset($_COOKIE['scadsy_db_cookie'])){			
+			$modules = $this->module->get_by_status('enabled');
 		}
 		else{
 			$module_locations = $this->CI->config->item('enterprise_locations');
@@ -74,7 +76,7 @@ class Module_manager {
 	 * Scan for new modules and add them to the database
 	 */
 	public function add_new_modules() {
-		$this->CI->load->model('module_model');
+		//$this->CI->load->model('module_model');
 		
 		// Get files and directories without the . and .. folders
 		foreach($this->CI->config->item('modules_locations') as $key => $value) {
@@ -88,9 +90,10 @@ class Module_manager {
 					$module_metadata = $this->get_module_metadata($key.$dir . '\index.php', $dir);
 					$module_actions = $this->get_module_actions($key.$dir.'\controllers\\');
 					$module_permissions = $this->get_module_permissions($key.$dir . '\index.php');
-	
-					if($this->CI->module_model->get_module($module_metadata['directory']) === NULL){
-						$this->CI->module_model->add_module($module_metadata, $module_actions, $module_permissions);					
+									
+					$this->module->get_where(array('directory'=>$module_metadata['directory']),1);
+					if($this->module->exists() === FALSE){
+						$this->module->add_module($module_metadata, $module_actions, $module_permissions);
 					}
 				}
 			}

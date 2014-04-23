@@ -24,8 +24,8 @@ function module_pre_scripts_header_generated($template_manager) {
 
 Hook_manager::add_hook('pre_scripts_header_generate', 'module_permissions_pre_scripts_header_generated');
 function module_permissions_pre_scripts_header_generated($template_manager) {
-$template_manager->add_method_script('permission_list_js_script','modules/module/assets/scripts/permission_list.js','module','manage_modules','permissions',TRUE);			
-	}
+	$template_manager->add_method_script('permission_list_js_script','modules/module/assets/scripts/permission_list.js','module','manage_modules','permissions',TRUE);			
+}
 
 		
 

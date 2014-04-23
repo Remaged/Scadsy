@@ -191,35 +191,13 @@ class User extends DataMapper {
 	}
 	
 	/**
-	 * Gets the group the user is in.
-	 * @return	
-	 * 		string containing the group-name
-	 * 		or NULL if user is not logged in.
+	 * Gets the user that is currently logged in.
 	 */
-	public function get_group(){
+	public function get_by_logged_in(){
 		if($this->user_logged_in() === TRUE){
-			return $this->get_logged_in_user()->group->name;
+			$this->get_where(array('id'=>$this->CI->session->userdata('id')),1);
 		}
-		else{
-			return NULL;
-		}
-	}
-	
-	/**
-	 * Gets user-data of the logged in user.
-	 * @return
-	 * 		object containing user-data
-	 * 		or NULL if user is not logged in.
-	 */
-	public function get_logged_in_user(){
-		
-		if($this->user_logged_in() === TRUE){
-			$u = new User($this->CI->session->userdata('id'));
-			return $u;
-		}
-		else{
-			return NULL;
-		}
+		return $this;
 	}
 }
 

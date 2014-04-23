@@ -24,7 +24,8 @@ function save_module_status(input_elm, action){
 		action,
 		postdata,
 		function(data){
-			location.reload();
+			alert(data);
+			//location.reload();
 		}
 	);
 }
@@ -35,4 +36,11 @@ function callback_install_fail(){
 
 function callback_deinstall_fail(){
 	alert('Something went wrong. The de-installation did likely not succeed.');
+}
+
+
+function enable_module_callback(object,module_name){
+	alert($(object).attr('href'))
+	showNotification('succes', 'Module '+module_name+' has been enabled!');
+	
 }

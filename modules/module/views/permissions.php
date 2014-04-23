@@ -19,7 +19,7 @@
 						<tr>											
 							<td><?php echo $group->name; ?></td>
 							<td>
-								<?php echo form_open('module/manage_modules/permission_edit'); ?>
+								<?php echo form_open(site_action_uri('permission_edit')); ?>
 									<?php echo form_hidden(array(
 												"action" => $action->name, 
 												"controller" => $action->controller,
