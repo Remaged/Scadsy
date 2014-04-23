@@ -16,6 +16,7 @@ $config['template_styles'] = array(
 	"reset" => "reset.css",
 	"open-sans" => "open-sans.css",
 	"jquery-ui" => "jquery-ui-1.10.4.custom.min.css",
+	"jquery-switchbutton" => "jquery.switchbutton.css",
 	"template_style" => "style.css"
 );
 

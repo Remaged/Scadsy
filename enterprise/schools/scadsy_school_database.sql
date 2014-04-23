@@ -267,9 +267,10 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   `allowed` tinyint(1) NOT NULL,
   `group_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_action_id_AND_group_id` (`action_id`,`group_id`),
   KEY `module_action_id` (`action_id`),
   KEY `group_id` (`group_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=50 ;
 
 --
 -- Dumping data for table `permissions`

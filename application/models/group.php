@@ -3,7 +3,7 @@
 class Group extends DataMapper {
 	
 	var $table = 'groups';
-    var $has_many = array('user');
+    var $has_many = array('user','permission');
 
 }
 

@@ -23,7 +23,7 @@ $(function() {
 		on_callback: function() {
 			$(this).closest('form').submit();
 		},
-		off_callback: function() {  
+		off_callback: function() {
 			$(this).closest('form').submit(); 	
 		}	
 	});
