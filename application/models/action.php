@@ -18,6 +18,14 @@ class Action extends DataMapper {
             'rules' => array('required', 'xss_clean', 'trim', 'unique'),
         )
     );
+	
+	public function get_by_unique($module_directory, $controller_name, $action_name){
+		$module = new Module();
+		$module->get_where(array('directory'=>$module_directory),1);
+		$this->get_where(array('module_id'=>$module->id,'name'=>$action_name,'controller'=>$controller_name),1);
+		return $this;
+	}
+
 
 }
 

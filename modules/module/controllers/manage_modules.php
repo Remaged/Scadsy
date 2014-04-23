@@ -14,7 +14,7 @@ class Manage_modules extends SCADSY_Controller{
 		$modules->get();
 		$data['modules'] = $modules;
 		
-		$this->load->helper('form');
+		$this->load->helper('form'); 
 		$this->view('list_new', $data);
 	}
 	

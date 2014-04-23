@@ -4,12 +4,10 @@
  * The Permission_manager class. This class manages the permissions.
  */
 class Permission_manager {
-	private $CI;
 
 	public function __construct() {
-		$this->CI =& get_instance();
-		$this->CI->load->model('permission_model');
-		$this->CI->load->model('user');
+		$this->permission = new Permission();
+		$this->user = new User();
 	}
 
 	/**
@@ -17,7 +15,7 @@ class Permission_manager {
 	 */
 	 public function should_check_permissions() {
 		if(defined("ENTERPRISE")) {
-			if($this->CI->user->user_logged_in()) {
+			if($this->user->user_logged_in()) {
 				if(Database_manager::get_db()->database == ENTERPRISE){ 
 					return FALSE;
 				}
@@ -37,21 +35,30 @@ class Permission_manager {
 	 * @param $default_groups
 	 * 		The default groups that are allowed to view this page. This can be either an array or a single string.
 	 */	
-	public function check_permissions($action, $controller, $module, $default_groups) {
+	public function check_permissions($action_name, $controller, $module_name, $default_groups) {
 
 		if ($this->should_check_permissions()){
 			
-			$user_group = $this->CI->user->get_group();
-			$is_allowed = $this->check_permissions_database($action, $controller, $module, $user_group);
+			$user_group = $this->user->get_by_logged_in()->group->name;
+			$is_allowed = $this->check_permissions_database($action_name, $controller, $module_name, $user_group);
 			
 			if($is_allowed === NULL) {
-	echo "JUP";
 				if(in_array($user_group, $default_groups)){
 					$is_allowed = TRUE;
 				} else {
 					$is_allowed = FALSE;
 				}
-				$this->CI->permission_model->add_permission($action, $controller, $module, $user_group, $is_allowed);
+			
+				$action = new Action();
+				$action->get_by_unique($module_name, $controller, $action_name);
+				
+				$group = new Group();
+				$group->get_where(array('name'=>$user_group),1);
+				
+				$this->permission->allowed = $is_allowed;
+
+				$this->permission->save(array($action, $group));
+				
 			}
 				
 			return $is_allowed;
@@ -75,25 +82,24 @@ class Permission_manager {
 	 * 		TRUE if the current group is allowed to see the current action
 	 * 		NULL if no data could be found in the database about this action
 	 */
-	private function check_permissions_database($action, $controller, $module, $group) {
-		if($group === NULL) {
+	private function check_permissions_database($action, $controller, $module, $groups) {
+		if($groups === NULL) {
 			return TRUE;
-		}
-		
+		}		
 		$is_allowed = NULL;
-		if(is_array($group)) {
-			foreach($group as $item) {
-				$permission = $this->CI->permission_model->get_permission($action, $controller, $module, $item);
-				if($permission !== NULL) {
-					$is_allowed = $permission->allowed;
+		if(is_array($groups)) {
+			foreach($groups as $group) {				
+				$this->permission->get_by_unique($module,$controller,$action, $group);
+				if($this->permission->exists() === TRUE){
+					$is_allowed = $this->permission->allowed;
 					break;
 				}
 			}
-		} else {
-			$permission = $this->CI->permission_model->get_permission($action, $controller, $module, $group);
-			if($permission !== NULL) {
-				$is_allowed = $permission->allowed;
-			}
+		} else {			
+			$this->permission->get_by_unique($module,$controller,$action,$groups);
+			if($this->permission->exists() === TRUE){
+				$is_allowed = $this->permission->allowed;
+			} 
 		}
 		return $is_allowed;
 	}
