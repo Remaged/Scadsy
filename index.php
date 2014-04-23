@@ -1,6 +1,11 @@
 <?php
 
-
+/*
+ * The current version of SCADSY
+ */ 
+	define('VERSION', '0.2');
+	define('UPDATE_URL', 'http://www.scadsy.com:1337/updates/scadsy/');
+ 
 /*
  *-------------------------------------------------------------------------------
  * APPLICATION ENVIRONMENT

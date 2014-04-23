@@ -8,7 +8,7 @@ if ( ! function_exists('post_link'))
 		$crsf_hash = $CI->security->get_csrf_hash();
 		$crsf_token = $CI->security->get_csrf_token_name();
 		
-		$post_jquery = "$.post('".site_url($page)."', {";
+		$post_jquery = "var myLink = $(this); $.post('".site_url($page)."', {";
 			$post_jquery .= $crsf_token.":"."'".$crsf_hash."',";
 			foreach($data as $key => $value) {
 				$post_jquery .= $key.":"."'".$value."',";
