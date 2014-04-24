@@ -5,7 +5,12 @@ class UpdateCallbacks {
 	private function __construct() {}
 	
 	public static function pre_menu_generated($menu_manager) {
-		$menu_manager->add_submenu_item('dashboard/dashboard/index','update/updates/index', __('Updates'), array('admin'));		
+		$count = (new Update())->where('has_update = 1')->count();	
+		if($count > 0) {
+			$menu_manager->add_submenu_item('dashboard/dashboard/index','update/updates/index', __('Updates').'<span class="update-count"><span class="count">'.$count.'</span></span>', array('admin'));		
+		} else {
+			$menu_manager->add_submenu_item('dashboard/dashboard/index','update/updates/index', __('Updates'), array('admin'));		
+		}
 	}	
 	
 	public static function check_for_updates($notification_manager){

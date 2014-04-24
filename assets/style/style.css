@@ -258,6 +258,31 @@ body {
 	display:block;
 }
 
+#sc-main-menu ul a span.update-count {
+	background:#d54e21;
+	border-radius: 10px;
+	display:inline-block;
+	padding:0 !important;
+	width:18px;
+	height:18px;
+	position:relative;
+	top:5px;
+	left:5px;
+}
+
+#sc-main-menu ul a span.update-count span.count {
+	color:white;
+	font-size:10px;
+	position:absolute;
+	left:-4px;
+	top:-8px;
+}
+
+#sc-main-menu ul.side a span.update-count span.count {
+	left:-30px;
+	top:-9px;
+}
+
 #sc-main-menu ul.side {
 	position:absolute;
 	top:0;
