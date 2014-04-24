@@ -61,9 +61,24 @@ class Module_manager {
 					include_once($key.$module['directory'].'\index.php');	
 				}
 
+				// Auto load module models
+				if(is_dir($key.$module['directory'].'/models/')) {
+					$models = preg_grep('/^([^.])/', scandir($key.$module['directory'].'/models/'));
+					foreach($models as $model) {
+						include_once($key.$module['directory'].'/models/'.$model);
+					}
+				}				
+
+				// Auto load the language file for the module if it is present
 				$file = $key.$module['directory'].'/language/'.$this->CI->config->item('language').'/'.$module['directory'].'_lang.php';
 				if(is_file($file)) {				
 					$this->CI->load->language($module['directory'], '', FALSE, TRUE, '', $module['directory']);
+				}
+				
+				// Auto load the callback_helper if it is present
+				$file = $key.$module['directory'].'/helpers/callback_helper.php';
+				if(is_file($file)) {
+					$this->CI->load->helper('callback', $module['directory']);
 				}
 			}
 		}

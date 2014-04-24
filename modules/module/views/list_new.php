@@ -31,7 +31,7 @@
 	<?php foreach($modules as $module): ?>
 		<tr class="<?php echo $module->status; ?>">
 			<!--  <td class="checkbox"><span class="stripe"></span><input type="checkbox"></td> -->
-			<td class="module">
+			<td class="module"><span class="stripe"></span>
 				<div class="sc-module-name"><?php echo $module->name; ?></div>
 				<div class="sc-module-actions">
 					<?php if ($module->status == 'disabled') { 

@@ -13,7 +13,7 @@ class Updates extends SCADSY_Controller{
 	
 	public function install() {
 		if($this->input->post('update') !== FALSE) {	
-			if(Update::install_update($this->input->post('update')) === TRUE) {
+			if(UpdateCallbacks::install_update($this->input->post('update')) === TRUE) {
 				$this->load->view("succes");	
 			} else {
 				$this->load->view("failure");

@@ -105,13 +105,17 @@ class MX_Loader extends CI_Loader
 	}
 
 	/** Load a module helper **/
-	public function helper($helper = array()) {
+	public function helper($helper = array(), $module = FALSE) {
 		
 		if (is_array($helper)) return $this->helpers($helper);
 		
 		if (isset($this->_ci_helpers[$helper]))	return;
 
-		list($path, $_helper) = Modules::find($helper.'_helper', $this->_module, 'helpers/');
+		if($module === FALSE) {
+			$module = $this->_module;	
+		}
+
+		list($path, $_helper) = Modules::find($helper.'_helper', $module, 'helpers/');
 
 		if ($path === FALSE) return parent::helper($helper);
 
@@ -182,7 +186,7 @@ class MX_Loader extends CI_Loader
 	}
 
 	/** Load a module model **/
-	public function model($model, $object_name = NULL, $connect = FALSE) {
+	public function model($model, $object_name = NULL, $connect = FALSE, $module = FALSE) {
 		
 		if (is_array($model)) return $this->models($model);
 
@@ -191,8 +195,12 @@ class MX_Loader extends CI_Loader
 		if (in_array($_alias, $this->_ci_models, TRUE)) 
 			return CI::$APP->$_alias;
 			
+		if($module === FALSE) {
+			$module = $this->_module;
+		}	
+			
 		/* check module */
-		list($path, $_model) = Modules::find(strtolower($model), $this->_module, 'models/');
+		list($path, $_model) = Modules::find(strtolower($model), $module, 'models/');
 		
 		if ($path == FALSE) {
 			

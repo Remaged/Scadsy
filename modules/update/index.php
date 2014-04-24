@@ -9,17 +9,9 @@ Author: Bob van den Berge
 Author URI: http://www.seoduct.com/
 */
 
-// Pre-load update class because otherwise the hook can't
-// call it functions
-include_once("models/update.php");
+Hook_manager::add_hook('pre_notifications_generate', 'UpdateCallbacks::check_for_updates');
 
-Hook_manager::add_hook('pre_notifications_generate', 'Update::check_for_updates');
-
-Hook_manager::add_hook('pre_menu_generate', 'update_pre_menu_generated');
-
-function update_pre_menu_generated($menu_manager) {
-	$menu_manager->add_submenu_item('dashboard/dashboard/index','update/updates/index', __('Updates'), array('admin'));
-}
+Hook_manager::add_hook('pre_menu_generate', 'UpdateCallbacks::pre_menu_generated');
 
 /* End of file index.php */
 /* Location: ./modules/update/index.php */

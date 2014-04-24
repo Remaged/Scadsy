@@ -3,7 +3,7 @@
 /**
  * __
  *
- * Fetches a language variable and outputs it
+ * Fetches a language variable and returns it
  *
  * @access	public
  * @param	string	the language line
@@ -17,10 +17,16 @@ if ( ! function_exists('__'))
 		$translation = $CI->lang->line($line);
 
 		if($translation == '') {
-			return $line;
+			$translation = $line;
 		}
 
-		return $translation;
+		$args = func_get_args();
+		if(count($args) == 1) {
+			return $translation;
+		}	
+		
+		$args[0] = $translation;
+		return call_user_func_array('sprintf', $args);
 	}
 }
 

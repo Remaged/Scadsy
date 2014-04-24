@@ -1,1 +1,2 @@
-The update was installed succesfully.
+<?php 
+	echo __('The update was installed succesfully.');
