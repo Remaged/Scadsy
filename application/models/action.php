@@ -11,11 +11,11 @@ class Action extends DataMapper {
     var $validation = array(
         'name' => array(
             'label' => 'Name',
-            'rules' => array('required', 'trim', 'xss_clean', 'unique'),
+            'rules' => array('required', 'trim', 'xss_clean'),
         ),
         'controller' => array(
-            'label' => 'uri',
-            'rules' => array('required', 'xss_clean', 'trim', 'unique'),
+            'label' => 'Controller',
+            'rules' => array('required', 'xss_clean', 'trim'),
         )
     );
 	

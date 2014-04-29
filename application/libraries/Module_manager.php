@@ -5,6 +5,7 @@
  */
 class Module_manager {
 	private $CI;
+	private $module;
 	
 	public function __construct() {
 		$this->CI =& get_instance();
@@ -88,11 +89,29 @@ class Module_manager {
 	}
 	
 	/**
+	 * Refresh the metadata that is stored for a certain module
+	 * @param $directory	
+	 * 				The module directory
+	 */
+	 public function refresh_module($directory) {
+	 	foreach($this->CI->config->item('modules_locations') as $key => $value) {
+
+	 			if(is_dir($key.$directory) && is_file($key.$directory . '\index.php')) {
+					$module_actions = $this->get_module_actions($key.$directory.'\controllers\\');
+					$module_permissions = $this->get_module_permissions($key.$directory . '\index.php');
+					
+					$this->module->get_where(array('directory'=>$directory),1);
+					if($this->module->exists() === TRUE){
+						$this->module->update_module($directory, $module_actions, $module_permissions);
+					}
+				}
+		}
+	 }
+	
+	/**
 	 * Scan for new modules and add them to the database
 	 */
 	public function add_new_modules() {
-		//$this->CI->load->model('module_model');
-		
 		// Get files and directories without the . and .. folders
 		foreach($this->CI->config->item('modules_locations') as $key => $value) {
 			$directories = preg_grep('/^([^.])/', scandir($key));

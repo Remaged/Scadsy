@@ -36,13 +36,18 @@
 				<div class="sc-module-actions">
 					<?php if ($module->status == 'disabled') { 
 						echo post_link(site_action_uri('enable'), "Enable", array("module" => $module->directory), "showNotification('succes', 'Module ".$module->directory." has been enabled!'); location.reload();");
-						echo " / ";
+						echo " | ";
 						echo post_link(site_action_uri('uninstall'), "Uninstall", array("module" => $module->directory), "showNotification('succes', 'Module ".$module->directory." has been uninstalled!'); location.reload();");
 					} else if ($module->status == 'enabled') { 
 						echo post_link(site_action_uri('disable'), "Disable", array("module" => $module->directory), "showNotification('succes', 'Module ".$module->directory." has been disabled!'); location.reload();");
 					} else if ($module->status == 'not_installed') { 
 						echo post_link(site_action_uri('install'), "Install", array("module" => $module->directory), "showNotification('succes', 'Module ".$module->directory." has been installed!'); location.reload();");
-					} ?>
+					} 
+					
+					if($module->status != 'not_installed') {
+						echo ' | '.post_link(site_action_uri('refresh'), "Refresh", array("module" => $module->directory), "showNotification('succes', 'Module ".$module->directory." has been refreshed!'); location.reload();");
+					}
+					?>
 				</div>
 			</td>	
 			<td>

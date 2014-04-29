@@ -137,7 +137,41 @@ class Module extends DataMapper {
 		Database_manager::get_db()->trans_complete();
 	 }
 
+	/**
+	 * Update module
+	 * @param $directory
+	 * 		The modules directory
+	 * @param $module_actions
+	 * 		An array with all the actions of a module
+	 * @param $module_permissions
+	 * 		An array with the groups that are allowed to load this module
+	 */
+	 public function update_module($directory, $module_actions, $module_permissions) {
+	 	Database_manager::get_db()->trans_start();
+		$module = (new Module())->where('directory = "'.$directory.'"')->get();
+		$module->action->get(); 
 
+		foreach($module->action as $existing_action) {
+			for($i = 0; $i < count($module_actions); $i++) {
+				if($module_actions[$i]['controller'] == $existing_action->controller && $module_actions[$i]['action'] == $existing_action->name) {
+					unset($module_actions[$i]);
+					break;
+				}
+			}
+		}
+		
+		foreach($module_actions as $action) {
+			$a = new Action();
+			$a->name = $action['action'];
+			$a->module_id = $module->id;
+			$a->controller = $action['controller'];
+			if(!$a->save()) {
+				echo $a->error->string;
+			}	
+		}
+
+		Database_manager::get_db()->trans_complete();
+	 }
 }
 
 /* End of file module.php */

@@ -68,6 +68,16 @@ class Manage_modules extends SCADSY_Controller{
 	}
 	
 	/**
+	 * Refresh a single module
+	 * (used for jquery-post)
+	 */
+	 public function refresh($dir) {
+	 	if($this->input->post('module') !== FALSE) {
+			$this->module_manager->refresh_module($this->input->post('module'));
+		}
+	 }
+	
+	/**
 	 * Stores all enable/disable data of all modules
 	 */
 	public function save_modules(){
