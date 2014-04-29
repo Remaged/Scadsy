@@ -341,13 +341,6 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   KEY `last_activity_idx` (`last_activity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Gegevens worden uitgevoerd voor tabel `sessions`
---
-
-INSERT INTO `sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('2af6f5a5c06651c73c647aeb7c87a8a3', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.131 Safari/537.36', 1398771077, 'a:2:{s:9:"user_data";s:0:"";s:2:"id";i:5;}');
-
 -- --------------------------------------------------------
 
 --
