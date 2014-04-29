@@ -2,23 +2,6 @@
 
 /*
 |--------------------------------------------------------------------------
-| Enterprise version
-|--------------------------------------------------------------------------
-|
-| There are two possibilities for school-websites to run:
-|	1. On their own webserver and database.
-| 	2. On the Scadsy-website by registering the school to the system.
-| In the second scenario the multiple schools can be managed in an 
-| enterprise. For the enterprise to work, the ENTERPRISE constant has
-| to be defined, with the enterprise-database as value. 
-| When schools have their own webserver, this contstant should be removed.
-|
-*/
-//define('ENTERPRISE','codeigniter');
-
-
-/*
-|--------------------------------------------------------------------------
 | File and Directory Modes
 |--------------------------------------------------------------------------
 |
