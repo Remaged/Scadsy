@@ -67,6 +67,37 @@ body {
 	-webkit-font-smoothing: subpixel-antialiased;
 }
 
+#login {
+	width:300px;
+	margin: 200px auto 0;
+	background:white;
+	border:1px solid black;
+	padding:10px;
+}
+
+#login h1 {
+	font-weight:600;	
+	text-align:center;
+	font-size:20px;
+	border-bottom:1px solid black;
+	padding: 0 0 5px;
+}
+
+#login input[type="text"], #login input[type="password"] {
+	width:208px;
+}
+
+#login label {
+	font-weight:600;
+	width:85px;
+	display:inline-block;
+	padding:5px 0 0;
+}
+
+#login p {
+	color:red;
+}
+
 #sc-top-bar {
 	color:#ccc;
 	width:100%;

@@ -13,7 +13,7 @@
 		<input type="password" name="password" value="" size="50" />
 	</div>
 	<div>
-		<input type="submit" value="Submit" />
+		<button>Login</button>
 	</div>
 </form>
 

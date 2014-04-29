@@ -11,3 +11,4 @@ application/logs/*
 .project
 application/third_party/MX/Router.php
 application/config/database.php
+index.php
