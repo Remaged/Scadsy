@@ -1,3 +1,3 @@
-<p>Enterprise manager</p>
+<h1>Enterprise manager</h1>
 
-<p>Your are logged in as the main-admin. From here you can manage schools on a global scale.</p>
+<p>Your are logged in as the main-admin. Here you can manage schools on a global scale.</p>

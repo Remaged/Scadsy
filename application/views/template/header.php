@@ -9,7 +9,7 @@
 <body>
 	<div id="sc-top-bar">
 		<div id="sc-logo" show="#sc-logo-sub">
-			<span><a href="<?php echo site_url();?>">SCADSY</a></span>
+			<span><a href="<?php echo site_url();?>"><?php echo Database_manager::get_db(TRUE)->get_where('database',array('name'=>Database_manager::get_db()->database),1)->row()->school; ?></a></span>
 			<div id="sc-logo-sub" class="sc-simple-sub">
 				<ul>
 					<li><a target="_blank" href="http://schools.scadsy.za.org/about.php">About SCADSY</a></li>
@@ -20,7 +20,7 @@
 		</div>
 		
 		<div id="sc-quick-menu" show="#sc-quick-menu-sub">
-			<span>Hello, USER</span>
+			<span>Hello, <?php $user = new User(); echo $user->get_by_logged_in()->username; ?></span>
 			<div id="sc-quick-menu-sub" class="sc-simple-sub">
 				<ul>
 					<li><a href="#">Change profile</a></li>

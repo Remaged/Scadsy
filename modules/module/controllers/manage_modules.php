@@ -5,11 +5,11 @@ class Manage_modules extends SCADSY_Controller{
 	public function __construct() {
 		parent::__construct();
 		$this->module_manager->add_new_modules();
+		
+		parent::init();
 	}
 
-	public function index() {
-		parent::init(array('admin'));		
-		
+	public function index() {	
 		$modules = new Module();
 		$modules->get();
 		$data['modules'] = $modules;
@@ -91,31 +91,21 @@ class Manage_modules extends SCADSY_Controller{
 	 */
 	 public function permissions() {
 	 	$this->load->helper('form');
-		
-	 	parent::init(array(
-			'module' => "module",
-			'action' => "permissions",
-			'group' => array('admin')
-			)
-		);
-		
+		 
 		$modules = new Module();
 		$modules->get_where(array('status'=>'enabled'));
 		
-		foreach($modules as &$module){
-			$module->action->get_iterated();
+		foreach($modules as $module){
+			$module->action->get();
 			foreach($module->action AS $action){
-				$groups = new Group();
-				$groups->get();
-				foreach($groups AS $group){
+				$group = new Group();				
+				$action->group = $group->get();
+				foreach($action->group AS $group){
 					$group->permission->get_where(array('action_id'=>$action->id,'group_id'=>$group->id),1);
-				}
-				$action->group = $groups;
+				}				
 			}
 		}
-
 		$data['modules'] = $modules;
-
 		$this->view('permissions', $data);
 	 }
 	 
@@ -124,17 +114,17 @@ class Manage_modules extends SCADSY_Controller{
 	  */
 	  public function permission_edit() {
 	  	if($this->input->server('REQUEST_METHOD') == "POST") {
-			$action = new Action();
-			$action->get_by_unique($this->input->post('module'),$this->input->post('controller'),$this->input->post('action'));
+			Database_manager::get_db()->trans_start();	
 
-			$group = new Group();
-			$group->get_where(array('name'=>$this->input->post('group')),1);
-			
+			$action = new Action($this->input->post('module'),$this->input->post('controller'),$this->input->post('action'));		
+			$group = new Group($this->input->post('group'));
+
 			$permission = new Permission();
 			$permission->where_related($action)->where_related($group)->get();
-			$permission->allowed = ($this->input->post('allowed') === FALSE) ? 0 : 1;
+			$permission->allowed = ($this->input->post('allowed') === FALSE) ? 0 : 1;			
+			$permission->save(array($action,$group));
 			
-			$permission->save(array($action,$group));	
+			Database_manager::get_db()->trans_complete();	
 		}
 	  }
 }

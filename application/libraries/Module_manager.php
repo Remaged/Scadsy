@@ -9,7 +9,8 @@ class Module_manager {
 	
 	public function __construct() {
 		$this->CI =& get_instance();
-		$this->module = new Module();
+		//$this->module = new Module();
+		$this->module = (defined("ENTERPRISE") && Database_manager::get_db()->database == ENTERPRISE) ? NULL : new Module();
 	}
 	
 	/** 

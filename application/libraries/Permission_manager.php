@@ -4,10 +4,15 @@
  * The Permission_manager class. This class manages the permissions.
  */
 class Permission_manager {
-
+	var $permission;
+	var $user; 
+	 
 	public function __construct() {
-		$this->permission = new Permission();
+		$this->permission = (defined("ENTERPRISE") && Database_manager::get_db()->database == ENTERPRISE) ? NULL : new Permission();
 		$this->user = new User();
+		
+		//$this->permission = new Permission();
+		//$this->user = new User();
 	}
 
 	/**
@@ -15,7 +20,7 @@ class Permission_manager {
 	 */
 	 public function should_check_permissions() {
 		if(defined("ENTERPRISE")) {
-			if($this->user->user_logged_in()) {
+			if($this->user->is_logged_in()) {
 				if(Database_manager::get_db()->database == ENTERPRISE){ 
 					return FALSE;
 				}
@@ -89,17 +94,17 @@ class Permission_manager {
 		$is_allowed = NULL;
 		if(is_array($groups)) {
 			foreach($groups as $group) {				
-				$this->permission->get_by_unique($module,$controller,$action, $group);
+				$this->permission->get_by_unique($module, $controller, $action, $group);
 				if($this->permission->exists() === TRUE){
 					$is_allowed = $this->permission->allowed;
 					break;
 				}
 			}
-		} else {			
+		} else {		
 			$this->permission->get_by_unique($module,$controller,$action,$groups);
 			if($this->permission->exists() === TRUE){
 				$is_allowed = $this->permission->allowed;
-			} 
+			}
 		}
 		return $is_allowed;
 	}
