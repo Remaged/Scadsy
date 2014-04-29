@@ -4,7 +4,7 @@
  * The current version of SCADSY
  */ 
 	define('VERSION', '0.1');
-	define('UPDATE_URL', 'http://www.scadsy.com:1337/updates/scadsy/');
+	define('UPDATE_URL', 'http://schools.scadsy.za.org/updates/');
  
 /*
  *-------------------------------------------------------------------------------
@@ -24,7 +24,7 @@
  * NOTE: If you change these, also change the error_reporting() code below
  *
  */
- 	define('ENVIRONMENT', 'development');
+ 	define('ENVIRONMENT', 'production');
 	
  /*
  *-------------------------------------------------------------------------------
