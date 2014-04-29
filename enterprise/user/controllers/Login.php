@@ -15,6 +15,8 @@ class Login extends SCADSY_Controller{
 	 * Default action. When user not logged in this results in a login form. Otherwise a succes page will be shown.
 	 */
 	public function index() {
+		$this->_login(FALSE);
+		/*
 		$validate_login = $this->login_model->validate_login(); 
 		if($this->user->is_logged_in() || $validate_login === TRUE){
 			//redirect('welcome/welcome/index');
@@ -25,14 +27,15 @@ class Login extends SCADSY_Controller{
 			$this->data['schools'] = $this->login_model->get_databases();
 			$this->view('login_form',$this->data,'template/header_without_menu');
 		}
-	}
-	
-	
+		 * */
+	}	
 	
 	/**
 	 * Login for the admin
 	 */
 	public function admin() {
+		$this->_login(TRUE);
+		/*
 		$validate_login = $this->login_model->validate_login(TRUE); 
 		if($this->user->is_logged_in() || $validate_login === TRUE){
 			//redirect('welcome/welcome/index');
@@ -42,8 +45,26 @@ class Login extends SCADSY_Controller{
 			$this->data['failed_message'] = $validate_login;
 			$this->view('login_form_admin',$this->data,'template/header_without_menu');
 		}
+		 * */
 	}
-	
+
+	private function _login($admin_mode = FALSE){
+		$validate_login = $this->login_model->validate_login($admin_mode); 
+		if($this->user->is_logged_in() || $validate_login === TRUE){
+			//redirect('welcome/welcome/index');
+			redirect(site_url());
+		}		
+		else{
+			$this->data['failed_message'] = $validate_login;
+			if($admin_mode === FALSE){
+				$this->data['schools'] = $this->login_model->get_databases();
+				$this->view('login_form',$this->data,'template/header_without_menu');
+			}
+			else{
+				$this->view('login_form_admin',$this->data,'template/header_without_menu');
+			}
+		}
+	}	
 	
 	/**
 	 * Sets rules for the login form validation.
@@ -65,8 +86,7 @@ class Login extends SCADSY_Controller{
 		}
 		return TRUE;		
 	}
-	
-	
+		
 	/**
 	 * Logs out user
 	 */

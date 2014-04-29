@@ -157,6 +157,7 @@ class User extends DataMapper {
         $u->where('username', $this->username)->get();
 		
 		if($u->exists() === FALSE || password_verify($this->password,$u->password) === FALSE){
+			$this->error_message('login', 'The username or password is invalid.');
 			return FALSE; 	
 		} 		
 		$newdata = array('id'=>$u->id);
