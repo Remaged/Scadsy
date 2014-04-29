@@ -13,6 +13,19 @@ class Permission extends DataMapper {
             'rules' => array('integer','greater_than[0]','less_than[1]'),
         )
     );
+	
+	/**
+	 * Overrides parent-constructor, making it possible to directly get the permission-object
+	 * based on it's unique-key, using natural names only (no id's):
+	 * module_directory, controller_name, action_name, group_name
+	 */
+	public function __construct($id = NULL) {
+        parent::__construct($id); 
+        $args = func_get_args(); 			
+		if(count($args) == 4){
+			$this->get_by_unique($args[0],$args[1],$args[2],$args[3]);
+		}
+	}
 
 	
 	/**

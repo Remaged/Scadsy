@@ -19,30 +19,8 @@ class Welcome extends SCADSY_Controller {
 	 */
 	public function index()
 	{
-		parent::init(array(
-			'module' => "welcome",
-			'action' => "index",
-			'group' => array('student','school','admin')
-			)
-		);
-		
-		/*
-		//$user = new User();
-		echo $this->user->get_logged_in_user()->username.' <br />';
-		//exit('testexit');
-		
-		$u = new User(5);
-		
-		foreach($u AS $user){
-			echo $user->username.' <br />';
-		}
-		
-		var_dump($u->exists());
+		parent::init(array('admin','student','teacher','parent'));
 
-		
-		exit("....exit....");
-		*/
-		
 		$this->load->helper(array('form', 'url'));
 		$this->load->library('form_validation');
 		$data['menu'] = $this->menu_manager->get_menu();

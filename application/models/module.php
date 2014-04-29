@@ -3,9 +3,7 @@
 class Module extends DataMapper {
 
 	var $table = 'modules';
-
     var $has_many = array('action');
-	//var $auto_populate_has_one = TRUE;
 
     var $validation = array(
         array(
@@ -39,6 +37,19 @@ class Module extends DataMapper {
             'rules' => array('xss_clean', 'trim'),
         )
     );
+	
+	/**
+	 * Overrides parent-constructor, making it possible to directly get the group-object
+	 * based on it's unique-key: the directory
+	 */
+	public function __construct($id = NULL) {
+		if(is_string($id) === TRUE){
+			parent::__construct(NULL); 
+			$this->get_where(array('directory'=>$id),1); 
+			return;
+		}
+		parent::__construct($id);
+	}
 	
 	/**
 	 * Get the modules that have a certain status
@@ -101,8 +112,7 @@ class Module extends DataMapper {
 		$module->get_where(array('directory'=>$directory,'status'=>'enabled'),1);		
 		return $module->exists();
 	}
-	
-	
+		
 	/**
 	 * Add module
 	 * @param $module_metadata
@@ -112,28 +122,48 @@ class Module extends DataMapper {
 	 * @param $module_permissions
 	 * 		An array with the groups that are allowed to load this module
 	 */
-	 public function add_module($module_metadata, $module_actions, $module_permissions) {
+	 public function add_module($module_metadata, $module_actions, $module_permissions) {	
 	 	Database_manager::get_db()->trans_start();
 		
-		$module = new Module($module_metadata);
+		$module = new Module();
+		foreach($module_metadata AS $property => $value){
+			$module->$property = $value;
+		}
 		$module->save();
-
-		foreach($module_actions AS $action){
+		
+		$controllers = array();
+	
+		foreach($module_actions AS $module_action){
+			if(!in_array($module_action['controller'], $controllers)){
+				$controllers[] = $module_action['controller'];
+			}
 			$action = new Action();
-			$action->name = $action['action'];
-			$action->module_id = $module->id;
-			$action->controller = $action['controller'];
-			$action->save();
+			$action->name = $module_action['action'];
+			$action->controller = $module_action['controller'];
+			$action->save($module);
+			
+			foreach($module_permissions AS $permission_group_name){
+				$group = new Group($permission_group_name);
+				$permission = new Permission();
+				$permission->allowed = 1;
+				$permission->save(array($action,$group));
+			}
+			
 		}
 		/*
-		foreach($module_permissions AS $permission_group_name){
-			$group = new Group();
-			$group->get_where(array('name'=>$permission_group_name),1);
-			$permission = new Permission();
-			$permission->action_id = $action->id;
-			$permission->group_id = $group->id;
+		foreach($controllers AS $controller){
+			$action = new Action();
+			$action->name = NULL;
+			$action->controller = $controller;
+			$action->save($module);
+			foreach($module_permissions AS $permission_group_name){
+				$group = new Group($permission_group_name);
+				$permission = new Permission();
+				$permission->allowed = 1;
+				$permission->save(array($action,$group));
+			}
 		}
-		*/
+		 */ 
 		Database_manager::get_db()->trans_complete();
 	 }
 

@@ -18,13 +18,8 @@ class Welcome extends SCADSY_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 	public function index()
-	{	
-		parent::init(array(
-			'module' => "welcome",
-			'action' => "index",
-			'group' => array('student','school','admin')
-			)
-		);
+	{
+		parent::init(array('admin','student','teacher','parent'));
 		
 		$data['menu'] = $this->menu_manager->get_menu();
 		

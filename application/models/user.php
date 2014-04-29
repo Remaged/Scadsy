@@ -72,13 +72,22 @@ class User extends DataMapper {
             'rules' => array('xss_clean', 'trim')
         )
     );
-	
-	function __construct($id = NULL)
-    {
-        parent::__construct($id);
+
+	/**
+	 * Overrides parent-constructor, making it possible to directly get the user-object
+	 * based on it's unique-key, using it username
+	 */
+	public function __construct($id = NULL) {
+		if(is_string($id) === TRUE){
+			parent::__construct(NULL); 
+			$this->get_where(array('username'=>$id),1); 
+		}
+		else{
+			parent::__construct($id); 
+		}
 		$this->CI =& get_instance();
-		$this->CI->load->library('session');
-    }
+		$this->CI->load->library('session');		
+	}
 
 	
 
@@ -183,7 +192,7 @@ class User extends DataMapper {
 	 * 		TRUE if user is logged in (the id-session of the user is stored).
 	 * 		FALSE if the user is not logged in.
 	 */
-	public function user_logged_in(){
+	public function is_logged_in(){
 		if($this->CI->session->userdata('id')){
 			return TRUE;
 		}
@@ -194,7 +203,7 @@ class User extends DataMapper {
 	 * Gets the user that is currently logged in.
 	 */
 	public function get_by_logged_in(){
-		if($this->user_logged_in() === TRUE){
+		if($this->is_logged_in() === TRUE){
 			$this->get_where(array('id'=>$this->CI->session->userdata('id')),1);
 		}
 		return $this;

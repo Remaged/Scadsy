@@ -14,10 +14,12 @@ class SCADSY_Controller extends MX_Controller {
 	public function __construct() {	
 		parent::__construct();	
 		$this->redirect_to_login();
-		$this->load_managers();	
+
+		$this->load_managers();
 		if ($this->permission_manager->should_check_permissions()){			
 			$this->check_module_enabled();
-		}		
+		}
+				
 		$this->module_manager->load_modules();
 	}
 	
@@ -25,7 +27,7 @@ class SCADSY_Controller extends MX_Controller {
 	 * Redirects users to the the login page when not logged in.
 	 */
 	protected function redirect_to_login(){
-		if($this->user->user_logged_in() === FALSE && get_class($this) != 'Login'){
+		if($this->user->is_logged_in() === FALSE && get_class($this) != 'Login'){
 			redirect('user/login/index');
 		}
 	}
@@ -60,11 +62,10 @@ class SCADSY_Controller extends MX_Controller {
 	 * @param $groups
 	 * 		The default groups that are allowed to view this page
 	 */
-	protected function init(Array $groups) {
+	protected function init(Array $groups = array()) {
 		$module = $this->router->get_module();
 		$controller = $this->router->get_controller();
 		$action = $this->router->get_action();
-
 		$is_allowed = $this->permission_manager->check_permissions($action, $controller, $module, $groups);
 
 		if(!$is_allowed) {
