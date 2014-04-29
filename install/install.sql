@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Machine: 127.0.0.1
--- Genereertijd: 29 apr 2014 om 11:13
+-- Genereertijd: 29 apr 2014 om 13:31
 -- Serverversie: 5.6.14
 -- PHP-versie: 5.5.6
 
@@ -29,23 +29,32 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `actions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `module_id` int(11) DEFAULT NULL,
-  `name` varchar(100) NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
   `controller` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_module_id_AND_name_AND_controller` (`module_id`,`name`,`controller`),
   KEY `module_id` (`module_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=74 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=205 ;
 
 --
 -- Gegevens worden uitgevoerd voor tabel `actions`
 --
 
 INSERT INTO `actions` (`id`, `module_id`, `name`, `controller`) VALUES
-(59, 127, 'index', 'login'),
-(61, 127, 'index', 'registration'),
-(60, 127, 'logout', 'login'),
-(72, 136, 'index', 'updates'),
-(73, 136, 'install', 'updates');
+(185, 183, 'disable', 'manage_modules'),
+(184, 183, 'enable', 'manage_modules'),
+(183, 183, 'index', 'manage_modules'),
+(186, 183, 'install', 'manage_modules'),
+(189, 183, 'permissions', 'manage_modules'),
+(190, 183, 'permission_edit', 'manage_modules'),
+(188, 183, 'save_modules', 'manage_modules'),
+(187, 183, 'uninstall', 'manage_modules'),
+(195, 186, 'index', 'login'),
+(197, 186, 'index', 'registration'),
+(196, 186, 'logout', 'login'),
+(202, 189, 'index', 'dashboard'),
+(203, 190, 'index', 'updates'),
+(204, 190, 'install', 'updates');
 
 -- --------------------------------------------------------
 
@@ -112,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `ethnicities` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
+  UNIQUE KEY `UK_name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
@@ -133,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `grades` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
+  UNIQUE KEY `UK_name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 --
@@ -164,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `name` (`name`)
+  KEY `UK_name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
@@ -187,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `languages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
+  UNIQUE KEY `UK_name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
@@ -215,17 +224,18 @@ CREATE TABLE IF NOT EXISTS `modules` (
   `author_uri` varchar(200) DEFAULT NULL,
   `status` enum('not_installed','enabled','disabled') NOT NULL DEFAULT 'not_installed',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `directory` (`directory`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=137 ;
+  UNIQUE KEY `UK_directory` (`directory`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=191 ;
 
 --
 -- Gegevens worden uitgevoerd voor tabel `modules`
 --
 
 INSERT INTO `modules` (`id`, `directory`, `name`, `uri`, `description`, `version`, `author`, `author_uri`, `status`) VALUES
-(2, 'module', ' Module Manager\r', '', ' This is a module manager.\r', ' 1.0', ' Bob van den Berge\r', ' http://www.seoduct.com/\r', 'enabled'),
-(127, 'user', ' User\r', ' \r', ' Handling users, like login, logout, registrating users, edititing user information.\r', ' 1.0\r', ' Kevin Driessen\r', ' http://kevindriessen.nl\r', 'enabled'),
-(136, 'update', ' Update Module\r', ' http://seoduct.com/update_module/\r', ' This is the update module. This module allowes you to let SCADSY update when there is a new version available. This way you don''t have to automatically keep track of all the new versions. This plugin also allows plugins to be updated.\r', ' 1.0\r', ' Bob van den Berge\r', ' http://www.seoduct.com/\r', 'enabled');
+(183, 'module', 'Module', '', 'This module allows the school-admin to manage the modules inside the schoolsystem.', ' 1.0\r', '', '', 'enabled'),
+(186, 'user', 'User', '', 'Handling user-information, login and logout', ' 1.0\r', 'Kevin Driessen', 'http://kevindriessen.nl', 'enabled'),
+(189, 'dashboard', 'Dashboard', '', 'This module enables the dashboard system.', ' 1.0\r', '-', '-', 'enabled'),
+(190, 'update', 'Update Module', 'http://seoduct.com/update_module/', 'This is the update module. This module allowes you to let SCADSY update when there is a new version available. This way you don''t have to manually keep track of all the new versions. This plugin also allows plugins to be updated.', ' 1.0\r', 'Bob van den Berge', 'http://www.seoduct.com/', 'enabled');
 
 -- --------------------------------------------------------
 
@@ -237,7 +247,7 @@ CREATE TABLE IF NOT EXISTS `parents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
+  UNIQUE KEY `UK_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -247,10 +257,12 @@ CREATE TABLE IF NOT EXISTS `parents` (
 --
 
 CREATE TABLE IF NOT EXISTS `parents_students` (
-  `student` int(11) NOT NULL,
-  `parent` int(11) NOT NULL,
-  PRIMARY KEY (`student`,`parent`),
-  KEY `FK_STUDENT_PARENT_PARENT` (`parent`)
+  `student_id` int(11) NOT NULL,
+  `parent_id` int(11) NOT NULL,
+  PRIMARY KEY (`student_id`,`parent_id`),
+  KEY `FK_STUDENT_PARENT_PARENT` (`parent_id`),
+  KEY `student_id` (`student_id`),
+  KEY `parent_id` (`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -265,18 +277,30 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   `allowed` tinyint(1) NOT NULL,
   `group_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `action_id` (`action_id`,`group_id`),
-  KEY `module_action_id` (`action_id`),
-  KEY `group_id` (`group_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=56 ;
+  UNIQUE KEY `UK_action_id_AND_group_id` (`action_id`,`group_id`),
+  KEY `group_id` (`group_id`),
+  KEY `action_id` (`action_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=37 ;
 
 --
 -- Gegevens worden uitgevoerd voor tabel `permissions`
 --
 
 INSERT INTO `permissions` (`id`, `action_id`, `allowed`, `group_id`) VALUES
-(35, 61, 0, 1),
-(55, 72, 0, 1);
+(8, 183, 1, 1),
+(9, 184, 1, 1),
+(10, 185, 1, 1),
+(11, 186, 1, 1),
+(12, 187, 1, 1),
+(13, 188, 1, 1),
+(14, 189, 1, 1),
+(15, 190, 1, 1),
+(22, 195, 1, 1),
+(23, 196, 1, 1),
+(24, 197, 1, 1),
+(34, 202, 1, 1),
+(35, 203, 1, 1),
+(36, 204, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -298,7 +322,7 @@ CREATE TABLE IF NOT EXISTS `schools` (
   `email` varchar(100) DEFAULT NULL,
   `website` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `ceeb` (`ceeb`)
+  UNIQUE KEY `UK_ceeb` (`ceeb`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -317,6 +341,13 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   KEY `last_activity_idx` (`last_activity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Gegevens worden uitgevoerd voor tabel `sessions`
+--
+
+INSERT INTO `sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
+('2af6f5a5c06651c73c647aeb7c87a8a3', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.131 Safari/537.36', 1398771077, 'a:2:{s:9:"user_data";s:0:"";s:2:"id";i:5;}');
+
 -- --------------------------------------------------------
 
 --
@@ -329,9 +360,9 @@ CREATE TABLE IF NOT EXISTS `students` (
   `user_id` int(11) NOT NULL,
   `grade_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `user` (`user_id`),
-  KEY `grade` (`grade_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  KEY `UK_user_id` (`user_id`),
+  KEY `grade_id` (`grade_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -344,6 +375,7 @@ CREATE TABLE IF NOT EXISTS `subjects` (
   `name` varchar(100) NOT NULL,
   `grade_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_name` (`name`),
   KEY `grade_id` (`grade_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -361,7 +393,20 @@ CREATE TABLE IF NOT EXISTS `updates` (
   `to_version` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`module_id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `updates`
+--
+
+INSERT INTO `updates` (`id`, `module_id`, `last_checked`, `has_update`, `to_version`) VALUES
+(7, 0, '2014-04-29 11:28:20', 0, NULL),
+(1, 183, '2014-04-29 11:28:20', 0, NULL),
+(2, 186, '2014-04-29 11:28:20', 0, NULL),
+(3, 187, '2014-04-29 11:28:20', 0, NULL),
+(4, 188, '2014-04-29 11:28:20', 0, NULL),
+(5, 189, '2014-04-29 11:28:20', 0, NULL),
+(6, 190, '2014-04-29 11:28:20', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -386,16 +431,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   `language_id` int(11) DEFAULT NULL,
   `group_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `ethnicity` (`ethnicity_id`),
-  KEY `language` (`language_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+  UNIQUE KEY `UK_username` (`username`),
+  KEY `ethnicity_id` (`ethnicity_id`),
+  KEY `language_id` (`language_id`),
+  KEY `group_id` (`group_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 --
 -- Gegevens worden uitgevoerd voor tabel `users`
 --
 
 INSERT INTO `users` (`id`, `title`, `first_name`, `middle_name`, `last_name`, `username`, `password`, `email`, `phone_number`, `date_of_birth`, `gender`, `status`, `ethnicity_id`, `language_id`, `group_id`) VALUES
-(20, 'Mr', 'admin', NULL, 'admin', '{USERNAME}', '{PASSWORD}', '{EMAIL}', '0000000000', '2014-04-01', 'male', 'enabled', NULL, NULL, 1);
+(5, 'Mr', 'admin', 'admin', 'admin', '{USERNAME}', '{PASSWORD}', '{EMAIL}', '234234234', '2014-03-19', 'male', 'enabled', NULL, NULL, 1);
 
 --
 -- Beperkingen voor gedumpte tabellen
@@ -426,6 +473,13 @@ ALTER TABLE `parents`
   ADD CONSTRAINT `FK_PARENT_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Beperkingen voor tabel `parents_students`
+--
+ALTER TABLE `parents_students`
+  ADD CONSTRAINT `FK_PARENTS_STUDENTS_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `parents` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_PARENTS_STUDENTS_student_id` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Beperkingen voor tabel `permissions`
 --
 ALTER TABLE `permissions`
@@ -449,6 +503,7 @@ ALTER TABLE `subjects`
 -- Beperkingen voor tabel `users`
 --
 ALTER TABLE `users`
+  ADD CONSTRAINT `FK_USERS_group_id` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_USERS_etnicity_id` FOREIGN KEY (`ethnicity_id`) REFERENCES `ethnicities` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_USERS_language_id` FOREIGN KEY (`language_id`) REFERENCES `languages` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 

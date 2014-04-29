@@ -1,1 +1,0 @@
-alert('HEADER JS LOADED');
