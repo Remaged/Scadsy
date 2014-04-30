@@ -84,6 +84,10 @@ class SCADSY_Controller extends MX_Controller {
 	 */		
 	protected function view($page, $data = '', $header_template = 'template/header', $footer_template = 'template/footer')
 	{
+		if($this->input->is_ajax_request() === TRUE){
+			$this->load->view($page, $data);
+			return;
+		}
 		$headerdata['menu'] = $this->menu_manager->get_menu();
 		$headerdata['scripts'] = $this->template_manager->get_scripts();
 		$headerdata['stylesheets'] = $this->template_manager->get_stylesheets();
