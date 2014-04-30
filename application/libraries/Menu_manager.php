@@ -104,7 +104,8 @@ class Menu_manager {
 				foreach($this->menu_items[$i] as $key => $value) {
 					$html .= '<li>';
 					$style = 'side';
-					$module = explode('/', $key)[0];
+					$modules = explode('/', $key);
+					$module = $modules[0];
 					
 					$icon = '<img class="normal" src="'.base_url('modules/').'/'.$module.'/assets/images/icon_24.png" /><img class="hover" src="'.base_url('modules/').'/'.$module.'/assets/images/icon_24_hover.png" /><img class="active" src="'.base_url('modules/').'/'.$module.'/assets/images/icon_24_active.png" />';
 					if($this->is_active($key)) {

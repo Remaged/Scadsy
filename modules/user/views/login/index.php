@@ -1,19 +1,21 @@
+<h1>Login</h1>
 
 <?php echo validation_errors(); ?>
-
-<?php echo form_open(uri_string()); ?>
 <?php echo $failed_message; ?>
+
+<?php echo form_open(uri_string(), array("class" => "sc-form")); ?>
+
+	<?php echo form_fieldset('Acces information'); ?>
 	
+	<?php echo form_label_input('username'); ?>
+	<?php echo form_label_password('password'); ?>
+
 	<div>
-		<label>Username</label>
-		<input type="text" name="username" value="<?php echo set_value('username', ''); ?>" size="50" />
+		<?php echo form_submit('login','Login'); ?>
 	</div>
-	<div>
-		<label>Password</label>
-		<input type="password" name="password" value="" size="50" />
-	</div>
-	<div>
-		<button>Login</button>
-	</div>
-</form>
+	
+	<?php echo form_fieldset_close(); ?>
+	
+<?php echo form_close(); ?>
+
 
