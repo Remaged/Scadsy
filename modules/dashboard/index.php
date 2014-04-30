@@ -9,12 +9,8 @@ Author: -
 Author URI: -
 */
 
-Hook_manager::add_hook('pre_menu_generate', 'dashboard_pre_menu_generated');
-function dashboard_pre_menu_generated($menu_manager) {
-	$menu_manager->add_menu_item('dashboard/dashboard/index', 'Dashboard', array('admin'), 1);
-}
-
-
+Hook_manager::add_hook('pre_menu_generate', 'DashboardCallbacks::pre_menu_generate');
+Hook_manager::add_hook('pre_dashboard_generate', 'DashboardCallbacks::pre_dashboard_generate');
 
 
 

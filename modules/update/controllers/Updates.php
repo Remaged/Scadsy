@@ -2,7 +2,11 @@
 
 class Updates extends SCADSY_Controller{
 
-	public function index() {
+	public function __construct() {
+		parent::__construct();
+	}	
+
+	public function index() {	
 		$data = array();
 		$data['updates'] = (new Update())
 								->where('has_update = 1')

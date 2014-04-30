@@ -55,6 +55,7 @@ class SCADSY_Controller extends MX_Controller {
 		$this->load->library('module_manager');
 		$this->load->library('form_manager');
 		$this->load->library('notification_manager');
+		$this->load->library('dashboard_manager');
 	 }
 
 	/**

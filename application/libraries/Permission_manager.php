@@ -32,6 +32,21 @@ class Permission_manager {
 	 }
 
 	/**
+	 * Check the permission of the user against a certain group
+	 * @param $group
+	 * 		The group to check the user again
+	 * @return bool
+	 * 		Whether or not the user has permissions
+	 */
+	 public function has_permission($groups) {
+	 	if(is_array($groups)) {
+	 		return in_array($this->user->get_by_logged_in()->group->name, $groups);
+	 	} else {
+	 		return strtolower($this->user->get_by_logged_in()->group->name) == strtolower($groups);
+	 	}	 	
+	 }
+
+	/**
 	 * Check the permission of the current page
 	 * @param $action
 	 * 		The name of the current action
