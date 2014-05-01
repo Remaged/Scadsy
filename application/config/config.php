@@ -9,9 +9,7 @@
 | folder, change it here.
 |
 */
-$config['modules_locations'] = array(
-	'modules/' => '../../modules/'
-);
+$config['modules_dir'] = 'modules/';
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +19,7 @@ $config['modules_locations'] = array(
 | The location of the enterprise directories. 
 |
 */
-$config['enterprise_locations'] = array(
-	'enterprise/' => '../../enterprise/'
-);
+$config['enterprise_dir'] = 'enterprise/';
 
 /*
 |--------------------------------------------------------------------------

@@ -10,10 +10,10 @@ class SCADSY_Router extends MX_Router {
 	public function __construct() {
 		global $CFG;
 		if(!defined('ENTERPRISE') || isset($_COOKIE['scadsy_db_cookie'])){
-			Modules::$locations = $CFG->item('modules_locations');
+			Modules::$location = $CFG->item('modules_dir');
 		}
 		else{
-			Modules::$locations = $CFG->item('enterprise_locations');
+			Modules::$location = $CFG->item('enterprise_dir');
 		}
 		
 		parent::__construct();

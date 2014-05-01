@@ -5,9 +5,7 @@
 global $CFG;
 
 /* get module locations from config settings or use the default module location and offset */
-is_array(Modules::$locations = $CFG->item('modules_locations')) OR Modules::$locations = array(
-	APPPATH.'modules/' => '../modules/',
-);
+Modules::$location = $CFG->item('modules_dir');
 
 /* PHP5 spl_autoload */
 spl_autoload_register('Modules::autoload');
@@ -47,7 +45,7 @@ spl_autoload_register('Modules::autoload');
  **/
 class Modules
 {
-	public static $routes, $registry, $locations;
+	public static $routes, $registry, $location;
 	
 	/**
 	* Run a module controller method
@@ -178,16 +176,14 @@ class Modules
 		if ( ! empty($segments)) {
 			$modules[array_shift($segments)] = ltrim(implode('/', $segments).'/','/');
 		}	
-
-		foreach (Modules::$locations as $location => $offset) {					
-			foreach($modules as $module => $subpath) {			
-				$fullpath = $location.$module.'/'.$base.$subpath;
 				
-				if ($base == 'libraries/' AND is_file($fullpath.ucfirst($file_ext))) 
-					return array($fullpath, ucfirst($file));
-					
-				if (is_file($fullpath.$file_ext)) return array($fullpath, $file);
-			}
+		foreach($modules as $module => $subpath) {			
+			$fullpath = Modules::$location.$module.'/'.$base.$subpath;
+			
+			if ($base == 'libraries/' AND is_file($fullpath.ucfirst($file_ext))) 
+				return array($fullpath, ucfirst($file));
+				
+			if (is_file($fullpath.$file_ext)) return array($fullpath, $file);
 		}
 		
 		return array(FALSE, $file);	

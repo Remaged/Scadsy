@@ -9,7 +9,6 @@ class Module_manager {
 	
 	public function __construct() {
 		$this->CI =& get_instance();
-		//$this->module = new Module();
 		$this->module = (defined("ENTERPRISE") && Database_manager::get_db()->database == ENTERPRISE) ? NULL : new Module();
 	}
 	
@@ -17,15 +16,14 @@ class Module_manager {
 	 * Install a module 
 	 **/	
 	public function install_module($directory) {
-		foreach(Modules::$locations as $location => $offset) {
-			$file = $location.$directory.'/install.php';
-			if(is_file($file)) {
-				include_once($file);				
-				$this->module->get_where(array('directory'=>$directory));
-				$this->module->status = 'disabled';
-				$this->module->save();
-				return;
-			}
+		$module_dir = $this->CI->config->item('modules_dir');
+		$file = $module_dir.$directory.'/install.php';
+		if(is_file($file)) {
+			include_once($file);				
+			$this->module->get_where(array('directory'=>$directory));
+			$this->module->status = 'disabled';
+			$this->module->save();
+			return;
 		}
 	}
 	
@@ -33,55 +31,53 @@ class Module_manager {
 	 * Uninstall a module 
 	 **/	
 	public function uninstall_module($directory) {
-		foreach(Modules::$locations as $location => $offset) {
-			$file = $location.$directory.'/uninstall.php';
-			if(is_file($file)) {
-				include_once($file);
-				$this->module->uninstall($directory);	
-				return;
-			}
-		}
+		$module_dir = $this->CI->config->item('modules_dir');
+		$file = $module_dir.$directory.'/uninstall.php';
+		if(is_file($file)) {
+			include_once($file);
+			$this->module->uninstall($directory);	
+			return;
+		}		
 	}
 
 	/**
 	 * Load all the currently active modules
 	 */
 	public function load_modules() {
-		$module_locations = $this->CI->config->item('modules_locations');
+		$module_dir = $this->CI->config->item('modules_dir');
 		if(!defined('ENTERPRISE') || isset($_COOKIE['scadsy_db_cookie'])){			
 			$modules = $this->module->get_by_status('enabled');
 		}
 		else{
-			$module_locations = $this->CI->config->item('enterprise_locations');
+			$module_dir = $this->CI->config->item('enterprise_dir');
 			$modules = $this->get_enterprise_modules();
 		}
 
 		foreach($modules as $module) {
-			$module = (array) $module;
-			foreach($module_locations as $key => $value) {
-				if(is_file($key.$module['directory'].'\index.php')) {
-					include_once($key.$module['directory'].'\index.php');	
-				}
+			if(!is_file($module_dir.$module->directory.'\index.php')) {
+				break;						
+			}
+			
+			include_once($module_dir.$module->directory.'\index.php');
 
-				// Auto load module models
-				if(is_dir($key.$module['directory'].'/models/')) {
-					$models = preg_grep('/^([^.])/', scandir($key.$module['directory'].'/models/'));
-					foreach($models as $model) {
-						include_once($key.$module['directory'].'/models/'.$model);
-					}
-				}				
+			// Auto load module models
+			if(is_dir($module_dir.$module->directory.'/models/')) {
+				$models = preg_grep('/^([^.])/', scandir($module_dir.$module->directory.'/models/'));
+				foreach($models as $model) {
+					include_once($module_dir.$module->directory.'/models/'.$model);
+				}
+			}				
 
-				// Auto load the language file for the module if it is present
-				$file = $key.$module['directory'].'/language/'.$this->CI->config->item('language').'/'.$module['directory'].'_lang.php';
-				if(is_file($file)) {				
-					$this->CI->load->language($module['directory'], '', FALSE, TRUE, '', $module['directory']);
-				}
-				
-				// Auto load the callback_helper if it is present
-				$file = $key.$module['directory'].'/helpers/callback_helper.php';
-				if(is_file($file)) {
-					$this->CI->load->helper('callback', $module['directory']);
-				}
+			// Auto load the language file for the module if it is present
+			$file = $module_dir.$module->directory.'/language/'.$this->CI->config->item('language').'/'.$module->directory.'_lang.php';
+			if(is_file($file)) {				
+				$this->CI->load->language($module->directory, '', FALSE, TRUE, '', $module->directory);
+			}
+			
+			// Auto load the callback_helper if it is present
+			$file = $module_dir.$module->directory.'/helpers/callback_helper.php';
+			if(is_file($file)) {
+				$this->CI->load->helper('callback', $module->directory);
 			}
 		}
 		
@@ -95,17 +91,16 @@ class Module_manager {
 	 * 				The module directory
 	 */
 	 public function refresh_module($directory) {
-	 	foreach($this->CI->config->item('modules_locations') as $key => $value) {
+	 	$module_dir = $this->CI->config->item('modules_dir');
 
-	 			if(is_dir($key.$directory) && is_file($key.$directory . '\index.php')) {
-					$module_actions = $this->get_module_actions($key.$directory.'\controllers\\');
-					$module_permissions = $this->get_module_permissions($key.$directory . '\index.php');
-					
-					$this->module->get_where(array('directory'=>$directory),1);
-					if($this->module->exists() === TRUE){
-						$this->module->update_module($directory, $module_actions, $module_permissions);
-					}
-				}
+		if(is_dir($module_dir.$directory) && is_file($module_dir.$directory . '\index.php')) {
+			$module_actions = $this->get_module_actions($module_dir.$directory.'\controllers\\');
+			$module_permissions = $this->get_module_permissions($module_dir.$directory . '\index.php');
+			
+			$this->module->get_where(array('directory'=>$directory),1);
+			if($this->module->exists() === TRUE){
+				$this->module->update_module($directory, $module_actions, $module_permissions);
+			}
 		}
 	 }
 	
@@ -113,23 +108,23 @@ class Module_manager {
 	 * Scan for new modules and add them to the database
 	 */
 	public function add_new_modules() {
+		$module_dir = $this->CI->config->item('modules_dir');
+		
 		// Get files and directories without the . and .. folders
-		foreach($this->CI->config->item('modules_locations') as $key => $value) {
-			$directories = preg_grep('/^([^.])/', scandir($key));
-			// Scan all files/folders found
-			foreach($directories as $dir) {
-				// If it is a dir and has the correct file name
-				if(is_dir($key.$dir) 
-						&& is_file($key.$dir . '\index.php')) {
-							
-					$module_metadata = $this->get_module_metadata($key.$dir . '\index.php', $dir);
-					$module_actions = $this->get_module_actions($key.$dir.'\controllers\\');
-					$module_permissions = $this->get_module_permissions($key.$dir . '\index.php');
-									
-					$this->module->get_where(array('directory'=>$module_metadata['directory']),1);
-					if($this->module->exists() === FALSE){
-						$this->module->add_module($module_metadata, $module_actions, $module_permissions);
-					}
+		$directories = preg_grep('/^([^.])/', scandir($module_dir));
+		// Scan all files/folders found
+		foreach($directories as $dir) {
+			// If it is a dir and has the correct file name
+			if(is_dir($module_dir.$dir) 
+					&& is_file($module_dir.$dir . '\index.php')) {
+						
+				$module_metadata = $this->get_module_metadata($module_dir.$dir . '\index.php', $dir);
+				$module_actions = $this->get_module_actions($module_dir.$dir.'\controllers\\');
+				$module_permissions = $this->get_module_permissions($module_dir.$dir . '\index.php');
+								
+				$this->module->get_where(array('directory'=>$module_metadata['directory']),1);
+				if($this->module->exists() === FALSE){
+					$this->module->add_module($module_metadata, $module_actions, $module_permissions);
 				}
 			}
 		}
@@ -138,22 +133,20 @@ class Module_manager {
 	/**
 	 * Scan for all modules in the given locations, retrieving their metadata.
 	 * @param $config_item
-	 * 		Optional (default = enterprise_locations). Key (string) for the config item in which the locations are stored. 
+	 * 		Optional (default = enterprise_dir). Key (string) for the config item in which the locations are stored. 
 	 * @return
 	 * 		array with the metadata of each module.
 	 */
-	public function get_all_modules_from_directory($config_item = 'modules_locations'){
+	public function get_all_modules_from_directory($config_item = 'modules_dir'){
 		$modules_data = array();
-		$locations = array_keys($this->CI->config->item($config_item));
-		foreach($locations AS $location){					
-			$module_dirs = scandir(getcwd().'/'.$location);			
-			foreach($module_dirs AS $module_dir){
-				$module_dir_path = getcwd().'/'.$location.$module_dir;			
-				if(is_dir($module_dir_path) && $module_dir != '.' && $module_dir != '..'){
-					$index_filepath = $module_dir_path.'/index.php';
-					if(is_file($index_filepath)){
-						$modules_data[] = $this->get_module_metadata($index_filepath,$module_dir);
-					}
+		$location = $this->CI->config->item('modules_dir');					
+		$module_dirs = scandir(getcwd().'/'.$location);			
+		foreach($module_dirs AS $module_dir){
+			$module_dir_path = getcwd().'/'.$location.$module_dir;			
+			if(is_dir($module_dir_path) && $module_dir != '.' && $module_dir != '..'){
+				$index_filepath = $module_dir_path.'/index.php';
+				if(is_file($index_filepath)){
+					$modules_data[] = $this->get_module_metadata($index_filepath,$module_dir);
 				}
 			}
 		}
@@ -166,7 +159,7 @@ class Module_manager {
 	 * 		array with the metadata of each enterprise module.
 	 */
 	private function get_enterprise_modules(){
-		return $this->get_all_modules_from_directory('enterprise_locations');
+		return $this->get_all_modules_from_directory('enterprise_dir');
 	}
 	
 	/**

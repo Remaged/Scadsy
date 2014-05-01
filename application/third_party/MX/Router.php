@@ -81,31 +81,27 @@ class MX_Router extends CI_Router
 		list($module, $controller, $action) = array_pad($segments, 3, NULL);
 
 		$action = $action ?: 'index';			
-				
-		/* check modules */
-		foreach (Modules::$locations as $location => $offset) {
+						
+		/* module exists? */
+		if (is_dir($source = Modules::$location.$module.'/controllers/')) {
 			
-			/* module exists? */
-			if (is_dir($source = $location.$module.'/controllers/')) {
-				
-				$this->module = $module;
-				$this->directory = $offset.$module.'/controllers/';
-				
-				/* module sub-controller exists? */
-				if($controller AND is_file($source.$controller.$ext)) {
-					$this->controller = $controller;
-					$this->action = $action;
-					return array_slice($segments, 1);
-				}
+			$this->module = $module;
+			$this->directory = "../../".Modules::$location.$module.'/controllers/';
 			
-				/* module controller exists? */			
-				if(is_file($source.$controller.$ext)) {
-					$this->controller = $controller;
-					$this->action = $action;
-					return $segments;
-				}
-			} 
-		}
+			/* module sub-controller exists? */
+			if($controller AND is_file($source.$controller.$ext)) {
+				$this->controller = $controller;
+				$this->action = $action;
+				return array_slice($segments, 1);
+			}
+		
+			/* module controller exists? */			
+			if(is_file($source.$controller.$ext)) {
+				$this->controller = $controller;
+				$this->action = $action;
+				return $segments;
+			}
+		} 
 				
 		/* application controller exists? */			
 		if (is_file(APPPATH.'controllers/'.$module.$ext)) {
