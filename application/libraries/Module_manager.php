@@ -54,6 +54,11 @@ class Module_manager {
 		}
 
 		foreach($modules as $module) {
+			if(!is_dir($module_dir.$module->directory)) {
+				$module->delete();
+				break;
+			}
+			
 			if(!is_file($module_dir.$module->directory.'\index.php')) {
 				break;						
 			}
