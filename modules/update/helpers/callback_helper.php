@@ -21,7 +21,7 @@ class UpdateCallbacks {
 		self::show_notification($notification_manager);
 	}
 	
-	private static function update_existing_relationships() {
+	public static function update_existing_relationships() {
 		$m = new Module();
 		$m->has_one('update');
 	}
@@ -155,6 +155,14 @@ class UpdateCallbacks {
 			$zip->close();
 		} else {
 			throw new Exception();
+		}
+	}
+	
+	public static function pre_dashboard_generate($dashboard_manager) {
+		$count = (new Update())->where('has_update = 1')->count();
+		if($count > 0) {
+			self::update_existing_relationships();
+			$dashboard_manager->add_widget('update/updates/widget', 'admin');
 		}
 	}
 }

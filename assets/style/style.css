@@ -577,9 +577,23 @@ body {
 	vertical-align: top;
 }
 
+.sc-widget {
+	background:white;
+	border: 1px solid #e5e5e5;
+	padding:10px;
+	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
+	word-wrap: break-word;
+	float:left;
+	max-width:45%;
+	margin:0 2% 2% 0;
+}
 
-
-
+.sc-widget h2 {
+	font-weight:bold;
+	border-bottom:1px solid #e5e5e5;
+	font-size:15px;
+}
 
 
 

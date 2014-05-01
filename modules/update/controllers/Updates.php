@@ -24,6 +24,13 @@ class Updates extends SCADSY_Controller{
 			}
 		}
 	}
+	
+	public function widget() {
+		$updates = (new Update())->where('has_update = 1')->get();
+		$data = array();
+		$data['updates'] = $updates;
+		parent::widget('widgets/overview', $data);
+	}
 }
 
 /* End of file Update.php */

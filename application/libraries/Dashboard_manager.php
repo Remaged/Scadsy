@@ -53,7 +53,7 @@ class Dashboard_manager {
 	 	$html = '';
 		
 		foreach($this->widgets as $widget) {
-			$html .= '<div class="widget">'.modules::run($widget).'</div>';
+			$html .= '<div id="'.str_replace('/','_',$widget).'" class="sc-widget">'.modules::run($widget).'</div>';
 		}
 		
 		return $html;

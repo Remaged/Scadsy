@@ -13,5 +13,7 @@ Hook_manager::add_hook('pre_notifications_generate', 'UpdateCallbacks::check_for
 
 Hook_manager::add_hook('pre_menu_generate', 'UpdateCallbacks::pre_menu_generated');
 
+Hook_manager::add_hook('pre_dashboard_generate', 'UpdateCallbacks::pre_dashboard_generate');
+
 /* End of file index.php */
 /* Location: ./modules/update/index.php */

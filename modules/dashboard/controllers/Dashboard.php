@@ -10,7 +10,7 @@ class Dashboard extends SCADSY_Controller{
 	}
 	
 	public function exampleWidget() {
-		$this->view('widgets/example');
+		$this->widget('widgets/example');
 	}
 }
 

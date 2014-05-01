@@ -24,13 +24,13 @@
 	</tfoot>
 	<?php foreach($updates as $update) { 
 		if($update->module_id != 0) {
-			$update->module->get();
+			$m = (new Module($update->module_id))->get();
 		}
 		?>
 		<tr>
 			<td><?php echo ($update->module_id == 0) ? __('System') : __('Module'); ?></td>
-			<td><?php echo ($update->module_id == 0) ? 'SCADSY' : $update->module->name; ?></td>
-			<td><?php echo ($update->module_id == 0) ? VERSION : $update->module->version; ?></td>
+			<td><?php echo ($update->module_id == 0) ? 'SCADSY' : $m->name; ?></td>
+			<td><?php echo ($update->module_id == 0) ? VERSION : $m->version; ?></td>
 			<td><?php echo $update->to_version; ?></td>
 			<td><?php echo post_link("update/updates/install", __("Install update!"), array("update" => $update->id), "
 				if(data.indexOf('failed') == -1) {

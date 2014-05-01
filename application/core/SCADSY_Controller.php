@@ -85,7 +85,7 @@ class SCADSY_Controller extends MX_Controller {
 	protected function view($page, $data = '', $header_template = 'template/header', $footer_template = 'template/footer')
 	{
 		if($this->input->is_ajax_request() === TRUE){
-			$this->load->view($page, $data);
+			$this->widget($page, $data);
 			return;
 		}
 		$headerdata['menu'] = $this->menu_manager->get_menu();
@@ -99,6 +99,15 @@ class SCADSY_Controller extends MX_Controller {
 		$footerdata['scripts'] = $this->template_manager->get_scripts(FALSE);
 		$this->load->view($footer_template, $footerdata);
 	}
+	
+	/**
+	 * The widget function
+	 * @param $page
+	 * 		The page to return
+	 */
+	 protected function widget($page, $data = '') {
+	 	$this->load->view($page, $data);
+	 }
 }
 
 /* End of file SCADSY_Controller.php */
