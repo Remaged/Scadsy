@@ -26,7 +26,6 @@ class Permission extends DataMapper {
 			$this->get_by_unique($args[0],$args[1],$args[2],$args[3]);
 		}
 	}
-
 	
 	/**
 	 * get-function by using its 'natural' keys, thus using names instead of id's.
@@ -53,7 +52,65 @@ class Permission extends DataMapper {
 		}
 		return NULL;
 	}
-
+	
+	/**
+	 * Save
+	 * 
+	 * Extends the save-method of the parent. If the group of a permission has sub-groups, then the subgroups should be 
+	 * saved/changed as well.
+	 * Also, if a parent (or ancester) group is allowed, the current group cannot be set to deny. 
+	 *
+	 * @param	mixed $object Optional object to save or array of objects to save.
+	 * @param	string $related_field Optional string to save the object as a specific relationship.
+	 * @return	bool Success or Failure of the validation and save.
+	 */
+	public function save($object = '', $related_field = ''){
+		Database_manager::get_db()->trans_start();	
+		$succes = parent::save($object, $related_field);
+		if($succes === TRUE){
+			if($this->allowed == 1){
+				$this->save_child_groups_permissions($this->group->child_group->get());
+			}
+			else{
+				$CI =& get_instance();
+				$parent_allowed = $CI->permission_manager->group_has_permission(
+						$this->action, 
+						$this->group->parent_group->get()
+					);
+				
+				if($parent_allowed === TRUE){
+					$this->error_message('parent_permission_allowed', 'A parent-group (or ancester) is allowed for this permission. Child-groups cannot be denied if a parent or ancester is allowed.');
+					Database_manager::get_db()->trans_rollback();
+					return FALSE;
+				}
+			}
+		}
+		Database_manager::get_db()->trans_complete();
+		return $succes;
+	} 
+	
+	/**
+	 * Loops through all child-groups to match their allowed-status with the allowed-status of the current permission.
+	 * @param $child_groups
+	 * 		group-object (datamapper) to set its status the same as the current permission.
+	 */
+	private function save_child_groups_permissions($child_groups){
+		if($child_groups->exists()){
+			foreach($child_groups AS $child_group){
+				$permission = new Permission();
+				$permission->where_related($this->action)->where_related($child_group)->get();
+				$permission->allowed = $this->allowed;
+				if($permission->exists()){					
+					$permission->save();
+				}
+				else{
+					$permission->save(array($this->action,$child_group));
+				}
+				$this->save_child_groups_permissions($child_group->child_group->get());
+			}
+		}
+	}
+	
 }
 
 /* End of file permission.php */
