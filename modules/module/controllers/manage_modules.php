@@ -9,7 +9,9 @@ class Manage_modules extends SCADSY_Controller{
 		parent::init();
 	}
 
-	public function index() {	
+	public function index() {
+		$this->module_manager->check_modules();
+			
 		$modules = new Module();
 		$modules->get();
 		$data['modules'] = $modules;

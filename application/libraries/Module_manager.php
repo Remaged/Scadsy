@@ -41,6 +41,20 @@ class Module_manager {
 	}
 
 	/**
+	 * Check if all the modules in the database are still present on the file system
+	 */
+	public function check_modules() {
+		$this->module->get();
+		
+		foreach($this->module as $module) {
+			if(!is_dir($this->CI->config->item('modules_dir').$module->directory)) {
+				$module->delete();
+				break;
+			}
+		}
+	}
+
+	/**
 	 * Load all the currently active modules
 	 */
 	public function load_modules() {
