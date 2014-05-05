@@ -9,7 +9,9 @@ Author: Bob van den Berge
 Author URI: http://www.seoduct.com/
 */
 
-Hook_manager::add_hook('pre_notifications_generate', 'UpdateCallbacks::check_for_updates');
+Hook_manager::add_hook('modules_loaded', 'UpdateCallbacks::check_for_updates');
+
+Hook_manager::add_hook('pre_notifications_generate', 'UpdateCallbacks::show_notification');
 
 Hook_manager::add_hook('pre_menu_generate', 'UpdateCallbacks::pre_menu_generated');
 

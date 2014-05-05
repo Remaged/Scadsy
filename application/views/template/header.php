@@ -23,7 +23,6 @@
 			<span>Hello, <?php $user = new User(); echo $user->get_by_logged_in()->username; ?></span>
 			<div id="sc-quick-menu-sub" class="sc-simple-sub">
 				<ul>
-					<li><a href="#">Change profile</a></li>
 					<li><a href="<?php echo site_url('user/login/logout'); ?>">Logout</a></li>
 				</ul>
 			</div>

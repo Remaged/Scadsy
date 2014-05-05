@@ -24,6 +24,14 @@ class Update extends DataMapper {
         'to_version' => array(
             'label' => 'To Version',
             'rules' => array('xss_clean', 'min_length' => 1, 'max_length' => 49)
+        ),       
+        'file_location' => array(
+            'label' => 'File Location',
+            'rules' => array('xss_clean', 'min_length' => 1, 'max_length' => 199)
+        ),       
+        'change_log' => array(
+            'label' => 'Change Log',
+            'rules' => array('xss_clean', 'min_length' => 1)
         )
     );
 	

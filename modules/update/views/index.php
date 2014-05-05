@@ -11,6 +11,7 @@
 			<th><?php echo __('Current Version'); ?></th>
 			<th><?php echo __('New Version'); ?></th>
 			<th><?php echo __('Action'); ?></th>
+			<th><?php echo __('Change Log'); ?></th>
 		</tr>
 	</thead>
 	<tfoot>
@@ -20,6 +21,7 @@
 			<th><?php echo __('Current Version'); ?></th>
 			<th><?php echo __('New Version'); ?></th>
 			<th><?php echo __('Action'); ?></th>
+			<th><?php echo __('Change Log'); ?></th>
 		</tr>
 	</tfoot>
 	<?php foreach($updates as $update) { 
@@ -40,6 +42,7 @@
 					showNotification('error', data); 
 				}				
 			"); ?></td>
+			<td><?php echo $update->change_log; ?></td>
 		</tr>
 	<?php } ?>
 </table>

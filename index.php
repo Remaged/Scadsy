@@ -1,11 +1,4 @@
 <?php
-
-/*
- * The current version of SCADSY
- */ 
-	define('VERSION', '0.1');
-	define('UPDATE_URL', 'http://schools.scadsy.za.org/updates/');
- 
 /*
  *-------------------------------------------------------------------------------
  * APPLICATION ENVIRONMENT
@@ -215,6 +208,11 @@ if (defined('ENVIRONMENT'))
 
 		define('APPPATH', BASEPATH.$application_folder.'/');
 	}
+/* --------------------------------------------------------------------
+ * LOAD THE VERSIONS FILE
+ * --------------------------------------------------------------------
+ */
+require_once 'versions.php';
 
 /* --------------------------------------------------------------------
  * LOAD THE DATAMAPPER BOOTSTRAP FILE

@@ -10,6 +10,7 @@ $lang['Action'] 												= 'Action';
 $lang['System']													= 'System';
 $lang['Module']													= 'Module';
 $lang['Install update!']										= 'Install update!';
+$lang['Change Log']												= 'Change Log';
 $lang['The update failed to install. Please try again later.'] 	= 'The update failed to install. Please try again later.';
 $lang['The update was installed succesfully.'] 					= 'The update was installed succesfully.';
 $lang['Click here to update!'] 									= 'Click here to update!';

@@ -27,7 +27,16 @@ $fields = array(
 												'type' => "VARCHAR",
 												 'constraint' => '50',
 												 'null' => TRUE
-										  )                  
+										  ),
+                        'file_location' => array(
+												'type' => "VARCHAR",
+												 'constraint' => '200',
+												 'null' => TRUE
+										  ),
+                        'change_log' => array(
+												'type' => "TEXT",
+												 'null' => TRUE
+										  )                   
                 );
 $CI->dbforge->add_field($fields); 	
 $CI->dbforge->add_key('id');	

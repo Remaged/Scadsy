@@ -5,7 +5,8 @@ class UpdateCallbacks {
 	private function __construct() {}
 	
 	public static function pre_menu_generated($menu_manager) {
-		$count = (new Update())->where('has_update = 1')->count();	
+		$update = new Update();
+		$count = $update->where('has_update = 1')->count();	
 		if($count > 0) {
 			$menu_manager->add_submenu_item('dashboard/dashboard/index','update/updates/index', __('Updates').'<span class="update-count"><span class="count">'.$count.'</span></span>', array('admin'));		
 		} else {
@@ -13,20 +14,12 @@ class UpdateCallbacks {
 		}
 	}	
 	
-	public static function check_for_updates($notification_manager){
-		self::update_existing_relationships();
-		self::update_update_list();
-		self::check_updates_modules();	
-		self::check_updates_core();
-		self::show_notification($notification_manager);
+	public static function check_for_updates(){
+		self::check_update_list();
+		self::check_updates();
 	}
 	
-	public static function update_existing_relationships() {
-		$m = new Module();
-		$m->has_one('update');
-	}
-	
-	private static function update_update_list() {
+	private static function check_update_list() {
 		// Add missing modules
 		$m = new Module();
 		$m->get();
@@ -51,19 +44,35 @@ class UpdateCallbacks {
 		}
 	}
 	
-	private static function check_updates_modules() {
+	private static function check_updates() {
 		$u = new Update();
-		$u->where("module_id != 0 AND has_update = 0 AND DATEDIFF(last_checked, now()) < 0")->get();
+		$u->where("has_update = 0 AND DATEDIFF(last_checked, now()) < 0")->get();
 
 		foreach($u as $update) {
 			// See if we can check for updates
-			$module = new Module($update->module_id);
-			if(filter_var(trim($module->uri), FILTER_VALIDATE_URL) !== FALSE) {
+			$module = (new Module());
+			$module->where("id", $update->module_id)->get();
+			
+			$version = ($update->module_id == 0) ? VERSION : $module->version;
+			$url = ($update->module_id == 0) ? UPDATE_URL : $module->uri;
+
+			if(filter_var(trim($url), FILTER_VALIDATE_URL) !== FALSE) {				
 				// So we can check for updates, lets do it!
-				$lastest_version = file_get_contents(trim($module->uri).'?type=version');
-				if($lastest_version > $module->version) {
+				$query = array(
+					'version'           => VERSION,
+					'module'			=> trim($version),
+					'php'               => phpversion()
+				);			
+
+				$http_url = trim($url) . '?' . http_build_query( $query, null, '&' );
+				$http_data = file_get_contents($http_url);
+				$data = json_decode($http_data);
+				
+				if($data->has_update === TRUE) {
 					$update->has_update = 1;
-					$update->to_version = $lastest_version;
+					$update->to_version = $data->module;
+					$update->file_location = $data->file_location;
+					$update->change_log = $data->change_log;
 				} else {
 					$update->has_update = 0;
 				}
@@ -74,24 +83,7 @@ class UpdateCallbacks {
 		}
 	}
 	
-	private static function check_updates_core() {
-		$scadsy = new Update();
-		$scadsy->where('module_id = 0 AND DATEDIFF(last_checked, now()) < 0')
-				->limit(1)
-				->get();
-		if($scadsy->result_count() == 1) {
-			$lastest_version = file_get_contents(trim(UPDATE_URL).'?type=version');
-			if($lastest_version > VERSION) {
-				$scadsy->has_update = 1;
-				$scadsy->to_version = $lastest_version;						
-			} 			
-			$date = new DateTime();
-			$scadsy->last_checked = date('Y-m-d H:i:s',$date->getTimestamp());			
-			$scadsy->save();
-		}		
-	}
-	
-	private static function show_notification($notification_manager) {
+	public static function show_notification($notification_manager) {
 		$scadsy = new Update();
 		$scadsy->where('module_id = 0')->get();
 		if($scadsy->has_update == 1) {
@@ -101,14 +93,17 @@ class UpdateCallbacks {
 
 	public static function install_update($update_id) {
 		try {
-			self::update_existing_relationships();
-			
 			$update = new Update($update_id);
 			$module = new Module($update->module_id);
-			$url = self::get_update_url($update, $module);
+			$file = 'temp/updates/'.$update->id.'.zip';
 
-			self::download_zip($update, $url);
-			self::extract_zip($update, $module);
+			self::download_zip($file, $update, $update->file_location);
+			
+			if(self::zip_has_settings($file)) {
+				self::handle_settings($file, $update, $module);
+			}
+			
+			self::zip_extract($file, $update, $module);
 		
 			unlink('temp/updates/'.$update_id.".zip");
 			return TRUE;
@@ -118,38 +113,48 @@ class UpdateCallbacks {
 		}
 	}	
 
-	private static function get_update_url($update, $module) {		
-		if($update->module_id == 0) {
-			return UPDATE_URL.'?type=file';
-		} else {
-			return $module->uri.'?type=file';
-		}
-	}
-
-	private static function download_zip($update, $url) {
+	private static function download_zip($file, $update, $url) {		
 		if(!is_dir('temp/updates')){
 			mkdir('temp/updates');
 		}
 		
-		if(file_put_contents('temp/updates/'.$update->id.".zip", fopen($url, 'r')) === FALSE) {
+		if(file_put_contents($file, fopen($url, 'r')) === FALSE) {
 			throw new Exception();
 		}
 	}
 
-	private static function extract_zip($update, $module) {
+	private static function zip_has_settings($file) {
 		$zip = new ZipArchive();
-		if($zip->open('temp/updates/'.$update->id.".zip") === TRUE) {
+		if($zip->open($file) === TRUE) {
+			if($zip->getFromName('settings.xml') !== FALSE) {
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
+
+	private static function zip_extract($file, $update, $module) {
+		$zip = new ZipArchive();
+		if($zip->open($file) === TRUE) {
 			
 			if($update->module_id == 0) {
 				$zip->extractTo('.');
+				if(is_file('settings.xml')) {
+					unlink('settings.xml');
+				}
 			} else {
 				$zip->extractTo('modules/'.$module->directory.'/');
+				if(is_file('modules/'.$module->directory.'/'.'settings.xml')) {
+					unlink('modules/'.$module->directory.'/'.'settings.xml');
+				}
 				$module->version = $update->to_version;
 				$module->save();
 			}
 			
 			$update->has_update = 0;
 			$update->to_version = NULL;
+			$update->file_location = NULL;
+			$update->change_log = NULL;
 			$update->save();
 			
 			$zip->close();
@@ -158,10 +163,49 @@ class UpdateCallbacks {
 		}
 	}
 	
+	private static function handle_settings($file, $update, $module) {
+		$zip = new ZipArchive();
+		if($zip->open($file) === TRUE) {
+			
+			$settings = $zip->getFromName('settings.xml');
+			$xml = simplexml_load_string($settings);
+			$base_url = ($update->module_id == 0) ? './' : 'modules/'.$module->directory.'/';
+			
+			foreach($xml->actions as $action) {
+				// Delete
+				if(isset($action->delete)) {
+					foreach($action->delete->file as $file) {
+						unlink($base_url.$file);
+					}
+				}
+				
+				// Move
+				if(isset($action->move)) {
+					foreach($action->move->data as $data) {
+						$from = $base_url . $data->from;
+						$to = $base_url . $data->to;
+						rename($from, $to);
+					}
+				}
+				
+				// Database
+				if(isset($action->database)) {
+					foreach($action->database->file as $file) {
+						$sql = file_get_contents($base_url.$file);
+						Database_manager::get_db()->query($sql);
+					}
+				}
+			}
+
+			$zip->close();			
+		} else {
+			throw new Exception();
+		}
+	}
+	
 	public static function pre_dashboard_generate($dashboard_manager) {
-		$count = (new Update())->where('has_update = 1')->count();
-		if($count > 0) {
-			self::update_existing_relationships();
+		$count = new Update();
+		if($count->where('has_update = 1')->count() > 0) {
 			$dashboard_manager->add_widget('update/updates/widget', 'admin');
 		}
 	}
