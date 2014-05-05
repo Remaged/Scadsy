@@ -89,6 +89,18 @@ class Module extends DataMapper {
 	 }
 	 
 	 /**
+	  * Install a module
+	  * @param $directory
+	  * 	The directory of the module
+	  */
+	  public function install($directory) {
+	  	$module = new Module();
+		$module->get_where(array('directory'=>$directory),1);
+		$module->status = 'disabled';
+		$module->save();
+	  }
+	  
+	 /**
 	 * Uninstall a module
 	 * @param $directory
 	 * 		The directory of the module

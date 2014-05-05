@@ -18,13 +18,12 @@ class Module_manager {
 	public function install_module($directory) {
 		$module_dir = $this->CI->config->item('modules_dir');
 		$file = $module_dir.$directory.'/install.php';
+		
 		if(is_file($file)) {
-			include_once($file);				
-			$this->module->get_where(array('directory'=>$directory));
-			$this->module->status = 'disabled';
-			$this->module->save();
-			return;
-		}
+			include_once($file);
+		}			
+			
+		$this->module->install($directory);
 	}
 	
 	/** 
@@ -33,11 +32,12 @@ class Module_manager {
 	public function uninstall_module($directory) {
 		$module_dir = $this->CI->config->item('modules_dir');
 		$file = $module_dir.$directory.'/uninstall.php';
+		
 		if(is_file($file)) {
 			include_once($file);
-			$this->module->uninstall($directory);	
-			return;
-		}		
+		}
+		
+		$this->module->uninstall($directory);			
 	}
 
 	/**
