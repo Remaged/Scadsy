@@ -32,6 +32,28 @@ class Permission_manager {
 	 }
 
 	/**
+	 * Check the permission of the current page.
+	 * @param $action
+	 * 		The name of the current action.
+	 * @param $controller
+	 * 		The name of the current controller.
+	 * @param $module
+	 * 		The name of the current module.
+	 * @return
+	 * 		TRUE if a permission with allow is found
+	 * 		FALSE if a permission with deny is found or no permission is found.		
+	 */	
+	public function check_permissions($action_name, $controller, $module_name) {
+		if ($this->should_check_permissions()){		
+			$user_groups = $this->user->get_by_logged_in()->group->get();
+			$action = new Action($module_name, $controller, $action_name);			
+			return $this->group_has_permission($action, $user_groups);
+		} else {
+			return TRUE;
+		}
+	}
+	
+	/**
 	 * Check the permission of the user against a certain group
 	 * @param $group
 	 * 		The group to check the user again
@@ -46,82 +68,37 @@ class Permission_manager {
 	 	}	 	
 	 }
 
-	/**
-	 * Check the permission of the current page
-	 * @param $action
-	 * 		The name of the current action
-	 * @param $module
-	 * 		The name of the current module
-	 * @param $default_groups
-	 * 		The default groups that are allowed to view this page. This can be either an array or a single string.
-	 */	
-	public function check_permissions($action_name, $controller, $module_name, $default_groups) {
-
-		if ($this->should_check_permissions()){
-			
-			$user_group = $this->user->get_by_logged_in()->group->name;
-			$is_allowed = $this->check_permissions_database($action_name, $controller, $module_name, $user_group);
-			
-			if($is_allowed === NULL) {
-				if(in_array($user_group, $default_groups)){
-					$is_allowed = TRUE;
-				} else {
-					$is_allowed = FALSE;
-				}
-			
-				$action = new Action();
-				$action->get_by_unique($module_name, $controller, $action_name);
-				
-				$group = new Group();
-				$group->get_where(array('name'=>$user_group),1);
-				
-				$this->permission->allowed = $is_allowed;
-
-				$this->permission->save(array($action, $group));
-				
-			}
-				
-			return $is_allowed;
-		} else {
-			return TRUE;
-		}
-	}
+	
+	
 	
 	/**
-	 * Check if the database hase user_permissions stored for this action. If it has, use those.
+	 * Checks if a group or a group in a set of groups has permission for a certain action. 
+	 * If no permission is found, the ancesters (parent-groups) will be checked untill a permission is found or there are no further ancesters.
 	 * @param $action
-	 * 		The name of the current action
-	 * @param $controller
-	 * 		The name of the controller
-	 * @param $module
-	 * 		The name of the current module
-	 * @param $group
-	 * 		The name of the group to check
-	 * @return 
-	 * 		FALSE if the current group isn't allowed to see the current action
-	 * 		TRUE if the current group is allowed to see the current action
-	 * 		NULL if no data could be found in the database about this action
+	 * 		action-object (datamapper) to check if the group has permission for
+	 * @param $groups
+	 * 		group-object (datamapper) to check if it has permission for the action. This can either be a single group or a set of groups. 
+	 * @return
+	 * 		TRUE if any of the groups, parent-groups or ancester-groups is allowed.
+	 * 		FALSE if none of the groups, parent-groups or ancester-groups is allowed.
 	 */
-	private function check_permissions_database($action, $controller, $module, $groups) {
-		if($groups === NULL) {
-			return TRUE;
-		}		
-		$is_allowed = NULL;
-		if(is_array($groups)) {
-			foreach($groups as $group) {				
-				$this->permission->get_by_unique($module, $controller, $action, $group);
-				if($this->permission->exists() === TRUE){
-					$is_allowed = $this->permission->allowed;
-					break;
+	public function group_has_permission($action, $groups){
+		if($groups->exists() === FALSE){
+			return FALSE;
+		}
+		foreach($groups AS $group){
+			$permission = new Permission();
+			$permission->where_related($action)->where_related($group)->get();
+			if($permission->exists()){
+				return $permission->allowed == 1;
+			}
+			else{
+				if($this->group_has_permission($action, $group->parent_group->get()) === TRUE){
+					return TRUE;
 				}
 			}
-		} else {		
-			$this->permission->get_by_unique($module,$controller,$action,$groups);
-			if($this->permission->exists() === TRUE){
-				$is_allowed = $this->permission->allowed;
-			}
 		}
-		return $is_allowed;
+		return FALSE;
 	}
 	
 }

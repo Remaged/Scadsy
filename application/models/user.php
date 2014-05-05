@@ -5,8 +5,10 @@ class User extends DataMapper {
 	var $table = 'users';
 	var $CI;
 	
-    var $has_one = array('parent','student','teacher','language','grade','group','etnicity');
+    var $has_one = array('parent','student','teacher','language','grade','etnicity');
 	var $auto_populate_has_one = TRUE;
+	
+	var $has_many = array('group');
 
     var $validation = array(
         array(
@@ -41,10 +43,6 @@ class User extends DataMapper {
         ),
         'gender' => array(
             'label' => 'Gender',
-            'rules' => array('required','xss_clean', 'trim')
-        ),
-        'group_id' => array(
-            'label' => 'Group',
             'rules' => array('required','xss_clean', 'trim')
         ),
         'language_id' => array(
