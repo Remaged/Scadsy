@@ -1,0 +1,32 @@
+.sub_accordion{
+	width: 100%;
+}
+.sub_accordion>div{
+	float: right;
+	padding: 20px !important;
+	width: 55%;
+	box-sizing: border-box;
+	border: 1px solid rgb(170, 170, 170) !important;
+	border-left: 0px !important;
+	border-radius: 0px;
+	background: #e0e0e0;
+	position: relative;
+	top: 2px;
+}
+.sub_accordion>h3{
+	box-sizing: border-box;
+	clear: left;
+	width: 45%;
+	float: left;
+}
+.sub_accordion>h3:hover{
+	border-color: rgb(170, 170, 170) !important;
+}
+.sub_accordion>h3[aria-selected="true"]{
+	background: #e0e0e0 !important;
+	position: relative;
+	border-right: 0px !important;
+}
+.sub_accordion>h3:after{
+	display: none;
+}

@@ -79,7 +79,7 @@ class Permission extends DataMapper {
 					);
 				
 				if($parent_allowed === TRUE){
-					$this->error_message('parent_permission_allowed', 'A parent-group (or ancester) is allowed for this permission. Child-groups cannot be denied if a parent or ancester is allowed.');
+					$this->error_message('parent_permission_allowed', 'Cannot deny if parent is allowed');
 					Database_manager::get_db()->trans_rollback();
 					return FALSE;
 				}

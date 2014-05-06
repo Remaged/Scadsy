@@ -68,9 +68,6 @@ class Permission_manager {
 	 	}	 	
 	 }
 
-	
-	
-	
 	/**
 	 * Checks if a group or a group in a set of groups has permission for a certain action. 
 	 * If no permission is found, the ancesters (parent-groups) will be checked untill a permission is found or there are no further ancesters.

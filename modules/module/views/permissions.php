@@ -2,38 +2,25 @@
 
 <div id="accordion">
 	<?php foreach($modules as $module): ?>
-		<h3>
+		<h2>
 			<?php echo $module->name; ?> (<?php echo $module->directory;?>)
-		</h3>
-		<div>			
-			<?php foreach($module->action as $action): ?>
-				<table class="sc-table">
-					<thead>
-						<tr>
-							<th colspan="2">
-								<?php echo $action->controller.'/'.$action->name; ?>
-							</th>
-						</tr>
-					</thead>			
-					<?php foreach($action->group as $group): ?>
-						<tr>											
-							<td><?php echo $group->name; ?></td>
-							<td>
-								<?php echo form_open(site_action_uri('permission_edit')); ?>
-									<?php echo form_hidden(array(
-												"action" => $action->name, 
-												"controller" => $action->controller,
-												"module" => $module->directory,
-												"group" => $group->name)); ?>
-									<div class="switchbutton">
-										<input type="checkbox" value="1" name="allowed" <?php echo ($group->permission->allowed == 1) ? 'checked' : '';?>>
-									</div>
-								<?php echo form_close(); ?>															
-							</td>		
-						</tr>					
-					<?php endforeach; ?>
-				</table>
-			<?php endforeach; ?>
+		</h2>
+		<div>	
+			<div class="sub_accordion">		
+				<?php foreach($module->action as $action): ?>					
+					<h3>
+						<?php echo $action->controller.'/'.$action->name; ?>
+					</h3>
+					<div>
+						<table class="sc-table">	
+							<?php 
+								$groups = $action->group;
+								include('permissions_group_options.php'); 
+							?>
+						</table>
+					</div>					
+				<?php endforeach; ?>
+			</div>
 		</div>	
 	<?php endforeach; ?>
 </div>

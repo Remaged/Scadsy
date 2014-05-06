@@ -27,6 +27,11 @@ function module_permissions_pre_scripts_header_generated($template_manager) {
 	$template_manager->add_method_script('permission_list_js_script','modules/module/assets/scripts/permission_list.js','module','manage_modules','permissions',TRUE);			
 }
 
+Hook_manager::add_hook('pre_stylesheets_generate', 'module_pre_stylesheets_generate');
+function module_pre_stylesheets_generate($template_manager) {
+	$template_manager->add_stylesheet('module_permissions_style','modules/module/assets/styles/permission_style.css');	
+}
+
 		
 
 

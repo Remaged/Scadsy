@@ -61,5 +61,5 @@ class Notification_manager {
 	}
 }
 
-/* End of file Permission_manager.php */
-/* Location: ./application/libraries/Permission_manager.php */
+/* End of file Notification_manager.php */
+/* Location: ./application/libraries/Notification_manager.php */
