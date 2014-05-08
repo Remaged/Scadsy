@@ -62,12 +62,13 @@ class Module_manager {
 		if(!defined('ENTERPRISE') || isset($_COOKIE['scadsy_db_cookie'])){			
 			$modules = $this->module->get_by_status('enabled');
 		}
-		else{
+		else{			
 			$module_dir = $this->CI->config->item('enterprise_dir');
-			$modules = $this->get_enterprise_modules();
+			$modules = (object) $this->get_enterprise_modules();
 		}
 
 		foreach($modules as $module) {
+			$module = (object) $module;
 			if(!is_dir($module_dir.$module->directory)) {
 				$module->delete();
 				break;
@@ -158,7 +159,7 @@ class Module_manager {
 	 */
 	public function get_all_modules_from_directory($config_item = 'modules_dir'){
 		$modules_data = array();
-		$location = $this->CI->config->item('modules_dir');					
+		$location = $this->CI->config->item($config_item);					
 		$module_dirs = scandir(getcwd().'/'.$location);			
 		foreach($module_dirs AS $module_dir){
 			$module_dir_path = getcwd().'/'.$location.$module_dir;			
