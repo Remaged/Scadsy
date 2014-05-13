@@ -68,7 +68,10 @@ class Permission extends DataMapper {
 		Database_manager::get_db()->trans_start();	
 		$succes = parent::save($object, $related_field);
 		if($succes === TRUE){
-			if($this->allowed == 1){
+			if($this->group->exists() === FALSE && $this->allowed == 1){
+				$this->save_all_groups_permissions();
+			}
+			elseif($this->allowed == 1){
 				$this->save_child_groups_permissions($this->group->child_group->get());
 			}
 			else{
@@ -87,6 +90,20 @@ class Permission extends DataMapper {
 		}
 		Database_manager::get_db()->trans_complete();
 		return $succes;
+	}
+	
+	/**
+	 * Set the same permission for all groups.
+	 */
+	private function save_all_groups_permissions(){
+		$groups = new Group();
+		$groups->get();
+		foreach($groups AS $group){
+			$permission = new Permission();
+			$permission->where_related($this->action)->where_related($group)->get();
+			$permission->allowed = $this->allowed;
+			$permission->save(array($this->action,$group));
+		}
 	} 
 	
 	/**

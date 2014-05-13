@@ -81,8 +81,12 @@ class Permission_manager {
 	 */
 	public function group_has_permission($action, $groups){
 		if($groups->exists() === FALSE){
-			return FALSE;
-		}
+			$permission = new Permission();
+			$permission->get_where(array('action_id'=>$action->id,'group_id'=>NULL),1);
+			if($permission->exists()){
+				return $permission->allowed == 1;
+			}
+		}		
 		foreach($groups AS $group){
 			$permission = new Permission();
 			$permission->where_related($action)->where_related($group)->get();

@@ -5,7 +5,7 @@ class User extends DataMapper {
 	var $table = 'users';
 	var $CI;
 	
-    var $has_one = array('parent','student','teacher','language','grade','etnicity');
+    var $has_one = array('student','language','ethnicity');
 	var $auto_populate_has_one = TRUE;
 	
 	var $has_many = array('group');
@@ -53,14 +53,6 @@ class User extends DataMapper {
             'label' => 'Ethnicity',
             'rules' => array('required','xss_clean', 'trim')
         ),
-        'start_date' => array(
-            'label' => 'Start date',
-            'rules' => array('xss_clean', 'trim','required_for_student','required_for_teacher')
-        ),
-		'end_date' => array(
-            'label' => 'End date',
-            'rules' => array('xss_clean', 'trim')
-        ),
 		'date_of_birth' => array(
             'label' => 'Date of birth',
             'rules' => array('xss_clean', 'trim')
@@ -85,65 +77,7 @@ class User extends DataMapper {
 		}
 		$this->CI =& get_instance();
 		$this->CI->load->library('session');		
-	}
-
-	
-
-	// Validation function to make field required if group is student. 
-	function _required_for_student($field)
-	{
-		$group = new Group($this->group_id);
-	    if ($group->name == 'student' && empty($this->{$field}))
-	    {
-	    	$this->error_message($field.'_required_for_student', 'The '.$this->validation[$field]['label'].' field is required for students.');
-	        return FALSE;
-	    }
-	    return TRUE;
-	}
-	// Validation function to make field required if group is teacher. 
-	function _required_for_teacher($field)
-	{
-		$group = new Group($this->group_id);
-	    if ($group->name == 'teacher' && empty($this->{$field}))
-	    {
-	    	$this->error_message($field.'_required_for_teacher', 'The '.$this->validation[$field]['label'].' field is required for teachers.');
-	        return FALSE;
-	    }
-	    return TRUE;
-	}
-	
-	/**
-	 * Extends parents save-functionality. 
-	 * Adds a record in students when group is student. 
-	 * Adds a record in parents when group is parent.  
-	 */
-	function save(){
-		Database_manager::get_db()->trans_start();	
-		if( ! parent::save() ){
-			return FALSE;
-		}
-		if($this->group->name == 'student'){					
-			$student = new Student();
-			$student->user_id = $this->id;
-			$student->alternate_id = $this->alternate_id;
-			$student->grade_id = $this->grade_id;
-			if( !$student->save() ){
-				$this->error->string .= $student->error->string;
-				return FALSE;
-			}
-		}
-		elseif($this->group->name == 'parent'){
-			$parent = new Parent();
-			$parent->user_id = $this->id;
-			if( !$parent->save() ){
-				$this->error->string .= $parent->error->string;
-				return FALSE;
-			}
-		}
-		Database_manager::get_db()->trans_complete();
-		return TRUE;
-	}
-	
+	}	
 	
 	/**
 	 * Tries to log in a user by using provided POST-data and validating the username/email + password

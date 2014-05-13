@@ -14,7 +14,7 @@
 					<div>
 						<table class="sc-table">	
 							<?php 
-								$groups = $action->group;
+								$group = $action->group;
 								include('permissions_group_options.php'); 
 							?>
 						</table>
