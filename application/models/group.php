@@ -24,10 +24,18 @@ class Group extends DataMapper {
         )
     );
 	
+	var $validation = array(
+        'name' => array(
+            'label' => 'Name',
+            'rules' => array('required', 'trim', 'xss_clean', 'unique', 'alpha_dash'),
+        )
+    );
+	
 	/**
 	 * Overrides parent-constructor, making it possible to directly get the object based on it's unique-key: name
 	 */
 	public function __construct($id = NULL) {
+		
 		if(is_string($id) === TRUE){
 			parent::__construct(NULL); 
 			$this->get_where(array('name'=>$id),1);   

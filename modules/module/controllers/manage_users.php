@@ -4,7 +4,7 @@ class Manage_users extends SCADSY_Controller{
 	var $data = array();
 	public function __construct() {
 		parent::__construct();
-		$this->init();
+		parent::init();
 		$this->load->model('manage_user_model');
 	}
 	

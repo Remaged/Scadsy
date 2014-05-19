@@ -2,7 +2,7 @@
 	cursor: pointer;
 }
 #user_list tr[onclick]:hover{
-	font-weight: bold;	
+	background: #eee;
 }
 
 .sc-form ul ul{

@@ -8,8 +8,8 @@
 
 $config['prefix'] = '';
 $config['join_prefix'] = '';
-$config['error_prefix'] = '<p>';
-$config['error_suffix'] = '</p>';
+$config['error_prefix'] = '';
+$config['error_suffix'] = '';
 $config['created_field'] = 'created';
 $config['updated_field'] = 'updated';
 $config['local_time'] = FALSE;
@@ -28,6 +28,8 @@ $config['db_params'] = '';
 // $config['production_cache'] = 'datamapper/cache';
 $config['extensions_path'] = 'datamapper';
 $config['extensions'] = array();
+
+$config['cascade_delete'] = FALSE;		
 
 /* End of file datamapper.php */
 /* Location: ./application/config/datamapper.php */
