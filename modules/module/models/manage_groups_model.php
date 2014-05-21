@@ -1,111 +1,144 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-
+/**
+ * Manages the groups by post-requests.
+ */
 class Manage_groups_model extends SCADSY_Model {
 	
-	public function save(){
-		Database_manager::get_db()->trans_start();	
-			//Save all (new) groups and namechanges	
-			if($this->save_groups($this->input->post('groups'), 'everyone')){				
-				//Remove all groups that are not submitted (and thus removed)
-				$this->remove_old_groups();	
-				//Check all permissions to keep constraints intact (if parent-groups are allowed, then the children should be allowed as well)
-				$this->check_all_permissions();
-				$this->notification_manager->add_notification("succes", "Saving groups successfull!");  
-			}
-		Database_manager::get_db()->trans_complete();		
-					
-	}
-
-	private function remove_old_groups(){
-		$existing_group_names = call_user_func_array('array_merge', $this->input->post('groups'));
-		$groups = new Group();
-		$groups->where_not_in('name',$existing_group_names)->get();
-		$groups->delete_all();
+	/**
+	 * Retrieves a hierarchical list of groups and subgroups. 
+	 * @return
+	 * 		group-object that consists of one or more groups.
+	 */
+	public function get_group_list(){
+		$groups = (new Group())->where_related_parent_group('id IS NULL')->get();
+		foreach($groups AS $group){
+			$group->get_child_groups();
+		}
+		return $groups;
 	}
 	
 	/**
-	 * Save all (new) groups and name-changes to the database.
+	 * Handles saving a group by a post-request. 
+	 * Either changes an existing group or adds a new group, based on the post-values.
+	 */	
+	public function save_group(){		
+		Database_manager::get_db()->trans_start();	
+		if($this->input->post('old_name')){
+			if($this->input->post('old_name') != $this->input->post('name')){
+				$this->rename_group();
+			}			
+		}
+		elseif($this->input->post('name')){
+			$this->add_group();
+		}
+		Database_manager::get_db()->trans_complete();
+	}
+	
+	/**
+	 * Adds a new group using post-values.
+	 * @return
+	 * 		TRUE if adding the group went successful.
+	 * 		FALSE if something went wrong.
 	 */
-	private function save_groups($group_names, $group_name_parent){	
-		foreach($group_names[$group_name_parent] AS $group_name_old => $group_name_new){				
-			$group = new Group(is_numeric($group_name_old) ? NULL : $group_name_old);
-			$group->name = $group_name_new;
-			if($group->save() === FALSE){
-				$this->notification_manager->add_notification("failed", "Saving groups failed because of ".$group_name_new.": ". $group->error->string); 
-				Database_manager::get_db()->trans_rollback();
-				return FALSE;	
+	private function add_group(){
+		$group = new Group();
+		$group->name = $this->input->post('name');
+		if($group->save() === FALSE){
+			$this->notification_manager->add_notification("failed", "Could not add group: ".$group->error->string);
+			return FALSE;
+		}
+		if($this->relate_with_parent($group) === FALSE){
+			return FALSE;
+		}
+		$this->notification_manager->add_notification("succes", $this->input->post('name')." group successfully added!");
+		return TRUE;
+	}
+	
+	/**
+	 * Relates the group with the parent-group provided in the post-request. 
+	 * @param $group
+	 * 		the group-object to relate with the parent-group.
+	 * @return
+	 * 		TRUE if relating with parent was succesfull (or didn't happen, because of no need)
+	 * 		FALSE if trying to relate the groups went wrong.
+	 */
+	private function relate_with_parent($group){		
+		if($this->input->post('parent_group') == 'everyone'){
+			if($this->inherit_permissions($group, NULL) === FALSE){
+				return FALSE;
 			}
-			$parent_group = new Group($group_name_parent);
-			if($parent_group->exists()){
-				if($group->save_parent_group($parent_group) === FALSE){
-					$this->notification_manager->add_notification("failed", "Saving groups failed because of ".$group_name_new." relation with ".$parent_group->name.": ". $group->error->string); 
-					Database_manager::get_db()->trans_rollback();
-					return FALSE;	
-				}
+			return TRUE;
+		}
+		$parent_group = new Group($this->input->post('parent_group'));
+		if($parent_group->exists()){
+			if($group->save_parent_group($parent_group) === FALSE){
+				$this->notification_manager->add_notification("failed", "Could not add group: ".$group->error->string);
+				return FALSE;
 			}
-			if(isset($group_names[$group_name_new])){
-				if($this->save_groups($group_names, $group_name_new) === FALSE){
-					return FALSE;
-				}
+			if($this->inherit_permissions($group, $parent_group->id) === FALSE){
+				return FALSE;
 			}
 		}
 		return TRUE;
 	}
 	
-	
 	/**
-	 * Check all permissions for their allowed-statusses:
-	 * each group that is allowed for a certain action should have their child-groups allowed as well.
-	 * 
-	 * This method first checks all permissions that are allowed to everyone and then sets all those groups to allowed.
-	 * Afterwards it checks for the groups without parents and saves their child-group to have those inherit their allowed-permissions.
+	 * Makes a group inherit the permissions of the parent-group.
+	 * @param $group
+	 * 		group-object that should inherit permissions
+	 * @param $parent_group_id
+	 * 		id of the parent group of which permissions should be inherited.
+	 * @return
+	 * 		TRUE if inheriting permissions went succesfully.
+	 * 		FALSE if something went wrong.
 	 */
-	private function check_all_permissions(){	
-		$completed_actions = array(0);	
-		//First, save all permissions that are allowed to everyone
-		$permissions = new Permission();
-		$permissions->where('allowed',1)->where_related_group('id IS NULL')->get();		
-		foreach($permissions AS $permission){
-			$completed_actions[] = $permission->action_id;
-			$permission->save_all_groups_permissions();			
-		}
-		
-		//Then, check the parent-most groups (groups without parent).
-		$groups = new Group();
-		$groups->where_related_parent_group('id IS NULL')->get();
-		$this->save_child_permissions($groups, $completed_actions);
-		
-	}
-	
-	/**
-	 * Save permissions of the child-groups.
-	 * Don't check permissions that:
-	 * - have allowed set to 0 (thus being a deny)
-	 * - have their action_id not in completed_actions (and thus have been checked already)
-	 * @param $groups
-	 * 		The groups (datamapper-object) to match permissions with
-	 * @param $completed_actions
-	 * 		Array of action_id's of which their matching permissions have been set on allowed for all groups already.
-	 */
-	private function save_child_permissions($groups, $completed_actions){
-		if($groups->exists() === FALSE){
-			return;
-		}
-		foreach($groups AS $group){
-			$completed_actions_for_this_group = $completed_actions;		
-			$permissions = (new Permission())
-				->where('group_id',$group->id)
-				->where('allowed',1)
-				->where_not_in('action_id',$completed_actions)
-				->get();
-			foreach($permissions AS $permission){	
-				$permission->save_child_groups_permissions($group->child_group->get());
-				$completed_actions_for_this_group[] = $permission->action_id;
+	private function inherit_permissions($group, $parent_group_id){
+		$permission = new Permission();
+		foreach($permission->get_where(array('group_id'=>$parent_group_id,'allowed'=>1)) AS $permission){
+			if($permission->get_copy()->save($group) === FALSE){
+				$this->notification_manager->add_notification("failed", "Could not add group because of permissions: ".$permission_copy->error->string);
+				return FALSE;
 			}
-			$this->save_child_permissions($group->child_group->get(), $completed_actions_for_this_group);
 		}
+		return TRUE;
 	}
+	
+	/**
+	 * Change the name of an existing group.
+	 * @return
+	 * 		TRUE if renaming the group went successfully.
+	 * 		FALSE if something went wrong. 
+	 */
+	private function rename_group(){
+		$group = new Group($this->input->post('old_name'));
+		if((new Group($this->input->post('name')))->exists()){
+			$this->notification_manager->add_notification("failed", "Could not rename group: ".$this->input->post('old_name')." is already taken.");
+			return FALSE; 	
+		}
+		$group->name = $this->input->post('name');
+		if($group->save() === FALSE){
+			$this->notification_manager->add_notification("failed", "Could not rename group: ".$group->error->string);
+			return FALSE;
+		}
+		$this->notification_manager->add_notification("succes", $this->input->post('old_name')." group successfully renamed to ".$this->input->post('name')."!");
+		return TRUE;
+	}
+	
+	/**
+	 * Removes a group entirely
+	 * Ensures that child-groups are moved upwards and become children of the deleted group's parent-group. 
+	 */
+	public function delete_group(){
+		$group = new Group($this->input->post('old_name'));
+		$parent_group = new Group($this->input->post('parent_group'));
+		foreach($group->child_group->get() AS $child_group){
+			$child_group->save_parent_group($parent_group);
+		}
+		$group->delete();
+		$this->notification_manager->add_notification("succes", $this->input->post('old_name')." group successfully removed!");
+	}
+	
 	
 
 }

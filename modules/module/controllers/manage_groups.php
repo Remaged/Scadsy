@@ -9,20 +9,24 @@ class Manage_groups extends SCADSY_Controller{
 	}
 	
 	/**
-	 * 
+	 * Default view
+	 * - handles post-requests for deleting and saving group.
+	 * - gets and shows the existing groups
 	 */
 	public function index(){
-		if($this->input->post('groups')){
-			$this->manage_groups_model->save();
+		if($this->input->post('delete') == 1){
+			$this->manage_groups_model->delete_group();
 		}
-		$groups = (new Group())->where_related_parent_group('id IS NULL')->get();
-		foreach($groups AS $group){
-			$group->get_child_groups();
-		}
-		$this->data['groups'] = $groups;
+		elseif($this->input->post('name')){
+			$this->manage_groups_model->save_group();
+		}		
+		
+		$this->data['groups'] = $this->manage_groups_model->get_group_list();
 		$this->view('groups/index', $this->data);
 	}
 	
+
+
 	
 }
 
