@@ -37,17 +37,25 @@ $(function(){
 		$(".form_search_user [name='search_group']").val($(this).val());
 	});
 	
+	$(".add_child_to_parent").click(function(){
+		$(this).before("<div><input type='text' name='children[]' /><input type='button' value='remove' class='button remove_child_to_parent'></div>");
+	})
+	$("#fields_children_information").on('click','.remove_child_to_parent',function(){
+		$(this).parent().remove();
+	})
 	
 });
 
 function show_hide_fields(){
-	$("#fields_student_information").hide();
-	$("#fields_enrollment_information").hide();
+	$("#fields_student_information,#fields_children_information,#fields_enrollment_information").hide();
 	$("#fields_student_information,#fields_enrollment_information").find("[required]").prop("required",false);
 	
 	if($("input[name='groups[]'][value='student']:checked").length){
 		$("#fields_student_information,#fields_enrollment_information").find("[required]").prop("required",true);
 		$("#fields_student_information,#fields_enrollment_information").show();
+	}
+	if($("input[name='groups[]'][value='parent']:checked").length){
+		$("#fields_children_information").show();
 	}
 }
 

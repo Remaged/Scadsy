@@ -42,14 +42,15 @@ class Manage_user_model extends SCADSY_Model {
 	public function save_user($username = NULL){
 		$user = new User($username);
 		$this->set_all_user_properties($user);
-		
+
 		Database_manager::get_db()->trans_start();		
 			if($user->save() === FALSE){
 				$this->notification_manager->add_notification("error", "Saving failed: ".$user->error->string); 
 				Database_manager::get_db()->trans_rollback();
 				return;
-			}				
+			}	
 			$this->save_user_groups($user);
+			$this->save_parent_information($user);
 			if($this->save_student_information($user) === FALSE){
 				Database_manager::get_db()->trans_rollback();
 				return;
@@ -66,13 +67,14 @@ class Manage_user_model extends SCADSY_Model {
 	 * Deletes all old group-relationships and adds the new relationshipts
 	 */
 	private function save_user_groups($user){
-		$user->delete($user->group->get()->all);
+		$user->delete($user->group->where_not_in('name',$this->input->post('groups'))->get()->all);
+		
 		if(!$this->input->post('groups')){
 			return;
 		}
 		foreach($this->input->post('groups') AS $group_key => $value){
 			$group = new Group($value);
-			$user->save($group);
+			$user->save($group);			
 		}
 	}
 	
@@ -87,6 +89,52 @@ class Manage_user_model extends SCADSY_Model {
 		}
 		if($user->exists() && $this->input->post('password') === NULL){
 			$user->password_confirm = $user->password;
+		}
+	}
+	
+	/**
+	 * Stores parent information for the provided user.
+	 * @param $user
+	 * 		user-object (datamapper) to store student information for.
+	 */
+	private function save_parent_information($user){
+		$parent_group = new Group('parent');
+		if($user->is_related_to($parent_group)){
+			$guardian = new Guardian();
+			if($guardian->where_related($user)->get()->exists() === FALSE){
+				$guardian->user_id = $user->id;			
+				$guardian->save();
+			}
+
+			$this->save_children_to_guardian($user);
+
+		}
+	}
+
+	/**
+	 * Creates the relationship between the user and provided children.
+	 * @param $user
+	 * 		not used (instead the username post-value is used).
+	 */
+	private function save_children_to_guardian($user){
+		$user = new User($this->input->post('username'));	//Use instead of parameter: for some unexplainable reason that goes wrong (even though it should be exact the same).		
+		$guardian = new Guardian();
+		$guardian->where_related($user)->get();
+		
+		if($guardian->student->get()->exists()){
+			$guardian->delete($guardian->student->get()->all);
+		}
+
+		$children = $this->input->post('children');
+		if($children){
+			foreach($children AS $child_username){
+				$user = new User($child_username);
+				$student = new Student();
+				$student->get_where(array('user_id'=>$user->id),1);
+				if($student->exists()){
+					$student->save($guardian);
+				}
+			}
 		}
 	}
 	
@@ -128,7 +176,6 @@ class Manage_user_model extends SCADSY_Model {
 		return TRUE;
 	}
 }
-
 
 /* End of file manage_user_model.php */
 /* Location: ./modules/module/models/manage_user_model.php */

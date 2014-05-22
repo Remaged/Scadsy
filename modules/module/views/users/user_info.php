@@ -13,7 +13,6 @@
 	<?php endif; ?>
 </div>
 
-
 <?php echo form_open(site_action_uri('save'.($user->username?'/'.$user->username:'')), array("class" => "sc-form")); ?>
 	<p>
 		* = Required field.
@@ -92,6 +91,21 @@
 		</div>
 	<?php echo form_fieldset_close(); ?>
 	
+	<?php echo form_fieldset('Children information',array('id'=>'fields_children_information')); ?>
+		<div>
+		<?php echo form_label('Children (usernames)'); ?>
+			<div>
+				<?php foreach($user->guardian->student->get() AS $child): ?>
+					<div>
+						<?php echo form_input('children[]',$child->user->username); ?>
+						<?php echo form_input(array('type'=>'button','value'=>'remove','class'=>'remove_child_to_parent button')); ?>
+					</div>
+				<?php endforeach; ?>
+				<?php echo form_input(array('type'=>'button','value'=>'Add child','class'=>'button add_child_to_parent')); ?>
+			</div>
+		</div>
+	<?php echo form_fieldset_close(); ?>
+	
 	<?php echo form_fieldset('Student information',array('id'=>'fields_student_information')); ?>
 		<?php echo form_label_input('alternate_id','Alternate ID',$user->student->alternate_id); ?>
 		<?php 
@@ -107,8 +121,6 @@
 		<?php echo form_label_date('start_date',null,$user->start_date, 'required'); ?>	
 		<?php echo form_label_date('end_date',null,$user->end_date); ?>	
 	<?php echo form_fieldset_close(); ?>
-	
-	
 	
 	<div>
 		<?php echo form_submit('submit','Save'); ?>

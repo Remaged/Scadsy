@@ -5,7 +5,7 @@ class User extends DataMapper {
 	var $table = 'users';
 	var $CI;
 	
-    var $has_one = array('student','language','ethnicity');
+    var $has_one = array('student','guardian','language','ethnicity');
 	var $auto_populate_has_one = TRUE;
 	
 	var $has_many = array('group');

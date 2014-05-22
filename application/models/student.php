@@ -4,7 +4,7 @@ class Student extends DataMapper {
 
     var $has_one = array('user','grade');
 	var $auto_populate_has_one = TRUE;
-	var $has_many = array('enrollment');
+	var $has_many = array('enrollment','guardian');
 	
 	var $validation = array(		
         'grade_id' => array(
