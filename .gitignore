@@ -11,3 +11,5 @@ application/logs/*
 .project
 application/third_party/MX/Router.php
 application/config/database.php
+enterprise/*
+application/config/constants.phpapplication/models/module.php

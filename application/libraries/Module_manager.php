@@ -18,12 +18,13 @@ class Module_manager {
 	public function install_module($directory) {
 		$module_dir = $this->CI->config->item('modules_dir');
 		$file = $module_dir.$directory.'/install.php';
-		
+
 		if(is_file($file)) {
 			include_once($file);
 		}			
 			
-		$this->module->install($directory);
+		$m = new Module();
+		$m->install($directory);
 	}
 	
 	/** 
@@ -37,7 +38,8 @@ class Module_manager {
 			include_once($file);
 		}
 		
-		$this->module->uninstall($directory);			
+		$m = new Module();
+		$m->uninstall($directory);			
 	}
 
 	/**
@@ -141,10 +143,12 @@ class Module_manager {
 				$module_metadata = $this->get_module_metadata($module_dir.$dir . '\index.php', $dir);
 				$module_actions = $this->get_module_actions($module_dir.$dir.'\controllers\\');
 				$module_permissions = $this->get_module_permissions($module_dir.$dir . '\index.php');
-								
-				$this->module->get_where(array('directory'=>$module_metadata['directory']),1);
-				if($this->module->exists() === FALSE){
-					$this->module->add_module($module_metadata, $module_actions, $module_permissions);
+						
+				$m = new Module();				
+				$m->get_where(array('directory'=>$module_metadata['directory']),1);
+				if($m->result_count() == 0){
+					
+					//$m->add_module($module_metadata, $module_actions, $module_permissions);
 				}
 			}
 		}

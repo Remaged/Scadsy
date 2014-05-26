@@ -27,8 +27,17 @@ class Database_manager {
 	 * @param $db_name
 	 * 		The name of the new database
 	 */
-	public static function set_db($db_name) {	
+	public static function set_db($db_name, $set_cookie = FALSE) {	
 		self::connect($db_name);
+		
+		if($set_cookie === TRUE) {
+			$cookie = array(
+			    'name'   => 'scadsy_db_cookie',
+			    'value'  => $db_name,
+			    'expire' => 0
+			);			
+			self::$CI->input->set_cookie($cookie,TRUE);
+		}
 	}
 	
 	/**
@@ -77,13 +86,6 @@ class Database_manager {
 			$config['dbdriver'] = 'mysql';
 
 			self::$DB = &self::$CI->load->database($config, TRUE);
-			
-			$cookie = array(
-			    'name'   => 'scadsy_db_cookie',
-			    'value'  => $db_name,
-			    'expire' => 0
-			);			
-			self::$CI->input->set_cookie($cookie,TRUE);
 		}
 	}
 	
@@ -92,6 +94,7 @@ class Database_manager {
 	 */
 	public static function disconnect() {
 		self::$DB = NULL;
+		
 		$cookie = array(
 		    'name'   => 'scadsy_db_cookie',
 		    'value'  => FALSE

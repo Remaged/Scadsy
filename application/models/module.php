@@ -113,6 +113,30 @@ class Module extends DataMapper {
 	 }
 	 
 	 /**
+	 * Enable a module
+	 * @param $directory
+	 * 		The directory of the module
+	 */
+	 public function enable($directory) {
+	 	$module = new Module();
+		$module->get_where(array('directory'=>$directory),1);
+		$module->status = 'enabled';
+		$module->save();
+	 }
+
+	 /**
+	 * Disable a module
+	 * @param $directory
+	 * 		The directory of the module
+	 */
+	 public function disable($directory) {
+	 	$module = new Module();
+		$module->get_where(array('directory'=>$directory),1);
+		$module->status = 'disabled';
+		$module->save();
+	 }
+	 
+	 /**
 	 * Check if a module is active
 	 * @param $directory
 	 * 		The directory of the module
