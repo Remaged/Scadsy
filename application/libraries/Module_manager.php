@@ -148,7 +148,7 @@ class Module_manager {
 				$m->get_where(array('directory'=>$module_metadata['directory']),1);
 				if($m->result_count() == 0){
 					
-					//$m->add_module($module_metadata, $module_actions, $module_permissions);
+					$m->add_module($module_metadata, $module_actions, $module_permissions);
 				}
 			}
 		}

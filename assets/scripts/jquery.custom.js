@@ -28,7 +28,11 @@ function showNotification($type, $text) {
 		$('.sc-msg').last().after(msgBox);
 	}
 		
-	msgBox.fadeIn('slow', function () {
-		$(this).delay(5000).fadeOut('slow');
-	});
+	msgBox.fadeIn('slow').delay(5000).fadeOut('slow');
 }
+
+// Pause execution
+function pauseExec(ms) {
+	ms += new Date().getTime();
+	while (new Date() < ms){}
+} 
