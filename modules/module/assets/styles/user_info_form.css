@@ -1,0 +1,24 @@
+#user_list tr[onclick]{
+	cursor: pointer;
+}
+#user_list tr[onclick]:hover{
+	background: #eee;
+}
+
+.sc-form ul ul{
+	margin-left: 15px;
+}
+
+
+.pagination{
+	margin: 5px 0;
+	text-align: right;
+}
+
+.search_options{
+	float: left;
+}
+
+.button_container{
+	text-align: right;
+}

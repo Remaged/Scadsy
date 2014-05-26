@@ -231,6 +231,7 @@ class DataMapper implements IteratorAggregate {
 		'db_params' => '',
 		'extensions' => array(),
 		'extensions_path' => 'datamapper',
+		'cascade_delete' => FALSE
 	);
 
 	/**
@@ -273,7 +274,7 @@ class DataMapper implements IteratorAggregate {
 	 * set to FALSE if you RDBMS takes care of this using constraints
 	 * @var bool
 	 */
-	public $cascade_delete = TRUE;
+	//public $cascade_delete = TRUE;
 	/**
 	 * Contains the database fields for this object.
 	 * ** Automatically configured **

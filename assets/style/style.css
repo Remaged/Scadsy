@@ -30,7 +30,7 @@ select options {
 	padding: 2px 0;
 }
 
-button {
+button, .button {
 	display: inline-block;
 	text-decoration: none;
 	font-size: 13px;
@@ -188,7 +188,7 @@ body {
 #sc-right-box {
 	width:84%;
 	float:left;
-	padding: 15px 0 0 0;	
+	padding: 15px 0;	
 }
 
 #sc-main-menu-back {
@@ -542,11 +542,19 @@ body {
 	min-width:150px;
 	display:inline-block;
 	padding:5px 0;
+	vertical-align: top;
+}
+
+.sc-form label + * {
+	display: inline-block;
 }
 
 .sc-form input[type="text"], 
 .sc-form input[type="password"],
-.sc-form input[type="email"] {
+.sc-form input[type="email"],
+.sc-form input[type="search"],
+.sc-form input[type="date"],
+.sc-form input[type="number"]{
 	padding:5px;
 }
 

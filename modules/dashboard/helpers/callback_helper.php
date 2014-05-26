@@ -3,7 +3,7 @@
 class DashboardCallbacks {
 	
 	public static function pre_menu_generate($menu_manager) {
-		$menu_manager->add_menu_item('dashboard/dashboard/index', 'Dashboard', array('admin'), 1);
+		$menu_manager->add_menu_item('dashboard/dashboard/index', 'Dashboard', 1);
 	}
 	
 	public static function pre_dashboard_generate($dashboard_manager) {

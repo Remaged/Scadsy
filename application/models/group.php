@@ -24,10 +24,18 @@ class Group extends DataMapper {
         )
     );
 	
+	var $validation = array(
+        'name' => array(
+            'label' => 'Name',
+            'rules' => array('required', 'trim', 'xss_clean', 'unique', 'alpha_dash'),
+        )
+    );
+	
 	/**
 	 * Overrides parent-constructor, making it possible to directly get the object based on it's unique-key: name
 	 */
 	public function __construct($id = NULL) {
+		
 		if(is_string($id) === TRUE){
 			parent::__construct(NULL); 
 			$this->get_where(array('name'=>$id),1);   
@@ -35,6 +43,21 @@ class Group extends DataMapper {
 		}
 		parent::__construct($id);
 	}
+	
+	 /**
+	  * Gets all childgroups (including further descendants) and their permission.
+	  * @param $action_id
+	  * 	(optional) action-object (datamapper) to find permissions that match both (child)group and action
+	  */
+	 public function get_child_groups(&$action = NULL){
+	 	$this->child_group->get();
+		foreach($this->child_group AS $child_group){
+			if($action !== NULL){
+				$child_group->permission->get_where(array('action_id'=>$action->id,'group_id'=>$child_group->id),1);
+			}
+			$child_group->get_child_groups($action);
+		}
+	 }
 
 }
 

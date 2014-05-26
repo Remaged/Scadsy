@@ -1,8 +1,8 @@
 <?php
 
-class Grade extends DataMapper {
+class Language extends DataMapper {
 
-    var $has_many = array('student');
+    var $has_many = array('user');
 	
 	/**
 	 * Overrides parent-constructor, making it possible to directly get the object based on it's unique-key: name
@@ -18,5 +18,5 @@ class Grade extends DataMapper {
 
 }
 
-/* End of file grade.php */
-/* Location: ./application/models/grade.php */
+/* End of file language.php */
+/* Location: ./application/models/language.php */

@@ -1,0 +1,8 @@
+#manage_groups_list input:disabled{
+	background: none;
+	color: default;
+	border: 0px;
+}
+#manage_groups_list ul{
+	margin-left: 10px;
+}
