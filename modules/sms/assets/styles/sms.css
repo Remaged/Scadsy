@@ -1,0 +1,49 @@
+.sc-form>div>div{
+	width: calc(100% - 200px);
+	position: relative;
+}
+.sc-form [name='message']{
+	width: calc(100% - 200px);
+}
+
+.selected_users{
+	background: white;
+	border: 1px solid lightgrey;		
+}
+.selected_users div{
+	display: inline-block;
+	border: 1px solid grey;
+	background: lightgrey;
+	padding: 5px 15px 5px 5px;
+	margin: 0px 3px;
+	position: relative;
+	line-height: 1em;
+}
+.selected_users .remove_from_selected{
+	position: absolute;
+	top: 2px;
+	right: 2px;
+	color: red;
+	line-height: 1em;
+}
+.selected_users .remove_from_selected:hover{
+	font-weight: bold;
+	cursor: pointer;
+}
+
+#search_and_select_users{
+	display: none;
+	background: white;
+	border: 1px solid #555;
+	position: absolute;
+	width: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+#sms_list tr[onclick]{
+	cursor: pointer;
+}
+#sms_list tr[onclick]:hover{
+	background: #eee;
+}

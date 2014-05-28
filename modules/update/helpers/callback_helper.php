@@ -65,7 +65,7 @@ class UpdateCallbacks {
 				);			
 
 				$http_url = trim($url) . '?' . http_build_query( $query, null, '&' );
-				$http_data = file_get_contents($http_url);
+				$http_data = @file_get_contents($http_url);
 				$data = json_decode($http_data);
 				
 				if($data->has_update === TRUE) {

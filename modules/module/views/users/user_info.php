@@ -58,7 +58,7 @@
 	<?php echo form_fieldset_close(); ?>
 	
 	<?php echo form_fieldset('Contact information'); ?>
-		<?php echo form_label_email('email', null, $user->email,'required'); ?>
+		<?php echo form_label_email('email', null, $user->email); ?>
 		<?php echo form_label_input('phone_number', null, $user->phone_number); ?>
 	<?php echo form_fieldset_close(); ?>
 	
