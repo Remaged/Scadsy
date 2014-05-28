@@ -48,6 +48,15 @@
 						echo ' | '.post_link(site_action_uri('refresh'), "Refresh", array("module" => $module->directory), "showNotification('succes', 'Module ".$module->directory." has been refreshed!'); location.reload();");
 					}
 					?>
+					
+					<?php /* easy testing of installation
+						<?php  echo form_open(site_action_uri('install')); ?>
+							<?php echo form_hidden('module',$module->directory); ?>
+							
+							<?php echo form_submit('submit','install'); ?>
+						
+						<?php echo form_close();  ?>
+					 */ ?>
 				</div>
 			</td>	
 			<td>

@@ -26,7 +26,7 @@ class User extends DataMapper {
         ),       
         'email' => array(
             'label' => 'Email Address',
-            'rules' => array('required', 'xss_clean', 'trim', 'valid_email')
+            'rules' => array('xss_clean', 'trim', 'valid_email')
         )
 		,
         'first_name' => array(
@@ -47,11 +47,11 @@ class User extends DataMapper {
         ),
         'language_id' => array(
             'label' => 'Language',
-            'rules' => array('required','xss_clean', 'trim')
+            'rules' => array('xss_clean', 'trim')
         ),
         'ethnicity_id' => array(
             'label' => 'Ethnicity',
-            'rules' => array('required','xss_clean', 'trim')
+            'rules' => array('xss_clean', 'trim')
         ),
 		'date_of_birth' => array(
             'label' => 'Date of birth',
