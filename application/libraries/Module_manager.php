@@ -248,7 +248,7 @@ class Module_manager {
 	 * @return 
 	 * 		An array with action names
 	 */
-	private function get_module_actions($directory) {		
+	private function get_module_actions($directory) {	
 		$directories = preg_grep('/^([^.])/', scandir($directory));		
 		$module_actions = array();
 
