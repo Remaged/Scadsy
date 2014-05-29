@@ -27,10 +27,9 @@ class Importer extends SCADSY_Controller {
 	
 	public function import_final() {
 		if($this->input->post('data')) {
-			$data = unserialize($this->input->post('data'));
-			$this->manage_imports_model->save_import_data($data);
-			$this->session->set_flashdata("message", "The data was imported.");
-			//redirect(site_action_uri("index"));
+			$incoming = unserialize($this->input->post('data'));
+			$data['records'] = $this->manage_imports_model->save_import_data($incoming);
+			$this->view('import_done', $data);
 		}
 	}
 }

@@ -14,7 +14,7 @@ class User extends DataMapper {
         array(
         	'field' => 'username',
             'label' => 'Username',
-            'rules' => array('required', 'trim', 'xss_clean', 'unique', 'alpha_dash', 'min_length' => 3, 'max_length' => 20),
+            'rules' => array('required', 'trim', 'xss_clean', 'unique', 'alpha_dash', 'min_length' => 3, 'max_length' => 100),
         ),
         'password_confirm' => array(
             'label' => 'Confirm Password',

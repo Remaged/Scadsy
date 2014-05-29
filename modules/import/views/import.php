@@ -4,8 +4,8 @@
 
 <div>
 		<label>File</label>
-		<input type="file" name="import_csv" size="20" />
+		<input type="file" name="import_csv" size="20" /><br/>
 
 <?php echo form_submit('import','Import'); ?>
-	
+</div>	
 <?php echo form_close(); ?>

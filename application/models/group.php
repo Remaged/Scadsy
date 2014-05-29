@@ -27,7 +27,7 @@ class Group extends DataMapper {
 	var $validation = array(
         'name' => array(
             'label' => 'Name',
-            'rules' => array('required', 'trim', 'xss_clean', 'unique', 'alpha_dash'),
+            'rules' => array('required', 'trim', 'xss_clean', 'unique'),
         )
     );
 	
