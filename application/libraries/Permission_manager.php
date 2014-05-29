@@ -44,8 +44,9 @@ class Permission_manager {
 	 * 		FALSE if a permission with deny is found or no permission is found.		
 	 */	
 	public function check_permissions($action_name, $controller, $module_name) {
-		if ($this->should_check_permissions()){		
-			$user_groups = $this->user->get_by_logged_in()->group->get();
+		if ($this->should_check_permissions()){
+			//Only get the deepest groups (the ones without parent-group)
+			$user_groups = $this->user->get_by_logged_in()->group->where_related_child_group('id IS NULL')->get();
 			$action = new Action($module_name, $controller, $action_name);			
 			return $this->group_has_permission($action, $user_groups);
 		} else {
