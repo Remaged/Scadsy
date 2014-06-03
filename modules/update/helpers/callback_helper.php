@@ -68,7 +68,7 @@ class UpdateCallbacks {
 				$http_data = @file_get_contents($http_url);
 				$data = json_decode($http_data);
 				
-				if($data->has_update === TRUE) {
+				if(isset($data->has_update) && $data->has_update === TRUE) {
 					$update->has_update = 1;
 					$update->to_version = $data->module;
 					$update->file_location = $data->file_location;

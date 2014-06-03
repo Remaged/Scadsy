@@ -8,10 +8,9 @@ class Language extends DataMapper {
 	 * Overrides parent-constructor, making it possible to directly get the object based on it's unique-key: name
 	 */
 	public function __construct($id = NULL) {
-		if(is_string($id) === TRUE){
+		if(is_string($id) && !is_numeric($id)){
 			parent::__construct(NULL); 
-			$this->get_where(array('name'=>$id),1);  
-			return;
+			return $this->get_where(array('name'=>$id),1); 
 		}
 		parent::__construct($id);
 	}

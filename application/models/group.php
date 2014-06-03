@@ -35,11 +35,9 @@ class Group extends DataMapper {
 	 * Overrides parent-constructor, making it possible to directly get the object based on it's unique-key: name
 	 */
 	public function __construct($id = NULL) {
-		
-		if(is_string($id) === TRUE){
+		if(is_string($id) && !is_numeric($id)){
 			parent::__construct(NULL); 
-			$this->get_where(array('name'=>$id),1);   
-			return;
+			return $this->get_where(array('name'=>$id),1); 
 		}
 		parent::__construct($id);
 	}
@@ -57,6 +55,26 @@ class Group extends DataMapper {
 			}
 			$child_group->get_child_groups($action);
 		}
+	 }
+	 
+	 
+	 
+	 public function get_ancesters(){
+	 	$this->ancester = $this->parent_group->get();
+		foreach($this->parent_group AS $parent_group){
+			$parent_group->get_ancesters();
+			$this->ancester->all = array_merge($parent_group->ancester->all, $this->ancester->all);
+		}
+		return $this->ancester;
+	 }
+	 
+	 public function get_descendants(){
+	 	$this->descendant = $this->child_group->get();
+		foreach($this->child_group AS $child_group){
+			$child_group->get_descendants();
+			$this->descendant->all = array_merge($child_group->descendant->all, $this->descendant->all);
+		}
+		return $this->descendant;
 	 }
 
 }

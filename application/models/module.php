@@ -43,10 +43,9 @@ class Module extends DataMapper {
 	 * based on it's unique-key: the directory
 	 */
 	public function __construct($id = NULL) {
-		if(is_string($id) === TRUE){
+		if(is_string($id) && !is_numeric($id)){
 			parent::__construct(NULL); 
-			$this->get_where(array('directory'=>$id),1); 
-			return;
+			return $this->get_where(array('directory'=>$id),1); 
 		}
 		parent::__construct($id);
 	}

@@ -28,7 +28,7 @@ class Action extends DataMapper {
         $args = func_get_args(); 			
 		if(count($args) == 3){
 			if(empty($args[2])){ $args[2] = NULL; }
-			$this->get_by_unique($args[0],$args[1],$args[2]);
+			return $this->get_by_unique($args[0],$args[1],$args[2]);
 		}
 	}
 	

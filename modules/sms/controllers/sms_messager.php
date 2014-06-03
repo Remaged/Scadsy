@@ -12,7 +12,7 @@ class Sms_messager extends SCADSY_Controller{
 	/**
 	 * Default view
 	 */
-	public function index($page = 1, $page_size = 10, $search_name = NULL) {
+	public function index($page = 1, $page_size = 20, $search_name = NULL) {
 		if($this->session->flashdata("message") !== FALSE){
 			$this->notification_manager->add_notification("succes", $this->session->flashdata("message")); 
 		}
@@ -23,11 +23,18 @@ class Sms_messager extends SCADSY_Controller{
 		$this->view('sms_list', $this->data);
 	}
 	
+	/**
+	 * Display the detail view of a SMS-message
+	 */
 	public function detail($id){
 		$this->data['sms'] = $this->sms_messager_model->get_detail_info($id);
 		$this->view('sms_info', $this->data);
 	}
 	
+	/**
+	 * - Display view for creating a new SMS-message
+	 * - Handles post-request for new SMS-message
+	 */
 	public function new_sms(){
 		if($this->input->post('selected')){	
 			$message = $this->sms_messager_model->send_sms();
@@ -36,14 +43,20 @@ class Sms_messager extends SCADSY_Controller{
 			redirect(site_action_uri("index"));		
 		}
 		else{
-			$this->search(FALSE);	
+			$this->search(1, 20, NULL, NULL, FALSE);
+			$this->data['group_checkbox_options'] = $this->sms_messager_model->get_student_group_options();
 			$this->view('new_sms',$this->data);		
-		}
-		
+		}		
 	}
 	
-	public function search($load_view = TRUE){
-		$this->data['users'] = $this->sms_messager_model->search_users();;		
+	/**
+	 * search student (and their parents) and displays the results
+	 */
+	public function search($page = 1, $page_size = 20, $search_group = NULL, $search_name = NULL, $load_view = TRUE){
+		$this->data['users'] = $this->sms_messager_model->get_users($page, $page_size, $search_group, $search_name);	
+		$this->data['group_dropdown_options'] = $this->sms_messager_model->get_student_group_dropdown_options();
+		$this->data['group_selected_option'] = $search_group;
+		$this->data['search_name'] = $search_name;
 		if($load_view){
 			$this->view('search_users',$this->data);
 		}						

@@ -68,15 +68,14 @@ class User extends DataMapper {
 	 * based on it's unique-key, using it username
 	 */
 	public function __construct($id = NULL) {
-		if(is_string($id) === TRUE){
+		$this->CI =& get_instance();
+		$this->CI->load->library('session');
+		if(is_string($id) && !is_numeric($id)){
 			parent::__construct(NULL); 
 			$this->get_where(array('username'=>$id),1); 
+			return;
 		}
-		else{
-			parent::__construct($id); 
-		}
-		$this->CI =& get_instance();
-		$this->CI->load->library('session');		
+		parent::__construct($id);				
 	}	
 	
 	/**
