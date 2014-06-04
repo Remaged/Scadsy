@@ -13,7 +13,7 @@ class Login extends SCADSY_Controller{
 			redirect(site_url());
 		}		
 		else{
-			$this->view('login/index',$this->data, 'template/header_without_menu');
+			$this->view('login/index',$this->data, 'template/header');
 		}		
 	}
 	

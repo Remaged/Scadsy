@@ -49,6 +49,7 @@ class Sms_messager_model extends SCADSY_Model {
 		$sms = new Sms();
 		$sms->get_where(array('id'=>$id),1);
 		$sms->create_user_relation();
+		$sms->user->include_join_fields();
 		$sms->user->get();
 		$sms->reply = new Sms();
 		if($sms->event_id !== NULL){				
@@ -149,8 +150,8 @@ class Sms_messager_model extends SCADSY_Model {
 			} 
 		}
 		
-		return "The SMS has been (fake)sent.";
-		exit('voorkomt per ongeluk verbruiken van mobile api');
+		//return "The SMS has been (fake)sent.";
+		//exit('voorkomt per ongeluk verbruiken van mobile api');
 		
 		$this->load->model('mobile_api');
 		$sms_api_result = $this->mobile_api->sendSms(implode(",",$numbers), $sms->message);	
@@ -169,7 +170,8 @@ class Sms_messager_model extends SCADSY_Model {
 		$sms = new Sms();
 
 		$sms->message = $this->input->post('message');
-		$sms->user_id = (new User())->get_by_logged_in()->id;
+		$user = new User();
+		$sms->user_id = $user->get_by_logged_in()->id;
 		$sms->date_time = date('Y-m-d H:i:s');
 		$sms->save();
 
@@ -237,10 +239,9 @@ class Sms_messager_model extends SCADSY_Model {
 			return;
 		}		
 		$sms->create_user_relation($user);
-		
-		$sms->set_join_field($user,'used_phone_number',str_replace(" ","",$user->phone_number));
-		
+
 		$sms->save($user);
+		$sms->set_join_field($user,'used_phone_number',str_replace(" ","",$user->phone_number));
 	}
 	
 	
@@ -251,12 +252,11 @@ class Sms_messager_model extends SCADSY_Model {
 	public function handle_push_sent_item(){	
 		Database_manager::get_db()->insert('test_api_results',array('value'=>http_build_query($this->input->get())));	
 		$sms = $this->get_sent_sms();
-			
-		if($this->input->get('Flash')=='True'){
-			$sms->set_join_field($sms->user,'sent_date_time',
+		foreach($sms->user->get() AS $user){
+			$sms->set_join_field($user,'sent_date_time',
 				DateTime::createFromFormat('d/M/Y H:i:s', $this->input->get('SentDataTime'))->format('Y-m-d H:i:s')
 			);	
-		}		
+		}	
 	}
 	
 	/**
@@ -268,7 +268,7 @@ class Sms_messager_model extends SCADSY_Model {
 		Database_manager::get_db()->insert('test_api_results',array('value'=>http_build_query($this->input->get())));
 		
 		$sms = new Sms();
-		$sms->message = $this->input->get('SentData');
+		$sms->message = $this->input->get('IncomingData');
 		$sms->date_time = DateTime::createFromFormat('d/M/Y H:i:s', $this->input->get('SentDataTime'))->format('Y-m-d H:i:s');
 		$sms->reply_event_id = $this->input->get('EventID');
 		
@@ -291,7 +291,9 @@ class Sms_messager_model extends SCADSY_Model {
 		$sms->get_where(array('event_id'=>$this->input->get('EventID')),1);
 		$sms->create_user_relation();
 		$sms->user->include_join_fields();
-		$sms->user->get_where(array('used_phone_number'=>str_replace(' ','+',$this->input->get('Phonenumber'))),1);
+		$sms->user->where('used_phone_number',str_replace(' ','+',$this->input->get('Phonenumber')))
+				  ->or_where('used_phone_number','+'.str_replace(' ','',$this->input->get('Phonenumber')))
+				  ->get();
 		return $sms;
 	}
 

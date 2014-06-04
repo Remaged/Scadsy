@@ -77,11 +77,11 @@ class Module_manager {
 				break;
 			}
 			
-			if(!is_file($module_dir.$module->directory.'\index.php')) {
+			if(!is_file($module_dir.$module->directory.'/index.php')) {
 				break;						
 			}
 			
-			include_once($module_dir.$module->directory.'\index.php');
+			include_once($module_dir.$module->directory.'/index.php');
 
 			// Auto load module models
 			if(is_dir($module_dir.$module->directory.'/models/')) {
@@ -116,9 +116,9 @@ class Module_manager {
 	 public function refresh_module($directory) {
 	 	$module_dir = $this->CI->config->item('modules_dir');
 
-		if(is_dir($module_dir.$directory) && is_file($module_dir.$directory . '\index.php')) {
-			$module_actions = $this->get_module_actions($module_dir.$directory.'\controllers\\');
-			$module_permissions = $this->get_module_permissions($module_dir.$directory . '\index.php');
+		if(is_dir($module_dir.$directory) && is_file($module_dir.$directory . '/index.php')) {
+			$module_actions = $this->get_module_actions($module_dir.$directory.'/controllers//');
+			$module_permissions = $this->get_module_permissions($module_dir.$directory . '/index.php');
 			
 			$this->module->get_where(array('directory'=>$directory),1);
 			if($this->module->exists() === TRUE){
@@ -139,11 +139,11 @@ class Module_manager {
 		foreach($directories as $dir) {
 			// If it is a dir and has the correct file name
 			if(is_dir($module_dir.$dir) 
-					&& is_file($module_dir.$dir . '\index.php')) {
+					&& is_file($module_dir.$dir . '/index.php')) {
 						
-				$module_metadata = $this->get_module_metadata($module_dir.$dir . '\index.php', $dir);
-				$module_actions = $this->get_module_actions($module_dir.$dir.'\controllers\\');
-				$module_permissions = $this->get_module_permissions($module_dir.$dir . '\index.php');
+				$module_metadata = $this->get_module_metadata($module_dir.$dir . '/index.php', $dir);
+				$module_actions = $this->get_module_actions($module_dir.$dir.'/controllers//');
+				$module_permissions = $this->get_module_permissions($module_dir.$dir . '/index.php');
 						
 				$m = new Module();				
 				$m->get_where(array('directory'=>$module_metadata['directory']),1);

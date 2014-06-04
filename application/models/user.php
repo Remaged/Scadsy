@@ -69,6 +69,7 @@ class User extends DataMapper {
 	 */
 	public function __construct($id = NULL) {
 		$this->CI =& get_instance();
+		$this->CI->load->helper('passwordLib');
 		$this->CI->load->library('session');
 		if(is_string($id) && !is_numeric($id)){
 			parent::__construct(NULL); 

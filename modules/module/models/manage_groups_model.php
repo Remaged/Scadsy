@@ -11,7 +11,8 @@ class Manage_groups_model extends SCADSY_Model {
 	 * 		group-object that consists of one or more groups.
 	 */
 	public function get_group_list(){
-		$groups = (new Group())->where_related_parent_group('id IS NULL')->get();
+		$groups = new Group();
+		$groups->where_related_parent_group('id IS NULL')->get();
 		foreach($groups AS $group){
 			$group->get_child_groups();
 		}
@@ -112,7 +113,8 @@ class Manage_groups_model extends SCADSY_Model {
 	 */
 	private function rename_group(){
 		$group = new Group($this->input->post('old_name'));
-		if((new Group($this->input->post('name')))->exists()){
+		$check_group_exists = new Group($this->input->post('name'));
+		if($check_group_exists->exists()){
 			$this->notification_manager->add_notification("failed", "Could not rename group: ".$this->input->post('old_name')." is already taken.");
 			return FALSE; 	
 		}

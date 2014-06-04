@@ -12,7 +12,7 @@
 	<?php echo form_fieldset_close(); ?>
 	
 	<?php echo form_fieldset('Sent by'); ?>
-		<?php echo (new User())->get_where(array('id'=>$sms->user_id))->username;  ?>
+		<?php $user = new User(); echo $user->get_where(array('id'=>$sms->user_id))->username;  ?>
 	<?php echo form_fieldset_close(); ?>
 		
 	<?php echo form_fieldset('Time and date'); ?>
@@ -25,6 +25,7 @@
 				<tr>
 					<th>Name</th>
 					<th>Phone number</th>
+					<th>Time of receipt</th>
 				</tr>
 			</thead>	
 			<?php foreach($sms->user AS $user): ?>
@@ -34,6 +35,13 @@
 						<?php echo $user->last_name; ?>
 					</td>
 					<td><?php echo $user->phone_number; ?></td>
+					<td>
+						<?php if(!$user->join_sent_date_time): ?>
+							not received (yet)
+						<?php else: ?>
+							<?php echo DateTime::createFromFormat('Y-m-d H:i:s',$user->join_sent_date_time)->format('d M Y  \a\t  H:i'); ?>
+						<?php endif; ?>
+					</td>
 				</tr>
 			<?php endforeach; ?>
 		</table>
@@ -64,7 +72,7 @@
 						?>
 					</td>
 					<td>
-						<?php echo DateTime::createFromFormat('Y-m-d H:i:s', $reply->date_time)->format('H:i  \a\t  d M Y'); ?>
+						<?php echo DateTime::createFromFormat('Y-m-d H:i:s', $reply->date_time)->format('d M Y  \a\t  H:i'); ?>
 					</td>
 					<td><?php echo $reply->message; ?></td>
 				</tr>

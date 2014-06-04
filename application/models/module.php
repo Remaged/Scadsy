@@ -213,7 +213,8 @@ class Module extends DataMapper {
 	 */
 	 public function update_module($directory, $module_actions, $module_permissions) {
 	 	Database_manager::get_db()->trans_start();
-		$module = (new Module())->where('directory = "'.$directory.'"')->get();
+		$module = new Module();
+		$module->where('directory = "'.$directory.'"')->get();
 		$module->action->get(); 
 
 		foreach($module->action as $existing_action) {
