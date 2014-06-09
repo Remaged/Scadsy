@@ -11,6 +11,10 @@ a:hover {
 	color: #2ea2cc;
 }
 
+.spinner {
+	position: fixed !important;
+}
+
 input[type='checkbox'] {
 	background: #fff;
 	border-color: #bbb;
@@ -593,7 +597,6 @@ body {
 	box-shadow: 0 1px 1px rgba(0,0,0,.04);
 	word-wrap: break-word;
 	float:left;
-	max-width:45%;
 	margin:0 2% 2% 0;
 }
 

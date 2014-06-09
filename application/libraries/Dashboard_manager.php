@@ -19,13 +19,9 @@ class Dashboard_manager {
 	 * Add a new widget
 	 * @param $page
 	 * 		The page to load inside the widget
-	 * @param $default_groups
-	 * 		The default groups that have permission for this menu item
 	 */
-	public function add_widget($page, $default_groups) {		
-		if($this->CI->permission_manager->has_permission($default_groups)) {
-			$this->widgets[] = $page;
-		}		
+	public function add_widget($page) {		
+		$this->widgets[] = $page;	
 	}
 	
 	/**
@@ -53,7 +49,10 @@ class Dashboard_manager {
 	 	$html = '';
 		
 		foreach($this->widgets as $widget) {
-			$html .= '<div id="'.str_replace('/','_',$widget).'" class="sc-widget">'.modules::run($widget).'</div>';
+			$widgetContent = modules::run($widget);
+			if($widgetContent != "") {
+				$html .= '<div id="'.str_replace('/','_',$widget).'" class="sc-widget">'.$widgetContent.'</div>';
+			}
 		}
 		
 		return $html;

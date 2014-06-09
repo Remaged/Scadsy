@@ -10,8 +10,6 @@ Author URI: -
 */
 
 Hook_manager::add_hook('pre_menu_generate', 'DashboardCallbacks::pre_menu_generate');
-Hook_manager::add_hook('pre_dashboard_generate', 'DashboardCallbacks::pre_dashboard_generate');
-
 
 
 /* End of file index.php */

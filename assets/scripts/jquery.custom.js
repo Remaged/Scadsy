@@ -36,3 +36,15 @@ function pauseExec(ms) {
 	ms += new Date().getTime();
 	while (new Date() < ms){}
 } 
+
+function onResize() {
+	var minHeight = $('#sc-right-box').height();
+	var docHeight = $(document).height();
+	var windowHeight = $(window).height();
+
+	if(minHeight > windowHeight) {
+		$("#sc-main-menu-back").height(docHeight);
+	} else {
+		$("#sc-main-menu-back").height(windowHeight);
+	}
+}

@@ -1,0 +1,31 @@
+.sc-attendance .row {
+	border: 1px solid #e5e5e5;
+	background: white;
+}
+
+.sc-attendance .row .header {	
+	padding:10px;
+	cursor: pointer;
+}
+
+.sc-attendance .row .header:hover {
+	background: #e5e5e5;
+}
+
+.sc-attendance .row .header .arrow-right {
+	display:none;
+	float:right;
+	margin:5px 40px 0 0;
+}
+
+.sc-attendance .row.inactive .header:hover .arrow-right {
+	display:block;
+}
+
+.sc-attendance .row .content {
+	display:none;
+}
+
+.sc-form input[type="submit"].at-submit {
+	margin-top: 10px;
+}

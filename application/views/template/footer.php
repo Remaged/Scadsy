@@ -3,6 +3,7 @@
 </div> <!-- RIGHT-BOX -->
 
 <?php echo $scripts; ?>
+<script>onResize();</script>
 
 </body>
 
