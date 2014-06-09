@@ -49,7 +49,8 @@ class Manage_users extends SCADSY_Controller{
 		$this->data['users'] = $this->manage_user_model->get_users($page, $page_size, $search_group, $search_name);		
 		$this->data['dropdown_options'] = array('all'=>'Everyone');
 		
-		foreach((new Group())->get() AS $group){
+		$groups = new Group();		
+		foreach($groups->get() AS $group){
 			$this->data['dropdown_options'][$group->name] = ucfirst($group->name);
 		}
 
@@ -72,15 +73,18 @@ class Manage_users extends SCADSY_Controller{
 	 	$user = new User($username);
 		$this->data['user'] = $user;
 		
-		$groups = (new Group())->where_related_parent_group('id IS NULL')->get();
-		foreach($groups AS $group){
+		$groups = new Group();
+		foreach($groups->where_related_parent_group('id IS NULL')->get() AS $group){
 			$group->get_child_groups();
 		}
 		
 		$this->data['groups'] = $groups;
-		$this->data['ethnicities'] = (new Ethnicity())->get();
-		$this->data['languages'] = (new Language())->get();
-		$this->data['grades'] = (new Grade())->get();
+		$ethnicities = new Ethnicity();
+		$this->data['ethnicities'] = $ethnicities->get();
+		$languages = new Language();
+		$this->data['languages'] = $languages->get();
+		$grades = new Grade();
+		$this->data['grades'] = $grades->get();
 		
 		$this->view('users/user_info', $this->data);
 	 }

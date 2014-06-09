@@ -6,11 +6,11 @@
 	width: calc(100% - 200px);
 }
 
-.selected_users{
+.selected_users, .selected_groups{
 	background: white;
 	border: 1px solid lightgrey;		
 }
-.selected_users div{
+.selected_users div, .selected_groups div{
 	display: inline-block;
 	border: 1px solid grey;
 	background: lightgrey;
@@ -19,23 +19,24 @@
 	position: relative;
 	line-height: 1em;
 }
-.selected_users .remove_from_selected{
+.remove_from_selected{
 	position: absolute;
 	top: 2px;
 	right: 2px;
 	color: red;
 	line-height: 1em;
 }
-.selected_users .remove_from_selected:hover{
+.remove_from_selected:hover{
 	font-weight: bold;
 	cursor: pointer;
 }
 
-#search_and_select_users{
+#search_users_container,#select_groups_container{
 	display: none;
 	background: white;
 	border: 1px solid #555;
 	position: absolute;
+	z-index: 10;
 	width: 100%;
 	padding: 10px;
 	box-sizing: border-box;
@@ -46,4 +47,26 @@
 }
 #sms_list tr[onclick]:hover{
 	background: #eee;
+}
+
+#sms_search_users_pagination{
+	text-align: center;
+}
+
+#search_users_container table tr:first-child th{
+	text-align: center;
+	font-weight: bold;
+	width: 50%;
+}
+
+#search_users_container tbody td:nth-child(3){
+	border-right: 1px solid #e5e5e5;
+}
+
+.sms_search_users_pagination{
+	margin: 5px 0px;
+}
+
+.sms_search_users_pagination .pagination_options{
+	float: right;
 }

@@ -1,7 +1,7 @@
 <h1>Manage groups</h1>
 
 <p>
-	Below, you can add, remove and rename groups for this school. Please take note of the following:
+	Below, you can add, remove and rename groups for this school. Please note that all group names must be unique. 
 </p>
 
 <ul id="manage_groups_list">

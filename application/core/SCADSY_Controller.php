@@ -1,7 +1,7 @@
 <?php (defined('BASEPATH')) OR exit('No direct script access allowed');
 
 /* load the MX_Controller class */
-require APPPATH."third_party/MX/Controller.php";
+require_once APPPATH."third_party/MX/Controller.php";
 
 /**
  * The main controller, every controller should inherit from this controller

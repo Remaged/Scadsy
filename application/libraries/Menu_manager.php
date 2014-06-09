@@ -49,7 +49,7 @@ class Menu_manager {
 		}
 		if($this->CI->permission_manager->check_permissions($exploded[2], $exploded[1], $exploded[0])) {
 			$this->menu_items[$priority][$link] = array("description" => $description);
-		}		
+		}	
 	}
 	
 	/**

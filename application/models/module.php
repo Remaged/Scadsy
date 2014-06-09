@@ -43,10 +43,9 @@ class Module extends DataMapper {
 	 * based on it's unique-key: the directory
 	 */
 	public function __construct($id = NULL) {
-		if(is_string($id) === TRUE){
+		if(is_string($id) && !is_numeric($id)){
 			parent::__construct(NULL); 
-			$this->get_where(array('directory'=>$id),1); 
-			return;
+			return $this->get_where(array('directory'=>$id),1); 
 		}
 		parent::__construct($id);
 	}
@@ -214,7 +213,8 @@ class Module extends DataMapper {
 	 */
 	 public function update_module($directory, $module_actions, $module_permissions) {
 	 	Database_manager::get_db()->trans_start();
-		$module = (new Module())->where('directory = "'.$directory.'"')->get();
+		$module = new Module();
+		$module->where('directory = "'.$directory.'"')->get();
 		$module->action->get(); 
 
 		foreach($module->action as $existing_action) {

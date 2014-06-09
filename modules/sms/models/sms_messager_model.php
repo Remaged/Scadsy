@@ -26,8 +26,8 @@ class Sms_messager_model extends SCADSY_Model {
 		foreach($smses AS $sms){
 			$sms->create_user_relation();
 			$sms->user->get();
-			$sender = new User($sms->user_id);
-			$sms->sender = $sender->get();
+			$sender = new User();
+			$sms->sender = $sender->get_where(array('id'=>$sms->user_id),1);
 			
 			$sms->reply = new Sms();
 			if($sms->event_id !== NULL){				
@@ -49,30 +49,86 @@ class Sms_messager_model extends SCADSY_Model {
 		$sms = new Sms();
 		$sms->get_where(array('id'=>$id),1);
 		$sms->create_user_relation();
+		$sms->user->include_join_fields();
 		$sms->user->get();
 		$sms->reply = new Sms();
 		if($sms->event_id !== NULL){				
 			$sms->reply->get_where(array('reply_event_id'=>$sms->event_id));
 		}
 		return $sms;
+	}	
+
+	/**
+	 * Retrieves a list of student users and their parents.
+	 * @param $page
+	 * 		The page to be shown.
+	 * @param $page_size
+	 * 		The amount of user to show on a page.
+	 * @param $search_group
+	 * 		The group to filter users by.
+	 * @param $search_name
+	 * 		Name to search users by on their username, first_name, last_name, email or phone_number
+	 */
+	public function get_users($page = 1, $page_size = 10, $search_group = NULL, $search_name = NULL){
+		$users = new User();
+	
+		if(!empty($search_group) && $search_group != 'all'){
+			$group = new Group(urldecode($search_group));
+			$group_ids = array($group->id);
+			foreach($group->get_descendants() AS $descendant_group){
+				$group_ids[] = $descendant_group->id;
+			}
+			$users->include_related('group')->where_in('group_id',$group_ids);
+		}
+		else{
+			$group = new Group('student');
+			$group_ids = array($group->id);
+			foreach($group->get_descendants() AS $descendant_group){
+				$group_ids[] = $descendant_group->id;
+			}
+			$users->include_related('group')->where_in('group_id',$group_ids);
+		}	
+
+		if(!empty($search_name)){
+			$users->group_start()
+				->ilike('CONCAT(first_name," ",last_name)',urldecode($search_name))
+				->or_ilike('phone_number',urldecode($search_name))
+				->group_end();
+		}
+
+		return $users->get_paged($page, $page_size);
 	}
 	
 	/**
-	 * Searches for users by looking at their username and first- middle- and lastname.
-	 * @return $users
-	 * 		datamapper-object containing the first 10 results of found users.
+	 * Gets groups for students 
+	 * @return
+	 * 		associative array: group-name => parent-group-name
 	 */
-	public function search_users(){
-		$search_value = $this->input->post('search') ? $this->input->post('search') : '';
-		$users = new User();
-
-		$users	->like('username',$search_value)
-				->or_like('first_name',$search_value)
-				->or_like('middle_name',$search_value)
-				->or_like('last_name',$search_value)
-				->limit(10)
-				->get();
-		return $users;
+	public function get_student_group_options($group = 'student', $result = array('student'=>'0')){
+		$group = new Group($group);
+		if($group->exists() === FALSE){
+			return $result;
+		}
+		foreach($group->child_group->get() AS $child_group){
+			$result[$child_group->name] = $group->name;		
+			$result = $this->get_student_group_options($child_group->name, $result);
+		}
+		return $result; 		
+	}
+	
+	/**
+	 * Gets groups for students for a dropdown list.
+	 * @return
+	 * 		associative array: group-name => group-name (first letter capitalised)
+	 */
+	public function get_student_group_dropdown_options(){
+		$group_options = $this->get_student_group_options();
+		array_shift($group_options);
+		$dropdown_options = array('all'=>'All students/parents');
+		foreach($group_options AS $group_option => $parent_name){
+			$dropdown_options[$group_option] = ucfirst($group_option);
+		}
+		return $dropdown_options;
 	}
 	
 	/**
@@ -94,23 +150,17 @@ class Sms_messager_model extends SCADSY_Model {
 			} 
 		}
 		
-		
-		return "The SMS has been sent.";
-		exit('voorkomt per ongeluk verbruiken van mobile api');
+		//return "The SMS has been (fake)sent.";
+		//exit('voorkomt per ongeluk verbruiken van mobile api');
 		
 		$this->load->model('mobile_api');
 		$sms_api_result = $this->mobile_api->sendSms(implode(",",$numbers), $sms->message);	
-		if($sms->api_result->eventid){
-			$sms->event_id = $sms->api_result->eventid;
-		}
-		if($sms->api_result->error){
-			$sms->api_error = $sms->api_result->error;
+		if(isset($sms_api_result->eventid)){
+			$sms->event_id = $sms_api_result->eventid;
 		}
 		$sms->save();
 		
-			
-		var_dump($this->mobile_api->checkCredits());
-				
+		return "The SMS has been sent.";		
 	}
 	
 	/**
@@ -118,18 +168,62 @@ class Sms_messager_model extends SCADSY_Model {
 	 */
 	private function save_sent_sms(){
 		$sms = new Sms();
-		
+
 		$sms->message = $this->input->post('message');
-		$sms->user_id = (new User())->get_by_logged_in()->id;
+		$user = new User();
+		$sms->user_id = $user->get_by_logged_in()->id;
 		$sms->date_time = date('Y-m-d H:i:s');
 		$sms->save();
 
 		$receivers = array();
-		foreach($this->input->post('selected') AS $username){
-			$this->save_sent_sms_receiver($username, $sms);	
+		$selected = $this->input->post('selected');
+		
+		if(isset($selected['users'])){
+			foreach($selected['users'] AS $username){
+				$this->save_sent_sms_receiver($username, $sms);	
+			}
+		}
+		
+		if(isset($selected['groups'])){
+			foreach($selected['groups'] AS $group){
+				if(stristr($group,"parents_")){
+					$this->save_sent_sms_receiver_group(str_replace("parents_","",$group), $sms, TRUE);
+				}
+				elseif(stristr($group,"students_")){
+					$this->save_sent_sms_receiver_group(str_replace("students_","",$group), $sms, FALSE);
+				}
+			}
 		}
 		
 		return $sms;
+	}
+	
+	/**
+	 * Saves the receivers for a whole group.
+	 * @param $group_name
+	 * 		name of the group of which the receivers should be saved
+	 * @param $sms
+	 * 		the sms that the receivers should be linked to
+	 * @param $to_parents
+	 * 		TRUE if the parents (guardians) of the groups should be used instead.
+	 * 		FALSE (default) if the students (actual users of the group) should be used.
+	 */
+	private function save_sent_sms_receiver_group($group_name, $sms, $to_parents = FALSE){
+		$group = new Group($group_name);
+		$group->get_descendants();
+		$group->descendant->all = array_merge($group->all, $group->descendant->all);	
+		foreach($group->descendant AS $target_group){			
+			foreach($target_group->user->get() AS $user){
+				if($to_parents){
+					foreach($user->student->guardian->get() AS $parent){
+						$this->save_sent_sms_receiver($parent->user->username, $sms);
+					}
+				}
+				else{
+					$this->save_sent_sms_receiver($user->username, $sms);
+				}
+			}
+		}
 	}
 	
 	/**
@@ -142,14 +236,12 @@ class Sms_messager_model extends SCADSY_Model {
 	private function save_sent_sms_receiver($username, $sms){
 		$user = new User($username);
 		if(empty($user->phone_number)){
-			$this->notification_manager->add_notification("notice", "Message was not sent to {$username}, because no phone number was available."); 
 			return;
 		}		
 		$sms->create_user_relation($user);
-		
-		$sms->set_join_field($user,'used_phone_number',str_replace(" ","",$user->phone_number));
-		
+
 		$sms->save($user);
+		$sms->set_join_field($user,'used_phone_number',str_replace(" ","",$user->phone_number));
 	}
 	
 	
@@ -160,12 +252,11 @@ class Sms_messager_model extends SCADSY_Model {
 	public function handle_push_sent_item(){	
 		Database_manager::get_db()->insert('test_api_results',array('value'=>http_build_query($this->input->get())));	
 		$sms = $this->get_sent_sms();
-			
-		if($this->input->get('Flash')=='True'){
-			$sms->set_join_field($sms->user,'sent_date_time',
+		foreach($sms->user->get() AS $user){
+			$sms->set_join_field($user,'sent_date_time',
 				DateTime::createFromFormat('d/M/Y H:i:s', $this->input->get('SentDataTime'))->format('Y-m-d H:i:s')
 			);	
-		}		
+		}	
 	}
 	
 	/**
@@ -177,11 +268,12 @@ class Sms_messager_model extends SCADSY_Model {
 		Database_manager::get_db()->insert('test_api_results',array('value'=>http_build_query($this->input->get())));
 		
 		$sms = new Sms();
-		$sms->message = $this->input->get('SentData');
+		$sms->message = $this->input->get('IncomingData');
 		$sms->date_time = DateTime::createFromFormat('d/M/Y H:i:s', $this->input->get('SentDataTime'))->format('Y-m-d H:i:s');
 		$sms->reply_event_id = $this->input->get('EventID');
 		
 		$sms->user_id = $this->get_sent_sms()->user->id;
+		
 		
 		$sms->save();
 		
@@ -196,11 +288,12 @@ class Sms_messager_model extends SCADSY_Model {
 	 */	
 	private function get_sent_sms(){
 		$sms = new Sms();
-		$sms->get_where('event_id',$this->input->get('EventID'));
+		$sms->get_where(array('event_id'=>$this->input->get('EventID')),1);
 		$sms->create_user_relation();
 		$sms->user->include_join_fields();
-		$sms->user->get_where(array('used_phone_number'=>str_replace(' ','+',$this->input->get('Phonenumber'))),1);
-		
+		$sms->user->where('used_phone_number',str_replace(' ','+',$this->input->get('Phonenumber')))
+				  ->or_where('used_phone_number','+'.str_replace(' ','',$this->input->get('Phonenumber')))
+				  ->get();
 		return $sms;
 	}
 

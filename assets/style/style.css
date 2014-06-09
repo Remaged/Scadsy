@@ -459,7 +459,7 @@ body {
 	position:relative;
 }
 
-.sc-table tbody tr.alternative {
+.sc-table tbody tr.alternative, .sc-table tbody tr:nth-child(odd){
 	background: #f9f9f9;
 }
 

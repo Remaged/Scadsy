@@ -18,19 +18,15 @@ class Manage_user_model extends SCADSY_Model {
 		$users = new User();
 		
 		if(!empty($search_group) && $search_group != 'all'){
-			$users->where_related(new Group($search_group));
+			$users->where_related(new Group(urldecode($search_group)));
 		}		
 	 	
 		if(!empty($search_name)){
-
-			$users->group_start()->ilike('username',$search_name)
-				->or_ilike('first_name',$search_name)
-				->or_ilike('last_name',$search_name)
-				->or_ilike('email',$search_name)
-				->or_ilike('phone_number',$search_name)
+			$users->group_start()->ilike('CONCAT(first_name," ",last_name)',urldecode($search_name))
+				->or_ilike('phone_number',urldecode($search_name))
 				->group_end();
+		}	
 
-		}		
 		return $users->get_paged($page, $page_size);
 	}
 	

@@ -12,7 +12,7 @@ Author URI: -
 Hook_manager::add_hook('pre_menu_generate', 'module_pre_menu_generated');
 function module_pre_menu_generated($menu_manager) {
 	$menu_manager->add_menu_item('module/_manage_modules/index', 'Manage');
-	$menu_manager->add_submenu_item('module/_manage_modules/index','module/_manage_modules/index', 'Modules');
+	$menu_manager->add_submenu_item('module/_manage_modules/index','module/manage_modules/index', 'Modules');
 	$menu_manager->add_submenu_item('module/_manage_modules/index','module/manage_groups/index', 'Groups');
 	$menu_manager->add_submenu_item('module/_manage_modules/index','module/manage_permissions/index', 'Permissions');
 	$menu_manager->add_submenu_item('module/_manage_modules/index','module/manage_users/index', 'Users');

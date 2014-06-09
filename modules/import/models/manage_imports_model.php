@@ -55,7 +55,10 @@ class Manage_imports_model extends SCADSY_Model {
 			$g->save();
 			if($parent != null) {
 				$g->save_parent_group($parent);
-			}		
+			}
+			else {
+				$g->save_parent_group(new Group('student'));	
+			}	
 		}	
 		return $g;	
 	}
