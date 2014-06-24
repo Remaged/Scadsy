@@ -63,11 +63,11 @@ class SCADSY_Controller extends MX_Controller {
 	 * @param $groups
 	 * 		The default groups that are allowed to view this page
 	 */
-	protected function init(Array $groups = array()) {
+	protected function init() {
 		$module = $this->router->get_module();
 		$controller = $this->router->get_controller();
 		$action = $this->router->get_action();
-		$is_allowed = $this->permission_manager->check_permissions($action, $controller, $module, $groups);
+		$is_allowed = $this->permission_manager->check_permissions($action, $controller, $module);
 
 		if(!$is_allowed) {
 			show_401();
