@@ -5,8 +5,8 @@ class Mobile_api
 
     public function __construct() {
         $this->url = 'http://www.mymobileapi.com/api5/http5.aspx';
-        $this->username = 'scadsy'; //your login username
-        $this->password = '5c@d$y'; //your login password
+        $this->username = ''; //your login username
+        $this->password = ''; //your login password
     }
     
     public function checkCredits() {

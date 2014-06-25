@@ -3,7 +3,7 @@
 /**
  * The current version of the SCADSY installation
  */
- define("VERSION", "0.1");
+ define("VERSION", "0.2");
  
  /**
   * The current database version
@@ -18,5 +18,5 @@
   /**
    * The update url
    */
-   define("UPDATE_URL", "http://schools.scadsy.za.org/update");
+   define("UPDATE_URL", "");
     
