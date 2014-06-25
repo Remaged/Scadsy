@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Form helper : SCADSY User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='SCADSY Dev Team' />
+<meta name='description' content='SCADSY User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>SCADSY User Guide Version </h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://schools.scadsy.za.org/">SCADSY Home</a> &nbsp;&#8250;&nbsp; <a href="../index.html">SCADSY User Guide</a>&nbsp;&#8250;&nbsp;Form helper
+</td>
+</tr>
+</table>
+
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>Form Helper</h1>
+
+<p>
+The <a href="http://ellislab.com/codeigniter/user-guide/helpers/form_helper.html" target="_new">form helper of CodeIgniter</a> is being extended in Scadsy. 
+</p>
+
+
+<h2><a name="set_value($field_=_'',_$default_=_'')"></a>set_value($field = '', $default = '')</h2>
+
+<p>Overwrites the set_value of CodeIgniter. It is used the same way. Instead of only repopulating the field with the matching POST-field when a form_validation is used, the field will now always be repopulated with the matching POST-field. Example:</p>
+
+<code><span style="color: #000000">
+&lt;input&nbsp;type="text"&nbsp;name="quantity"&nbsp;value="<span style="color: #0000BB">&lt;?php&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">set_value</span><span style="color: #007700">(</span><span style="color: #DD0000">'quantity'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'0'</span><span style="color: #007700">);&nbsp;</span><span style="color: #0000BB">?&gt;</span>"&nbsp;size="50"&nbsp;/&gt;</span>
+</code>
+
+<p>
+The above form will show "0" when loaded for the first time. After a submit, the form will show the submitted value (unless a different page is shown).
+</p>
+
+
+
+<h2><a name="form_extra($identifier)"></a>form_extra($identifier)</h2>
+
+<p>Selects a specific part of the extra_fields array that is stored in the <a href="/docs/managers/form.html">form_manager</a> (using the identifier) and outputs that array as a string. Example</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">form_extra</span><span style="color: #007700">(</span><span style="color: #DD0000">"your_own_unique_form_identifier"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+
+<p>
+This part will be filled by the form_manager. Everything that is stored in the form_manager using the identifier 'your_own_unique_form_identifier' is placed in this part. More on this can be found in the form_manager documentation.
+</p>
+
+
+
+
+
+<h2><a name="form_any_input_type($data_=_'',_$value_=_'',_$extra_=_'',_$type_=_'text')"></a>form_any_input_type($data = '', $value = '', $extra = '', $type = 'text')</h2>
+
+<p>It's near the same as the form_input method of CodeIgniter's form_helper. This method has an additional $type parameter, allowing to use any type. This comes in handy when using specific html5 input-fields. Example</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">form_input</span><span style="color: #007700">(</span><span style="color: #DD0000">'username'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'johndoe'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'email'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;Would&nbsp;produce:<br /></span><span style="color: #007700">&lt;</span><span style="color: #0000BB">input&nbsp;type</span><span style="color: #007700">=</span><span style="color: #DD0000">"email"&nbsp;</span><span style="color: #0000BB">name</span><span style="color: #007700">=</span><span style="color: #DD0000">"username"&nbsp;</span><span style="color: #0000BB">value</span><span style="color: #007700">=</span><span style="color: #DD0000">"johndoe"&nbsp;</span><span style="color: #007700">/&gt;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+
+
+
+
+<h2><a name="form_date($data_=_'',_$value_=_'',_$extra_=_'')"></a>form_date($data = '', $value = '', $extra = '')</h2>
+
+<p>This function is identical in all respects to the <var>form_input()</var> function above except that is sets it as a "date" type.</p>
+
+<h2><a name="form_email($data_=_'',_$value_=_'',_$extra_=_'')"></a>form_email($data = '', $value = '', $extra = '')</h2>
+
+<p>This function is identical in all respects to the <var>form_input()</var> function above except that is sets it as a "email" type.</p>
+
+<h2><a name="form_search($data_=_'',_$value_=_'',_$extra_=_'')"></a>form_search($data = '', $value = '', $extra = '')</h2>
+
+<p>This function is identical in all respects to the <var>form_input()</var> function above except that is sets it as a "search" type.</p>
+
+
+
+
+
+<h2><a name="form_label_input($data_=_'',_$human_name_=_NULL,_$default_value_=_'',_$extra_=_'')"></a>form_label_input($data = '', $human_name = NULL, $default_value = '', $extra = '')</h2>
+<p>
+Combines <var>form_label</var> and <var>form_input</var> and wraps them in a div. Example:
+</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">form_label_input</span><span style="color: #007700">(</span><span style="color: #DD0000">"username"</span><span style="color: #007700">);&nbsp;</span><span style="color: #0000BB">?&gt;<br /></span><br />//Is&nbsp;the&nbsp;same&nbsp;as:<br />&lt;div&gt;<br /><span style="color: #0000BB">&lt;?php&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">form_label</span><span style="color: #007700">(</span><span style="color: #DD0000">'Username'</span><span style="color: #007700">,</span><span style="color: #DD0000">'username'</span><span style="color: #007700">);&nbsp;</span><span style="color: #0000BB">form_input</span><span style="color: #007700">(</span><span style="color: #DD0000">'username'</span><span style="color: #007700">);&nbsp;</span><span style="color: #0000BB">?&gt;<br /></span>&lt;/div&gt;<br /><br />//Produces:<br />&lt;div&gt;<br />&lt;label&nbsp;for="username"&gt;Username&lt;/label&nbsp;for="username"&gt;<br />&lt;input&nbsp;type="text"&nbsp;name="username"&nbsp;/&gt;<br />&lt;/div&gt;<br /></span>
+</code>
+
+<h3>form_label_{type}</h3>
+<p>
+Simular to form_password(), form_email(), form_date() and form_search() there are several variations on form_label_input(), which are: <var>form_label_password</var>, <var>form_label_email()</var>, <var>form_label_date()</var>, <var>form_label_search()</var>
+</p>
+
+<h2><a name="form_label_any_type($data_=_'',_$human_name_=_NULL,_$default_value_=_'',_$extra_=_'',_$type_=_'text'){"></a>form_label_any_type($data = '', $human_name = NULL, $default_value = '', $extra = '', $type = 'text'){</h2>
+<p>
+In case of needing a type that isn't supported (yet), you can use this method. With the $type parameter you can supply which type to use. 
+Aside from the $type parameter it is identical to <var>form_label_input()</var>
+</p>
+
+
+<h2><a name="form_label_textarea($data_=_'',_$human_name_=_NULL,_$default_value_=_'',_$extra_=_'')"></a>form_label_textarea($data = '', $human_name = NULL, $default_value = '', $extra = '')</h2>
+<p>
+Simular to <var>form_label_input()</var>, except that it uses a textarea instead of an input. 
+</p>
+
+
+<h2><a name="form_label_dropdown($name_=_'',_$options_=_'',_$human_name_=_NULL,_$default_value_=_'',_$extra_=_'')"></a>form_label_dropdown($name = '', $options = '', $human_name = NULL, $default_value = '', $extra = '')</h2>
+<p>
+Combines <var>form_label()</var> and <var>form_dropdown()</var> and adds a div around them. 
+</p>
+
+<h2><a name="form_label_multiselect($name_=_'',_$options_=_'',_$human_name_=_NULL,_$default_value_=_'',_$extra_=_'')"></a>form_label_multiselect($name = '', $options = '', $human_name = NULL, $default_value = '', $extra = '')</h2>
+<p>
+Almost identical to <var>form_label_dropdown</var>, except that it adds a multiple attribute. 
+</p>
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>Previous Topic: <a href="../helpers/link.html">Link Helper</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="http://schools.scadsy.za.org/docs">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;Next Topic: <a href="../helpers/url.html">Url helper</a></p>
+<p><a href="http://schools.scadsy.za.org/">SCADSY</a> &nbsp;&middot;&nbsp; Copyright &#169; 2014 </p>
+</div>
+
+
+
+</body>
+</html>

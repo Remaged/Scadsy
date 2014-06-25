@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>System Hooks : SCADSY User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='SCADSY Dev Team' />
+<meta name='description' content='SCADSY User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>SCADSY User Guide Version </h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://schools.scadsy.za.org/">SCADSY Home</a> &nbsp;&#8250;&nbsp; <a href="../index.html">SCADSY User Guide</a>&nbsp;&#8250;&nbsp;System Hooks
+</td>
+</tr>
+</table>
+
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>System Hooks</h1>
+
+<p>Hooks allow you to extend the core without editing any code. We will show you how this works by adding a menu item for our hello world controller. Remember earlier in this tutorial we said that we were going to use the index.php for much more? Well, this is it. We decided that the index.php would be a good place to let people define their hooks, so lets open up the index.php.</p>
+
+<p>To add a menu item to the menu we need the <var>"pre_menu_generate"</var> hook. To hook up a function into the system we first need to declare the function. So lets start by doing that. Inside your index.php, paste the following code:</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />Hook_manager</span><span style="color: #007700">::</span><span style="color: #0000BB">add_hook</span><span style="color: #007700">(</span><span style="color: #DD0000">'pre_menu_generate'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'hello_world_pre_menu_generated'</span><span style="color: #007700">);<br /><br />function&nbsp;</span><span style="color: #0000BB">hello_world_pre_menu_generated</span><span style="color: #007700">(</span><span style="color: #0000BB">$menu_manager</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Hello!"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;<br /></span>
+</span>
+</code>
+
+<p>Save the file and any page in the scadsy system. In the upper left corner it should say "Hello!" now. This is our hook that is getting loaded. But we wanted a menu item added. For managing data inside the system SCADSY uses managers. The manager we want to access is the menu manager. Luckely, we get the menu manager through our hook. So, lets add a menu item!</p>
+
+<p>Replace the echo "Hello!"; with the following code.</p>
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$menu_manager</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">add_menu_item</span><span style="color: #007700">(</span><span style="color: #DD0000">'helloworld/helloworld/index'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'Hello&nbsp;World'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;<br /></span>
+</span>
+</code>
+
+<p>Save the file and refresh the page. The Hello World menu item should now be added.</p>
+
+<p>You should now have a base understanding of the SCADSY system. Please feel free to explore the rest of the user guide because there is still a lot of information available about the system.</p>
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>Previous Topic: <a href="../modules/view.html">Views</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="http://schools.scadsy.za.org/docs">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;Next Topic: <a href="../modules/extra.html">Other Features</a></p>
+<p><a href="http://schools.scadsy.za.org/">SCADSY</a> &nbsp;&middot;&nbsp; Copyright &#169; 2014 </p>
+</div>
+
+
+
+</body>
+</html>

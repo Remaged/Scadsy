@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Template Manager : SCADSY User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='SCADSY Dev Team' />
+<meta name='description' content='SCADSY User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>SCADSY User Guide Version </h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://schools.scadsy.za.org/">SCADSY Home</a> &nbsp;&#8250;&nbsp; <a href="../index.html">SCADSY User Guide</a>&nbsp;&#8250;&nbsp;Template Manager
+</td>
+</tr>
+</table>
+
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>Template Manager</h1>
+
+<p>The template manager is responsible for managing the assets (javascript and stylesheet files). The template manager is accessible through the <var>script & stylesheet hooks</var>.</p>
+
+<h2><a name="Javascripts"></a>Javascripts</h2>
+
+<p>The template manager allows you to add your own JavaScript files to SCADSY. You can add JavaScript files in the following scopes: 
+<table>
+<tr>
+<th>Scope</th>
+<th>Explanation</th>
+<th>Function</th>
+</tr>
+<tr>
+<td class="td">Global</td>
+<td class="td">These scripts get loaded on every page of every controller of a every module.</td>
+<td class="td">add_global_script($identifier, $url, $header = TRUE)</td>
+</tr>
+<tr>
+<td class="td">Module</td>
+<td class="td">These scripts get loaded on every page of every controller of a certain module.</td>
+<td class="td">add_module_script($identifier, $url, $module, $header = TRUE)</td>
+</tr>
+<tr>
+<td class="td">Controller</td>
+<td class="td">These scripts get loaded on every page of a certain controller of a certain module.</td>
+<td class="td">add_controller_script($identifier, $url, $module, $controller, $header = TRUE)</td>
+</tr>
+<tr>
+<td class="td">Method</td>
+<td class="td">These scripts get loaded on a certain page of a certain controller of a certain module.</td>
+<td class="td">add_method_script($identifier, $url, $module, $controller, $method, $header = TRUE)</td>
+</tr>
+</table>
+<br/>
+As you can see, all the functions require an identifier for the javascript. This is meant to prevent script duplication. For example if "jquery" gets added 2 times the system will give out an error because jquery only needs to get included once.
+</p>
+
+<h3>add_global_script</h3>
+
+<p>With this function you can add a JavaScript file to the global scope. In the following example we add a new script to the global scope with the identifier "helloworld_script" and it is located at "modules/helloworld/assets/scripts/helloworld.js".</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$template_manager</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">add_global_script</span><span style="color: #007700">(</span><span style="color: #DD0000">'helloworld_script'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'modules/helloworld/assets/scripts/helloworld.js'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;<br /></span>
+</span>
+</code>
+
+<h3>add_module_script</h3>
+
+<p>With this function you can add a JavaScript file to the module scope. In the following example we add a new script to the module scope with the identifier "helloworld_script", located at "modules/helloworld/assets/scripts/helloworld.js" and for module "helloworld".</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$template_manager</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">add_module_script</span><span style="color: #007700">(</span><span style="color: #DD0000">'helloworld_script'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'modules/helloworld/assets/scripts/helloworld.js'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"helloworld"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;<br /></span>
+</span>
+</code>
+
+<h3>add_controller_script</h3>
+
+<p>With this function you can add a javascript to the controller scope. In the following example we add a new script to the controller scope with the identifier "helloworld_script", located at "modules/helloworld/assets/scripts/helloworld.js", for module "helloworld" and for controller "hello".</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$template_manager</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">add_controller_script</span><span style="color: #007700">(</span><span style="color: #DD0000">'helloworld_script'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'modules/helloworld/assets/scripts/helloworld.js'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"helloworld"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"hello"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;<br /></span>
+</span>
+</code>
+
+<h3>add_method_script</h3>
+
+<p>With this function you can add a JavaScript file to the method scope. In the following example we add a new script to the method scope with the identifier "helloworld_script", located at "modules/helloworld/assets/scripts/helloworld.js", for module "helloworld", for controller "hello" and for the "index" method.</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$template_manager</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">add_method_script</span><span style="color: #007700">(</span><span style="color: #DD0000">'helloworld_script'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'modules/helloworld/assets/scripts/helloworld.js'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"helloworld"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"hello"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"index"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;<br /></span>
+</span>
+</code>
+
+<h3>get_scripts</h3>
+
+<p>You can get the scripts in two states, the first state is an array and the second state is as html. By default, this function returns the header scripts as html. To get the footer scripts, change the first param to FALSE. To get the scripts as a list in stead of html set the second param to FALSE. So if you would want to get the list of the footer script you would call:</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$template_manager</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">get_scripts</span><span style="color: #007700">(</span><span style="color: #0000BB">FALSE</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">FALSE</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;<br /></span>
+</span>
+</code>
+
+<h2><a name="Stylesheets"></a>Stylesheets</h2>
+
+<p>The template manager also allows you to add stylesheets to SCADSY. The stylesheets, in comparison with the javascripts, don't have different scopes. Once you load a stylesheet, it will get loaded on every page. Please keep this in mind while naming your html elements. Stylesheets also have a identifier. Just as with the javascripts, this is to prevent duplicate stylesheets from loading.</p>
+
+<h3>add_stylesheet</h3>
+
+<p>To add a stylesheet file with identifier "helloworld_css" and located at "modules/helloworld/assets/style/helloworld.css" you can use the following code:</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$template_manager</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">add_stylesheet</span><span style="color: #007700">(</span><span style="color: #DD0000">"helloworld_css"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"modules/helloworld/assets/style/helloworld.css"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;<br /></span>
+</span>
+</code>
+
+<h3>get_stylesheets</h3>
+
+<p>Just as with the scripts you can also get the array of stylesheets or the stylesheets as html. This is done by using the <var>get_stylesheets</var> function. By default this function returns the html of the stylesheets. If you would it to return the array you have to add the FALSE param. For example, the follow code will return the array of stylesheets:</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$template_manager</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">get_stylesheets</span><span style="color: #007700">(</span><span style="color: #0000BB">FALSE</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;<br /></span>
+</span>
+</code>
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>Previous Topic: <a href="../managers/hook.html">Hook Manager</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="http://schools.scadsy.za.org/docs">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;Next Topic: <a href="../managers/database.html">Database Manager</a></p>
+<p><a href="http://schools.scadsy.za.org/">SCADSY</a> &nbsp;&middot;&nbsp; Copyright &#169; 2014 </p>
+</div>
+
+
+
+</body>
+</html>

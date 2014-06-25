@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Link Helper : SCADSY User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='SCADSY Dev Team' />
+<meta name='description' content='SCADSY User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>SCADSY User Guide Version </h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://schools.scadsy.za.org/">SCADSY Home</a> &nbsp;&#8250;&nbsp; <a href="../index.html">SCADSY User Guide</a>&nbsp;&#8250;&nbsp;Link Helper
+</td>
+</tr>
+</table>
+
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>Link Helper</h1>
+
+<h2><a name="post_link($page,_$text,_$data,_$succes_=_'',_$fail_=_'')"></a>post_link($page, $text, $data, $succes = '', $fail = '')</h2>
+
+<p>The post_link function allows you to easily create a link that submits data onClick. You can also specify what should happen on succes and on failure. Below can find a simple example.</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">post_link</span><span style="color: #007700">(</span><span style="color: #DD0000">'helloworld/helloworld/index'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Hello&nbsp;World&nbsp;Post&nbsp;Link"</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #DD0000">"name"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"hello"</span><span style="color: #007700">),&nbsp;</span><span style="color: #DD0000">"alert('Succes!');"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"alert('Failure!');"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+
+<p>Below you will find the list of the parameters and their meaning.
+<table>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Function</th>
+</tr>
+<tr>
+<td class="td">1</td>
+<td class="td"><var>$page</var></td>
+<td class="td">The page where the post should be send to.</td>
+</tr>
+<tr>
+<td class="td">2</td>
+<td class="td"><var>$text</var></td>
+<td class="td">The anchor text.</td>
+</tr>
+<tr>
+<td class="td">3</td>
+<td class="td"><var>$data</var></td>
+<td class="td">An array with the data that should be posted.</td>
+</tr>
+<tr>
+<td class="td">4</td>
+<td class="td"><var>$succes (Optional)</var></td>
+<td class="td">The javascript for the succes function. You can acces the link object inside the callback by using the myLink variable.</td>
+</tr>
+<tr>
+<td class="td">5</td>
+<td class="td"><var>$fail (Optional)</var></td>
+<td class="td">The javascript for the fail function. You can acces the link object inside the callback by using the myLink variable.</td>
+</tr>
+</table></p>
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p><a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="http://schools.scadsy.za.org/docs">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;Next Topic: <a href="../helpers/form.html">Form helper</a></p>
+<p><a href="http://schools.scadsy.za.org/">SCADSY</a> &nbsp;&middot;&nbsp; Copyright &#169; 2014 </p>
+</div>
+
+
+
+</body>
+</html>

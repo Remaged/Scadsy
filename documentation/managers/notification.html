@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Notification Manager : SCADSY User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='SCADSY Dev Team' />
+<meta name='description' content='SCADSY User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>SCADSY User Guide Version </h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://schools.scadsy.za.org/">SCADSY Home</a> &nbsp;&#8250;&nbsp; <a href="../index.html">SCADSY User Guide</a>&nbsp;&#8250;&nbsp;Notification Manager
+</td>
+</tr>
+</table>
+
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>The Notification Manager</h1>
+
+<p>The notification manager is responsible for generating the notifications. You can access the notification manager from within the <var>pre_notifications_generate</var> hook.
+
+<h2><a name="Adding_a_notification"></a>Adding a notification</h2>
+
+<p>Here is a simple example showing how you can add an notification:</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$notification_manager</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">add_notification</span><span style="color: #007700">(</span><span style="color: #DD0000">"succes"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"You&nbsp;added&nbsp;a&nbsp;notification!"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+
+<p>There are currently three supported notification types: <table>
+<tr>
+<th>Type</th>
+<th>Usage</th>
+</tr>
+<tr>
+<td class="td">succes</td>
+<td class="td">Use this type when you want to send a succes notification.</td>
+</tr>
+<tr>
+<td class="td">update</td>
+<td class="td">Use this type when you want to send a update notification.</td>
+</tr>
+<tr>
+<td class="td">error</td>
+<td class="td">Use this type when you want to send a error notification.</td>
+</tr>
+</table></p>
+
+<h2><a name="Getting_the_notifications"></a>Getting the notifications</h2>
+
+<p>Here is a simple example of getting the html for the notifications:</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$notification_manager</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">get_notifications</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+
+<p>If you would want to get the notification items instead of the html you have to call the function with FALSE as parameter:</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$notification_manager</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">get_notifications</span><span style="color: #007700">(</span><span style="color: #0000BB">FALSE</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>Previous Topic: <a href="../managers/form.html">Form Manager</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="http://schools.scadsy.za.org/docs">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;Next Topic: <a href="../managers/dashboard.html">Dashboard Manager</a></p>
+<p><a href="http://schools.scadsy.za.org/">SCADSY</a> &nbsp;&middot;&nbsp; Copyright &#169; 2014 </p>
+</div>
+
+
+
+</body>
+</html>

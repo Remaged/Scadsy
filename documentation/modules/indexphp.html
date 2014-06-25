@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Creating the index.php : SCADSY User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='SCADSY Dev Team' />
+<meta name='description' content='SCADSY User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>SCADSY User Guide Version 0.2</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://schools.scadsy.za.org/">SCADSY Home</a> &nbsp;&#8250;&nbsp; <a href="../index.html">SCADSY User Guide</a>&nbsp;&#8250;&nbsp;Creating the index.php
+</td>
+</tr>
+</table>
+
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>Creating the index.php</h1>
+
+<p>When you create a module, it is nice to be able to leave your own credentials in there. SCADSY uses the index.php file for this purpose (It also uses this file for other purposes but we will come back to that later). So, lets create our index.php!</p>
+
+<p>Go to your "helloworld" module directory and create a new file called "index.php". Inside this file paste the following template:</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php&nbsp;&nbsp;</span><span style="color: #007700">if&nbsp;(&nbsp;!&nbsp;</span><span style="color: #0000BB">defined</span><span style="color: #007700">(</span><span style="color: #DD0000">'BASEPATH'</span><span style="color: #007700">))&nbsp;exit(</span><span style="color: #DD0000">'No&nbsp;direct&nbsp;script&nbsp;access&nbsp;allowed'</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">/**<br />Module&nbsp;Name:&nbsp;Hello&nbsp;World<br />Module&nbsp;Permissions:&nbsp;admin,&nbsp;teacher<br />Module&nbsp;URI:&nbsp;schools.scadsy.za.org/docs<br />Description:&nbsp;This&nbsp;is&nbsp;the&nbsp;tutorial&nbsp;hello&nbsp;world&nbsp;plugin.<br />Version:&nbsp;1.0<br />Author:&nbsp;Bob<br />Author&nbsp;URI:&nbsp;schools.scadsy.za.org/docs<br />*/<br /><br /><br /><br />/*&nbsp;End&nbsp;of&nbsp;file&nbsp;index.php&nbsp;*/<br />/*&nbsp;Location:&nbsp;./modules/helloworld/index.php&nbsp;*/<br /></span>
+</span>
+</code>
+
+<p>Inside this file you can store the following information:<ul>
+<li>
+<b>Module Name:</b> The name of the module, in this case "Hello World".</li>
+<li><b>Module Permissions:</b> The users that are allowed to view this module.</li>
+<li><b>Module URI:</b> The website with more information about the module.</li>
+<li><b>Description:</b> The module description.</li>
+<li><b>Version:</b> The module version. This will be used to check if updates are available for the module.</li>
+<li><b>Author:</b> The name of the author.</li>
+<li><b>Author URI:</b> The website of the author.</li>
+</ul>
+If you can't/don't want to insert certain information you can leave the fields blank. The only required fields are the Module Name and Module Permissions.
+</p>
+
+<p>Once you created the index.php file, you should login to the administrator panel and see if your new module is visible in the module section. If it is, continue with the next step. If it isn't, please retrace all your previous steps to see where the mistake is.</p>
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>Previous Topic: <a href="../modules/directory.html">Creating the first files</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="http://schools.scadsy.za.org/docs">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;Next Topic: <a href="../modules/install.html">Creating the install script</a></p>
+<p><a href="http://schools.scadsy.za.org/">SCADSY</a> &nbsp;&middot;&nbsp; Copyright &#169; 2014 </p>
+</div>
+
+
+
+</body>
+</html>

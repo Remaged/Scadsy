@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>User : SCADSY User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='SCADSY Dev Team' />
+<meta name='description' content='SCADSY User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>SCADSY User Guide Version </h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://schools.scadsy.za.org/">SCADSY Home</a> &nbsp;&#8250;&nbsp; <a href="../index.html">SCADSY User Guide</a>&nbsp;&#8250;&nbsp;User
+</td>
+</tr>
+</table>
+
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>User</h1>
+
+<p>This object is the representation of the database "User" table. To learn how to use this object please see the <a href="../libraries/datamapper.html">Datamapper</a> explanation.</p>
+
+<h2><a name="Fields"></a>Fields</h2>
+<p>
+Below you will find information about the different fields the user has. You will also find the rules that are connected to each field. If you would want to save an user to the database make sure that every field abides the rules.
+<table>
+<tr>
+<th>Property</th>
+<th>Information</th>
+<th>Type</th>
+<th>Rules</th>
+</tr>
+<tr>
+<td class="td"><var>id</var></td>
+<td class="td">The unique number of the user.</td>
+<td class="td">Integer</td>
+<td class="td"></td>
+</tr>
+<tr>
+<td class="td"><var>title</var></td>
+<td class="td">The title of the person, for example: Mr</td>
+<td class="td">String</td>
+<td class="td"><ul><li>required</li><li> 'valid_match' => array('Mr', 'Mrs', 'Ms')</li></ul></td>
+</tr>
+<tr>
+<td class="td"><var>first_name</var></td>
+<td class="td">The users first name</td>
+<td class="td">String</td>
+<td class="td"><ul><li>required</li><li>'max_size' => 100</li><li>'min_size' => 1</li></ul></td>
+</tr>
+<tr>
+<td class="td"><var>middle_name</var></td>
+<td class="td">The users middle name</td>
+<td class="td">String</td>
+<td class="td"><ul><li>'max_size' => 100</li></ul></td>
+</tr>
+<tr>
+<td class="td"><var>last_name</var></td>
+<td class="td">The users last name</td>
+<td class="td">String</td>
+<td class="td"><ul><li>required</li><li>'max_size' => 100</li><li>'min_size' => 1</li></ul></td>
+</tr>
+<tr>
+<td class="td"><var>username</var></td>
+<td class="td">The users username.</td>
+<td class="td">String</td>
+<td class="td"><ul><li>required</li><li>unique</li><li>'max_size' => 100</li><li>'min_size' => 1</li></ul></td>
+</tr>
+<tr>
+<td class="td"><var>password</var></td>
+<td class="td">The users encrypted password.</td>
+<td class="td">String</td>
+<td class="td"><ul><li>required</li></ul></td>
+</tr>
+<tr>
+<td class="td"><var>email</var></td>
+<td class="td">The users e-mail.</td>
+<td class="td">String</td>
+<td class="td"><ul><li>required</li><li>'max_size' => 100</li><li>'min_size' => 1</li></ul></td>
+</tr>
+<tr>
+<td class="td"><var>phone_number</var></td>
+<td class="td">The users phone number.</td>
+<td class="td">String</td>
+<td class="td"><ul><li>required</li><li>'max_size' => 40</li><li>'min_size' => 1</li></ul></td>
+</tr>
+<tr>
+<td class="td"><var>date_of_birth</var></td>
+<td class="td">The users date of birth.</td>
+<td class="td">Date</td>
+<td class="td"><ul><li>required</li><li>valid_date</li></ul></td>
+</tr>
+<tr>
+<td class="td"><var>gender</var></td>
+<td class="td">The users gender.</td>
+<td class="td">String</td>
+<td class="td"><ul><li>required</li><li> 'valid_match' => array('male', 'female')</li></ul></td>
+</tr>
+<tr>
+<td class="td"><var>status</var></td>
+<td class="td">The users status.</td>
+<td class="td">String</td>
+<td class="td"><ul><li>required</li><li> 'valid_match' => array('enabled', 'disabled')</li></ul></td>
+</tr>
+<tr>
+<td class="td"><var>ethnicity_id</var></td>
+<td class="td">ID of the ethnicity that is the user has.</td>
+<td class="td">Int</td>
+<td class="td"><ul><li>'max_size' => 11</li></ul></td>
+</tr>
+<tr>
+<td class="td"><var>language_id</var></td>
+<td class="td">ID of the language that is the users main-language.</td>
+<td class="td">Int</td>
+<td class="td"><ul><li>'max_size' => 11</li></ul></td>
+</tr>
+</table></p>
+
+<h2><a name="Relations"></a>Relations</h2>
+
+<p>
+Below you will find the foreign_key fields that the user has. For more information about the fields please look in the table above.
+<table>
+<tr>
+<th>Field</th>
+<th>Relationship type</th>
+</tr>
+<tr>
+<td class="td"><var>ethnicity</var></td>
+<td class="td">many-to-one</td>
+</tr>
+<tr>
+<td class="td"><var>language</var></td>
+<td class="td">many-to-one</td>
+</tr>
+<tr>
+<td class="td"><var>grade</var></td>
+<td class="td">many-to-one</td>
+</tr>
+<tr>
+<td class="td"><var>group</var></td>
+<td class="td">many-to-many</td>
+</tr>
+<tr>
+<td class="td"><var>student</var></td>
+<td class="td">many-to-one</td>
+</tr>
+<tr>
+<td class="td"><var>parent</var></td>
+<td class="td">many-to-one</td>
+</tr>
+<tr>
+<td class="td"><var>teacher</var></td>
+<td class="td">many-to-one</td>
+</tr>
+</table>
+</p>
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p><a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="http://schools.scadsy.za.org/docs">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;Next Topic: <a href="../dataobjects/module.html">Module</a></p>
+<p><a href="http://schools.scadsy.za.org/">SCADSY</a> &nbsp;&middot;&nbsp; Copyright &#169; 2014 </p>
+</div>
+
+
+
+</body>
+</html>

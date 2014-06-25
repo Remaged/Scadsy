@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Form Manager : SCADSY User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='SCADSY Dev Team' />
+<meta name='description' content='SCADSY User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>SCADSY User Guide Version </h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://schools.scadsy.za.org/">SCADSY Home</a> &nbsp;&#8250;&nbsp; <a href="../index.html">SCADSY User Guide</a>&nbsp;&#8250;&nbsp;Form Manager
+</td>
+</tr>
+</table>
+
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>Form Manager</h1>
+
+<p>The form manager is responsible for adding extensibility to existing forms. Lets say that you would want to add an extra field to the login page. You don't want to alter the code of the existing form because that could break things. Instead you are able to add a new field to the login form by using the form manager. You can access the Form Manager through the <var>modules_loaded</var> hook.</p>
+
+<h2><a name="Adding_a_field_to_a_existing_form"></a>Adding a field to a existing form</h2>
+
+<p>Using the following piece of code we can add a field to a form:</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />Hook_manager</span><span style="color: #007700">::</span><span style="color: #0000BB">add_hook</span><span style="color: #007700">(</span><span style="color: #DD0000">'modules_loaded'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'helloworld_modules_loaded'</span><span style="color: #007700">);<br />function&nbsp;</span><span style="color: #0000BB">helloworld_modules_loaded</span><span style="color: #007700">(</span><span style="color: #0000BB">$form_manager</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$form_manager</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">add_fields</span><span style="color: #007700">(</span><span style="color: #DD0000">'helloworld_form'</span><span style="color: #007700">,array(<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"&lt;label&nbsp;for='test'&gt;Test&lt;/label&gt;&lt;input&nbsp;type='text'&nbsp;name='test'/&gt;"<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">),</span><span style="color: #DD0000">"helloworld_form_callback&nbsp;"</span><span style="color: #007700">);<br />}<br /><br />function&nbsp;</span><span style="color: #0000BB">helloworld_form_callback&nbsp;</span><span style="color: #007700">(</span><span style="color: #0000BB">$postdata</span><span style="color: #007700">){<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;Handle&nbsp;the&nbsp;post&nbsp;here,&nbsp;for&nbsp;example:&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">$postdata</span><span style="color: #007700">[</span><span style="color: #DD0000">'test'</span><span style="color: #007700">];<br />}<br /></span><span style="color: #0000BB">?&gt;<br /></span>
+</span>
+</code> 
+
+<p>We just added an input field to the hello world form that calls back to the helloworld_form_callback function. </p>
+
+<h2><a name="Allowing_expansion_to_your_own_forms"></a>Allowing expansion to your own forms</h2>
+
+<p>Allowing others to expend your own forms is really easy. The only thing you have to include in your form is the following code:</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">form_extra</span><span style="color: #007700">(</span><span style="color: #DD0000">"your_own_unique_form_identifier"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+
+<p>People will now be able to add fields to your form using the "your_own_unique_form_identifier" identifier.</p>
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>Previous Topic: <a href="../managers/module.html">Module Manager</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="http://schools.scadsy.za.org/docs">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;Next Topic: <a href="../managers/notification.html">Notification Manager</a></p>
+<p><a href="http://schools.scadsy.za.org/">SCADSY</a> &nbsp;&middot;&nbsp; Copyright &#169; 2014 </p>
+</div>
+
+
+
+</body>
+</html>

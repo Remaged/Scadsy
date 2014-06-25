@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Other Features : SCADSY User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='SCADSY Dev Team' />
+<meta name='description' content='SCADSY User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>SCADSY User Guide Version </h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://schools.scadsy.za.org/">SCADSY Home</a> &nbsp;&#8250;&nbsp; <a href="../index.html">SCADSY User Guide</a>&nbsp;&#8250;&nbsp;Other Features
+</td>
+</tr>
+</table>
+
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>Extra Features</h1>
+
+<h2><a name="Models"></a>Models</h2>
+
+<p>You should place all your models in the models directory. Models allow you to interact with the database through objects instead of queries. To find out more about using models inside SCADSY we would like to refer you to the <a href="../libraries/datamapper.html">datamapper page</a>.</p>
+
+<h2><a name="Helpers"></a>Helpers</h2>
+
+<p>You should place all your helpers in the helpers directory. All helper files should end with "_helper.php". Helpers are functions/methods that help you with certain repetitive tasks but are not part of a object and generally don't have any connection with the database.</p>
+
+<p>In order to allow you to use object oriented programming while using hooks we implemented the following mechanic. If you place a file called callback_helper.php inside your helpers folder it will automatically be included during the loading of your module. Because of this it is possible to use callbacks inside your index.php to static functions declared inside your callback_helper.php.</p>
+
+<h2><a name="Languages"></a>Languages</h2>
+
+<p>If you want your module to support languages you should place the language files here. All language files should end with "_lang.php". Each language should have it's own folder, so it you want to support two languages your structure would look like the following:
+<ul>
+<li>
+language
+<ul>
+<li>english
+<ul>
+<li>
+helloworld_lang.php
+</li></ul></li>
+</ul>
+<ul>
+<li>dutch
+<ul>
+<li>
+helloworld_lang.php
+</li></ul></li>
+</ul>
+</li>
+</ul>
+
+Language files that have the same name as the module's main directory will be automatically included. In this case, if the module's main directory is called helloworld the files will be included. For the usage of languages we would like to refer you to the <a href="../helpers/language.html">Language Helper</a>.
+</p>
+
+<h2><a name="Allow_updating"></a>Allow updating</h2>
+
+<p>SCADSY checks once every 24 hours if there is an update available for your module. In order to be able to check for updates your Module URI should be given inside the index.php file. Updating works the following way: (please make sure that, if you want to make use of updates, your module supports the following process)
+<ol>
+<li>SCADSY calls MODULE_URI/?type=version to get the latest module version.</li>
+<li>SCADSY compares the two versions. If a newer version is available it will give notice to the user.</li>
+<li>If the user decided to install the update, SCADSY will call MODULE_URI/?type=file. It expects to get a .zip file back from this call.</li>
+<li>Once downloaded SCADSY will extract the .zip file inside the module's directory.</li>
+</ol> </p>
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>Previous Topic: <a href="../modules/hooks.html">System Hooks</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="http://schools.scadsy.za.org/docs">User Guide Home</a></p>
+<p><a href="http://schools.scadsy.za.org/">SCADSY</a> &nbsp;&middot;&nbsp; Copyright &#169; 2014 </p>
+</div>
+
+
+
+</body>
+</html>

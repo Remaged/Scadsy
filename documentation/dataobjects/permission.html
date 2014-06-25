@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Permission : SCADSY User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='SCADSY Dev Team' />
+<meta name='description' content='SCADSY User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>SCADSY User Guide Version </h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://schools.scadsy.za.org/">SCADSY Home</a> &nbsp;&#8250;&nbsp; <a href="../index.html">SCADSY User Guide</a>&nbsp;&#8250;&nbsp;Permission
+</td>
+</tr>
+</table>
+
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>Permission</h1>
+
+<p>This object is the representation of the database "Permission" table. To learn how to use this object please see the <a href="../libraries/datamapper.html">Datamapper</a> explanation.</p>
+
+<h2><a name="Fields"></a>Fields</h2>
+<p>
+Below you will find information about the different fields the permission has. You will also find the rules that are connected to each field. If you would want to save an permission to the database make sure that every field abides the rules.
+<table>
+<tr>
+<th>Property</th>
+<th>Information</th>
+<th>Type</th>
+<th>Rules</th>
+</tr>
+<tr>
+<td class="td"><var>allowed</var></td>
+<td class="td">Whether or not access is allowed to a modules action. The module is described using the following three fields.</td>
+<td class="td">bool</td>
+<td class="td"><ul><li>required</li></ul></td>
+</tr>
+<tr>
+<td class="td"><var>module_action_name</var></td>
+<td class="td">The name of the modules action</td>
+<td class="td">String</td>
+<td class="td"><ul><li>required</li><li>'max_size' => 100</li><li>'min_size' => 1</li></ul></td>
+</tr>
+<tr>
+<td class="td"><var>module_action_module</var></td>
+<td class="td">The name of the module</td>
+<td class="td">String</td>
+<td class="td"><ul><li>required</li><li>'max_size' => 100</li><li>'min_size' => 1</li></ul></td>
+</tr>
+<tr>
+<td class="td"><var>module_action_controller</var></td>
+<td class="td">The name of the modules controller</td>
+<td class="td">String</td>
+<td class="td"><ul><li>required</li><li>'max_size' => 100</li><li>'min_size' => 1</li></ul></td>
+</tr>
+<tr>
+<td class="td"><var>group_name</var></td>
+<td class="td">The group this rule counts for</td>
+<td class="td">String</td>
+<td class="td"><ul><li>required</li><li>'max_size' => 100</li><li>'min_size' => 1</li></ul></td>
+</tr>
+</table></p>
+
+<h2><a name="Relations"></a>Relations</h2>
+
+<p>
+Below you will find the foreign_key fields that the module has. For more information about the fields please look in the table above.
+<table>
+<tr>
+<th>Field</th>
+<th>Relationship type</th>
+</tr>
+<tr>
+<td class="td"><var>module_action</var></td>
+<td class="td">many-to-one</td>
+</tr>
+<tr>
+<td class="td"><var>group_name</var></td>
+<td class="td">one-to-many</td>
+</tr>
+</table>
+</p>
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>Previous Topic: <a href="../dataobjects/module.html">Module</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="http://schools.scadsy.za.org/docs">User Guide Home</a></p>
+<p><a href="http://schools.scadsy.za.org/">SCADSY</a> &nbsp;&middot;&nbsp; Copyright &#169; 2014 </p>
+</div>
+
+
+
+</body>
+</html>

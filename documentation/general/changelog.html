@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Change Log : SCADSY User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='SCADSY Dev Team' />
+<meta name='description' content='SCADSY User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>SCADSY User Guide Version </h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://schools.scadsy.za.org/">SCADSY Home</a> &nbsp;&#8250;&nbsp; <a href="../index.html">SCADSY User Guide</a>&nbsp;&#8250;&nbsp;Change Log
+</td>
+</tr>
+</table>
+
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h2><a name="Version_Alpha_0.2"></a>Version Alpha 0.2</h2>
+<p>Release Data: <strong>Not Yet Released</strong></p>
+<ul>
+<li>
+		<strong>Core Changes</strong>
+<ul>
+		<li>All files should be named in lower case.</li>
+<li>Base system is rewritten to use the new datamapper.</li>
+<li>The design was revised and it is now required to add an image to a main menu item.</li>
+<li>The permission system has been reworked. It is now possible to create your own groups and set its permissions.</li>
+</ul>
+</li>
+<li>
+		<strong>New Features</strong>
+<ul>
+		<li>You can now extend existing forms from within modules using the <a href="../managers/form.html">Form Manager</a> and the <var>modules_loaded</var> hook.</li>
+<li><a href="../libraries/datamapper.html">Datamapper ORM Library</a> is now supported.</li>
+<li>Added the <var><a href="../helpers/link.html">post_link()</a></var> function for auto generating ajax post links.</li>
+<li>You can now show notifications using the <a href="../managers/notification.html">Notification Manager</a> and the <var>pre_notifications_generate</var> hook.</li> 
+<li>It is now possible to access the link object in the post_link helper javascript callbacks by using the <var>myLink</var> variable.</li>
+<li>Modules can now update if the protocol for updating is implemented. Click <a href="../modules/extra.html#Allow_updating">here</a> for more information.</li>
+<li>SCADSY now allows internationalization by using the <a href="../helper/language.html">Language Helper</a> and <a href="../modules/extra.html#Languages">Module Features</a>.</li>
+<li>It is now possible to add widgets to the dashboard by using the new <a href="../managers/dashboard.html">Dashboard Manager</a> and the <var>pre_dashboard_generate</var> hook.</li>
+</ul>
+</li>
+<li>
+		<strong>Bug Fixes</strong>
+<ul>
+		<li>Sessions are now stored in the correct database while using the enterprise version.</li>
+<li>Modules are now removed from the database if they are removed from the file system.</li>
+</ul>
+</li>
+</ul>
+
+<h2><a name="Version_Alpha_0.1"></a>Version Alpha 0.1</h2>
+<p>Release Date: March 24, 2014</p>
+<p>Download: <a href="https://github.com/Remaged/Scadsy/archive/v0.1-alpha.zip">https://github.com/Remaged/Scadsy/archive/v0.1-alpha.zip</a>
+<p>First publicly released version.</p> 
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>Previous Topic: <a href="../general/requirements.html">Server Requirements</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="http://schools.scadsy.za.org/docs">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;Next Topic: <a href="../general/credits.html">Credits</a></p>
+<p><a href="http://schools.scadsy.za.org/">SCADSY</a> &nbsp;&middot;&nbsp; Copyright &#169; 2014 </p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Url helper : SCADSY User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='SCADSY Dev Team' />
+<meta name='description' content='SCADSY User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>SCADSY User Guide Version </h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://schools.scadsy.za.org/">SCADSY Home</a> &nbsp;&#8250;&nbsp; <a href="../index.html">SCADSY User Guide</a>&nbsp;&#8250;&nbsp;Url helper
+</td>
+</tr>
+</table>
+
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>Url Helper</h1>
+
+<p>
+The <a href="http://ellislab.com/codeigniter/user-guide/helpers/url_helper.html" target="_new">url helper of CodeIgniter</a> is being extended in Scadsy. 
+</p>
+
+<h2><a name="get_uri_segment($segment_number)"></a>get_uri_segment($segment_number)</h2>
+<p>
+Gets a specific segment from the url by the given segment_number. 
+</p>
+<p>
+An uri in Scadsy is defined by module/controller/action/some_parameter. Therefore: module=1, controller=2, action=3, some_parameter=4. Example
+</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//If,&nbsp;for&nbsp;example,&nbsp;the&nbsp;current&nbsp;url&nbsp;is&nbsp;http://some-site.com/your_module/users/get/5&nbsp;,&nbsp;then:<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">get_uri_segment</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//will&nbsp;produce&nbsp;'your_module'<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">get_uri_segment</span><span style="color: #007700">(</span><span style="color: #0000BB">2</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//will&nbsp;produce&nbsp;'users'<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">get_uri_segment</span><span style="color: #007700">(</span><span style="color: #0000BB">3</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//will&nbsp;produce&nbsp;'get'<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">get_uri_segment</span><span style="color: #007700">(</span><span style="color: #0000BB">4</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//will&nbsp;produce&nbsp;'5'<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+
+
+<h2><a name="get_uri_segments($number_of_segments)"></a>get_uri_segments($number_of_segments)</h2>
+<p>
+Simular to <var>uri_string()</var> of CodeIgniter's uri_helper. Rather than giving the entire uri_string, this method allows you to only retrieve a certain number of segments.
+</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//If,&nbsp;for&nbsp;example,&nbsp;the&nbsp;current&nbsp;url&nbsp;is&nbsp;http://some-site.com/your_module/users/get/5&nbsp;,&nbsp;then:<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">get_uri_segments</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//will&nbsp;produce&nbsp;'/your_module'<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">get_uri_segments</span><span style="color: #007700">(</span><span style="color: #0000BB">2</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//will&nbsp;produce&nbsp;'/your_module/users'<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">get_uri_segment</span><span style="color: #007700">(</span><span style="color: #0000BB">3</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//will&nbsp;produce&nbsp;'/your_module/users/get'<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">get_uri_segment</span><span style="color: #007700">(</span><span style="color: #0000BB">4</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//will&nbsp;produce&nbsp;'/your_module/users/get/5'<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+
+
+<h2><a name="site_action_uri($action)"></a>site_action_uri($action)</h2>
+<p>
+This method will create an uri based on the current module, controller and the provided action-parameter. Example
+</p>
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//If,&nbsp;for&nbsp;example,&nbsp;the&nbsp;current&nbsp;url&nbsp;is&nbsp;http://some-site.com/your_module/users/get/5&nbsp;,&nbsp;then:<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">site_action_uri</span><span style="color: #007700">(</span><span style="color: #DD0000">'delete'</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//will&nbsp;produce&nbsp;'/your_module/users/delete'<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>Previous Topic: <a href="../helpers/form.html">Form helper</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="http://schools.scadsy.za.org/docs">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;Next Topic: <a href="../helpers/language.html">Language Helper</a></p>
+<p><a href="http://schools.scadsy.za.org/">SCADSY</a> &nbsp;&middot;&nbsp; Copyright &#169; 2014 </p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Partial view helper : SCADSY User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='SCADSY Dev Team' />
+<meta name='description' content='SCADSY User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>SCADSY User Guide Version </h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://schools.scadsy.za.org/">SCADSY Home</a> &nbsp;&#8250;&nbsp; <a href="../index.html">SCADSY User Guide</a>&nbsp;&#8250;&nbsp;Partial view helper
+</td>
+</tr>
+</table>
+
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>Partial view Helper</h1>
+
+<p>
+A partial view enables you to define a view that will be rendered inside a parent view. 
+</p>
+
+<h2><a name="partial_view($uri)"></a>partial_view($uri)</h2>
+<p>
+Creates a partial view using the provided uri-parameter. The call for this partial view will be simular to an AJAX-call. This will result in a view without template.
+</p>
+<p>
+Example usage:
+</p>
+
+<code><span style="color: #000000">
+&lt;h1&gt;Some&nbsp;parent&nbsp;page&lt;/h1&gt;<br />&lt;p&gt;This&nbsp;is&nbsp;content&nbsp;of&nbsp;the&nbsp;parent&nbsp;page&lt;/p&gt;<br />&lt;p&gt;The&nbsp;code&nbsp;below&nbsp;will&nbsp;render&nbsp;a&nbsp;view&nbsp;within&nbsp;this&nbsp;parent&nbsp;page&lt;/p&gt;<br /><span style="color: #0000BB">&lt;?php&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">partial_view</span><span style="color: #007700">(</span><span style="color: #DD0000">'/some_module/some_controller/some_action'</span><span style="color: #007700">);&nbsp;</span><span style="color: #0000BB">?&gt;<br /></span><br />//Results&nbsp;in:<br />&lt;h1&gt;Some&nbsp;parent&nbsp;page&lt;/h1&gt;<br />&lt;p&gt;This&nbsp;is&nbsp;content&nbsp;of&nbsp;the&nbsp;parent&nbsp;page&lt;/p&gt;<br />&lt;p&gt;The&nbsp;code&nbsp;below&nbsp;will&nbsp;render&nbsp;a&nbsp;view&nbsp;within&nbsp;this&nbsp;parent&nbsp;page&lt;/p&gt;<br />&lt;div&nbsp;data-partial_view="/some_module/some_controller/some_action"&gt;Some&nbsp;possible&nbsp;content&nbsp;of&nbsp;the&nbsp;partial_view&lt;/div&gt;<br /></span>
+</code>
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>Previous Topic: <a href="../helpers/language.html">Language Helper</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;<a href="http://schools.scadsy.za.org/docs">User Guide Home</a></p>
+<p><a href="http://schools.scadsy.za.org/">SCADSY</a> &nbsp;&middot;&nbsp; Copyright &#169; 2014 </p>
+</div>
+
+
+
+</body>
+</html>
