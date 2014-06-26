@@ -80,7 +80,7 @@ class MX_Router extends CI_Router
 		//list($module, $directory, $controller) = array_pad($segments, 3, NULL);
 		list($module, $controller, $action) = array_pad($segments, 3, NULL);
 
-		$action = $action ?: 'index';			
+		$action = ($action != null) ? $action : 'index';		
 						
 		/* module exists? */
 		if (is_dir($source = Modules::$location.$module.'/controllers/')) {

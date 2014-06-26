@@ -13,7 +13,7 @@ require_once('passwordLibClass.php');
 
 if (!function_exists('password_hash')){
     function password_hash($password, $algo=PASSWORD_DEFAULT, $options=array()){
-        $crypt = NEW Antnee\PhpPasswordLib\PhpPasswordLib;
+        $crypt = new PhpPasswordLib();
         $crypt->setAlgorithm($algo);
         
         $debug  = isset($options['debug'])
@@ -34,14 +34,14 @@ if (!function_exists('password_verify')){
 
 if (!function_exists('password_needs_rehash')){
     function password_needs_rehash($hash, $algo, $options=array()){
-        $crypt = NEW Antnee\PhpPasswordLib\PhpPasswordLib;
+        $crypt = new PhpPasswordLib();
         return !$crypt->verifyCryptSetting($hash, $algo, $options);
     }
 }
 
 if (!function_exists('password_get_info')){
     function password_get_info($hash){
-        $crypt = NEW Antnee\PhpPasswordLib\PhpPasswordLib;
+        $crypt = new PhpPasswordLib();
         return $crypt->getInfo($hash);
     }
 }
