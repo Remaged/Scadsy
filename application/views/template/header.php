@@ -20,12 +20,17 @@
 		</div>
 		
 		<div id="sc-quick-menu" show="#sc-quick-menu-sub">
-			<span>Hello, <?php $user = new User(); echo $user->get_by_logged_in()->username; ?></span>
-			<div id="sc-quick-menu-sub" class="sc-simple-sub">
-				<ul>
-					<li><a href="<?php echo site_url('user/login/logout'); ?>">Logout</a></li>
-				</ul>
-			</div>
+			<?php $user = new User(); $user->get_by_logged_in(); if($user->exists()): ?>
+				<span>Hello, <?php echo $user->username; ?></span>
+				<div id="sc-quick-menu-sub" class="sc-simple-sub">
+					<ul>
+						<li><a href="<?php echo site_url('base/login/logout'); ?>">Logout</a></li>
+					</ul>
+				</div>
+			<?php else: ?>
+				<span><a href="<?php echo site_url('base/login'); ?>">Login</a></span>
+			<?php endif; ?>	
+			
 		</div>
 		<div class="clear"></div>
 	</div>

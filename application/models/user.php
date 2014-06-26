@@ -11,19 +11,18 @@ class User extends DataMapper {
 	var $has_many = array('group');
 
     var $validation = array(
-        array(
-        	'field' => 'username',
+        'username' => array(
             'label' => 'Username',
             'rules' => array('required', 'trim', 'xss_clean', 'unique', 'alpha_dash', 'min_length' => 3, 'max_length' => 100),
         ),
         'password_confirm' => array(
             'label' => 'Confirm Password',
             'rules' => array('required', 'xss_clean', 'matches' => 'password'),
-        ),
+        ),        
         'password' => array(
             'label' => 'Password',
             'rules' => array('required', 'xss_clean', 'min_length' => 6, 'encrypt'),
-        ),       
+        ),          
         'email' => array(
             'label' => 'Email Address',
             'rules' => array('xss_clean', 'trim', 'valid_email')
@@ -77,7 +76,22 @@ class User extends DataMapper {
 			return;
 		}
 		parent::__construct($id);				
-	}	
+	}
+	
+	/**
+	 * Save
+	 * Extends the save-method of the parent. 
+	 *
+	 * @param	mixed $object Optional object to save or array of objects to save.
+	 * @param	string $related_field Optional string to save the object as a specific relationship.
+	 * @return	bool Success or Failure of the validation and save.
+	 */
+	public function save($object = '', $related_field = ''){
+		$this->generate_username();
+		$this->generate_password();
+		return parent::save($object, $related_field);
+	}
+		
 	
 	/**
 	 * Tries to log in a user by using provided POST-data and validating the username/email + password
@@ -107,6 +121,32 @@ class User extends DataMapper {
     {
     	$this->$field = password_hash($this->{$field}, PASSWORD_DEFAULT);
     }
+	
+	/**
+	 * Generates a username if non is provided.
+	 */
+	private function generate_username(){
+		if(! empty($this->username)){
+			return;
+		}
+		$this->username = strtolower(substr($this->first_name, 0, 1) .'_'. $this->last_name); 
+		$users_with_same_username = new User();
+		$users_with_same_username->like('username', $this->username, 'after');
+		if($users_with_same_username->get()->result_count() > 0){
+			$this->username .= $users_with_same_username->get()->result_count();
+		}		
+	}
+	
+	/**
+	 * generates a password is non is provided
+	 */
+	private function generate_password(){
+		if( ! empty($this->password)){
+			return;
+		}
+		$this->password = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&_-+=-') , 0 , 10 );
+		$this->password_confirm = $this->password;
+	}
 	
 	/**
 	 * Ends session-data for the current logged in user. 

@@ -95,8 +95,8 @@ class Sms_messager_model extends SCADSY_Model {
 				->or_ilike('phone_number',urldecode($search_name))
 				->group_end();
 		}
-
-		return $users->get_paged($page, $page_size);
+		
+		return $users->group_by('username')->get_paged($page, $page_size);
 	}
 	
 	/**

@@ -5,7 +5,7 @@ Module Permissions: admin
 Module URI: 
 Description: This module enables the dashboard system.
 Version: 1.0
-Author: -
+Author: Bob van den Berge
 Author URI: -
 */
 

@@ -282,6 +282,7 @@ body {
 	padding:2px 10px 2px 36px;
 	display:inline-block;
 	width:112px;
+	width: calc(100% - 40px);
 }
 
 #sc-main-menu > li:hover > a {

@@ -3,10 +3,10 @@
 class Group extends DataMapper {
 	
 	var $table = 'groups';
-    //var $has_many = array('user','permission');
 	var $join_prefix = "";
 	var $has_many =array(
 		'user',
+		'enrollment',
 		'permission', 
 		'child_group' => array(
             'class' => 'group',
@@ -36,7 +36,7 @@ class Group extends DataMapper {
 	 */
 	public function __construct($id = NULL) {
 		if(is_string($id) && !is_numeric($id)){
-			parent::__construct(NULL); 
+			parent::__construct(NULL);
 			return $this->get_where(array('name'=>$id),1); 
 		}
 		parent::__construct($id);

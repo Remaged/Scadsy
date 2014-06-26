@@ -96,9 +96,14 @@ $(function(){
     	set_selected_groups();
     });
     
+    $("#search_users_container").on('click','.search_button',function(){	
+    	search_users();
+    });
+    /*
     $(".search_button").click(function(){   	
     	search_users();
     });
+    */
     
     $("#search_users_container").on("change","[name='search_group']",function(){
     	$(".sms_search_users_pagination [name='page']").val('1');

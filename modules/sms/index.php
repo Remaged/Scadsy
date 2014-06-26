@@ -3,7 +3,7 @@
 Module Name: SMS
 Module Permissions: admin
 Module URI: 
-Description: Makes sms-communication between school and users possible.
+Description: Makes sms-communication between school and users possible. This modules relies on the 'primary school' module.
 Version: 1.0
 Author: Kevin Driessen
 Author URI: http://kevindriessen.nl

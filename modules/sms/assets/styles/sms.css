@@ -1,4 +1,4 @@
-.sc-form>div>div{
+.sc-form label+div{
 	width: calc(100% - 200px);
 	position: relative;
 }

@@ -5,9 +5,10 @@ Module Permissions: admin, teachers
 Module URI: 
 Description: This module enables schools to register student attendance
 Version: 1.0
-Author: Kevin Driessen, Bob van den Berge
+Author: Bob van den Berge
 Author URI: -
 */
+
 
 Hook_manager::add_hook('pre_menu_generate', 'attendance_pre_menu_generated');
 function attendance_pre_menu_generated($menu_manager) {

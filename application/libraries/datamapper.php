@@ -1468,7 +1468,16 @@ class DataMapper implements IteratorAggregate {
 		// since they aren't necessary and might slow down the query.
 		$count_query->db->ar_select = NULL;
 		$count_query->db->ar_orderby = NULL;
-		$total = $count_query->db->ar_distinct ? $count_query->count_distinct() : $count_query->count();
+		
+		$distinct_column = 'id';
+		if($count_query->db->ar_groupby){
+			$distinct_column = implode(",",$count_query->db->ar_groupby);
+			$count_query->db->ar_distinct = TRUE;
+			$count_query->db->ar_groupby = NULL;
+		}
+
+		$total = $count_query->db->ar_distinct ? $count_query->count_distinct(NULL, $distinct_column) : $count_query->count();
+		//$total = $count_query->db->ar_distinct ? $count_query->count_distinct() : $count_query->count();
 
 		// common vars
 		$last_row = $page_size * floor($total / $page_size);

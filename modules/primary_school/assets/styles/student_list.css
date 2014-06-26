@@ -1,0 +1,6 @@
+#student_list_container tr:not(:first-child){
+	cursor: pointer;
+}
+#student_list_container tr:not(:first-child):hover{
+	background: #eee;
+}
