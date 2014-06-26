@@ -10,8 +10,6 @@
  */
 
 
-namespace Antnee\PhpPasswordLib;
-
 if (!defined('PASSWORD_BCRYPT')) define('PASSWORD_BCRYPT', 1);
 
 // Note that SHA hashes are not implemented in password_hash() or password_verify() in PHP 5.5

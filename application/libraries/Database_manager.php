@@ -79,7 +79,7 @@ class Database_manager {
 
 			$row = $query->row();
 			
-			$config['hostname'] = 'localhost';
+			$config['hostname'] = $row->host;
 			$config['username'] = $row->username;
 			$config['password'] = $row->password;
 			$config['database'] = $row->name;
