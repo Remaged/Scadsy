@@ -13,7 +13,8 @@
 		<?php foreach($updates as $update) {
 			
 		if($update->module_id != 0) {
-			$m = (new Module($update->module_id))->get();
+			$m = new Module($update->module_id);
+			$m = $m->get();
 		}
 		?>
 		<tr>

@@ -8,7 +8,8 @@ class Updates extends SCADSY_Controller{
 
 	public function index() {	
 		$data = array();
-		$data['updates'] = (new Update())
+		$update = new Update();
+		$data['updates'] = $update
 								->where('has_update = 1')
 								->get();
 		
@@ -26,7 +27,8 @@ class Updates extends SCADSY_Controller{
 	}
 	
 	public function widget() {
-		$updates = (new Update())->where('has_update = 1')->get();
+		$updates = new Update();
+		$updates = $updates->where('has_update = 1')->get();
 		$data = array();
 		$data['updates'] = $updates;
 		parent::widget('widgets/overview', $data);
