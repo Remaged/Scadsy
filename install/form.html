@@ -211,7 +211,7 @@
 		<form name="data" method="post">
 			<h2>User information</h2>
 			<p>
-				Please provide the following user information. Don't worry, you can always change these settings later.
+				Please provide the following information for creating a user. You can change these settings later.
 			</p>
 			
 			<table>
@@ -230,25 +230,55 @@
 					</td>
 				</tr>
 				<tr>
+					<td><label for="gender">Gender</label></td>
+					<td><select name="gender"><option value="male">Male</option><option value="female">Female</option></select>
+						<span class="hint"></span>
+					</td>
+				</tr>
+				<tr>
+					<td><label for="first_name">First name</label></td>
+					<td><input type="text" name="first_name"> (OPTIONAL)<br/>
+						<span class="hint"></span>
+					</td>
+				</tr>
+				<tr>
+					<td><label for="last_name">Last name</label></td>
+					<td><input type="text" name="last_name"> (OPTIONAL)<br/>
+						<span class="hint"></span>
+					</td>
+				</tr>
+				<tr>
+					<td><label for="date_of_birth">Date of birth</label></td>
+					<td><input type="date" name="date_of_birth"> (OPTIONAL)<br/>
+						<span class="hint"></span>
+					</td>
+				</tr>
+				<tr>
+					<td><label for="phone_number">Phone number</label></td>
+					<td><input type="tel" name="phone_number"> (OPTIONAL)<br/>
+						<span class="hint"></span>
+					</td>
+				</tr>					
+				<tr>
 					<td><label for="email">Your E-mail</label></td>
-					<td><input type="text" name="email"><br/>
-						<span class="hint">Double-check your email address before continuing.</span>
+					<td><input type="text" name="email"> (OPTIONAL)<br/>
+						<span class="hint"></span>
 					</td>
 				</tr>
 			</table>
 			
 			<h2>Database information</h2>
 			<p>
-				Please provide the following database information. Don't worry, you can always change these settings later.
+				Please provide the following information for making connection to the database.
 			</p>
 			<table>
 				<tr>
 					<td><label for="db_host">Database Host</label></td>
-					<td><input type="text" name="db_host"></td>
+					<td><input type="text" name="db_host" placeholder="e.g. localhost"></td>
 				</tr>
 				<tr>
 					<td><label for="db_name">Database Name</label></td>
-					<td><input type="text" name="db_name"></td>
+					<td><input type="text" name="db_name" placeholder="e.g. scadsy"></td>
 				</tr>
 				<tr>
 					<td><label for="db_user">Database User</label></td>

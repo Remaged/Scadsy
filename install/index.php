@@ -9,7 +9,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 	// Load the database connection
 	$dbh = new PDO($_POST['db_driver'].':host='.$_POST['db_host'].';dbname='.$_POST['db_name'], $_POST['db_user'], $_POST['db_pass']);
 	
-	$dbh->query(get_prepared_sql($sql_file, $_POST['username'], $_POST['password'], $_POST['email']));
+	$dbh->query(get_prepared_sql($sql_file));
 	
 	$dbh = NULL;
 	
@@ -36,10 +36,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 
-function get_prepared_sql($sql_file, $username, $password, $email) {
+function get_prepared_sql($sql_file) {
 	$sql = file_get_contents($sql_file);
-	$sql = str_replace("{USERNAME}", $username, $sql);
-	$sql = str_replace("{PASSWORD}", password_hash($password, PASSWORD_DEFAULT), $sql);
-	$sql = str_replace("{EMAIL}", $email, $sql);
+	$sql = str_replace("{USERNAME}", $_POST['username'], $sql);
+	$sql = str_replace("{PASSWORD}", password_hash($_POST['password'], PASSWORD_DEFAULT), $sql);
+	$sql = str_replace("{EMAIL}", $_POST['email'], $sql);
+	$sql = str_replace("{FIRST_NAME}", $_POST['first_name'], $sql);
+	$sql = str_replace("{LAST_NAME}", $_POST['last_name'], $sql);
+	$sql = str_replace("{GENDER}", $_POST['gender'], $sql);
+	$sql = str_replace("{DATE_OF_BIRTH}", $_POST['date_of_birth'], $sql);
+	$sql = str_replace("{PHONE_NUMBER}", $_POST['phone_number'], $sql);
 	return $sql;
 }

@@ -28,7 +28,7 @@ class SCADSY_Controller extends MX_Controller {
 	 */
 	protected function redirect_to_login(){
 		if($this->user->is_logged_in() === FALSE && get_class($this) != 'Login'){
-			redirect('user/login/index');
+			redirect('base/login/index');
 		}
 	}
 	
